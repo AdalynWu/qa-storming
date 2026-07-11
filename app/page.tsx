@@ -76,8 +76,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="animal animal-fox" style={{ transform: `translateY(${scrollY * .28}px)` }}><span>🦊</span><i>任務準備好了嗎？</i></div>
-        <div className="animal animal-rabbit" style={{ transform: `translateY(${scrollY * .38}px)` }}><span>🐇</span></div>
+        <div className="animal animal-fox" style={{ transform: `translateY(${scrollY * .28}px)` }}><span className="animal-sprite sprite-fox" role="img" aria-label="狐狸嚮導" /><i>任務準備好了嗎？</i></div>
         <button className="rpg-scroll" onClick={() => jumpTo("onboarding")}><i>⌄</i><span>向下探索</span></button>
       </section>
 
@@ -96,7 +95,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="critter owl" style={{ transform: `translate(${Math.sin(scrollY * .01) * 14}px, ${(scrollY - 800) * -.06}px)` }}>🦉<span>HOOT!</span></div>
+        <div className="critter owl" style={{ transform: `translate(${Math.sin(scrollY * .01) * 14}px, ${(scrollY - 800) * -.06}px)` }}><span className="animal-sprite sprite-owl" role="img" aria-label="飛行的貓頭鷹" /><i>HOOT!</i></div>
       </section>
 
       <section className="library-zone" id="knowhow">
@@ -107,7 +106,7 @@ export default function Home() {
             {lore.map((item) => <article key={item.title}><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>)}
           </div>
         </div>
-        <div className="animal-deer" style={{ transform: `translateY(${(scrollY - 1500) * -.04}px)` }}>🦌</div>
+        <div className="animal-deer" style={{ transform: `translateY(${(scrollY - 1500) * -.04}px)` }}><span className="animal-sprite sprite-deer" role="img" aria-label="散步的小鹿" /></div>
       </section>
 
       <section className="camp-zone">
