@@ -76,7 +76,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="animal animal-fox" style={{ transform: `translateY(${scrollY * .28}px)` }}><span className="animal-sprite sprite-fox" role="img" aria-label="狐狸嚮導" /><i>任務準備好了嗎？</i></div>
+        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * -.28}px)` }}><span className="animal-sprite sprite-fox" role="img" aria-label="狐狸嚮導" /><i>任務準備好了嗎？</i></div>
         <button className="rpg-scroll" onClick={() => jumpTo("onboarding")}><i>⌄</i><span>向下探索</span></button>
       </section>
 
