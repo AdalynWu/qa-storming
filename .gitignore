@@ -17,6 +17,7 @@
 /.next/
 /.vinext/
 /out/
+/.firebase/
 
 # misc
 .DS_Store
