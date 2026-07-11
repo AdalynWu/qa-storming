@@ -1,17 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { QuestBookCarousel } from "@/components/QuestBookCarousel";
 
 const fruits = [
   { id: "onboarding", className: "fruit-pink", icon: "✦", title: "新手村", subtitle: "ONBOARDING" },
   { id: "regression", className: "fruit-blue", icon: "◆", title: "試煉之森", subtitle: "REGRESSION" },
   { id: "knowhow", className: "fruit-green", icon: "✧", title: "賢者書庫", subtitle: "KNOW-HOW" },
-];
-
-const quests = [
-  { type: "新手任務", title: "QA 冒險者啟程指南", description: "完成環境建置、權限申請與第一週修行。", progress: "12 個章節", reward: "+120 EXP", color: "mint", icon: "🧭" },
-  { type: "團隊副本", title: "Console Web · Release 4.8", description: "核心流程、權限矩陣與跨瀏覽器回歸試煉。", progress: "84 Cases", reward: "P0 · 18", color: "blue", icon: "🛡️" },
-  { type: "限時挑戰", title: "Mobile App · Checkout", description: "iOS / Android 結帳與錯誤恢復測試。", progress: "63 Cases", reward: "P0 · 12", color: "peach", icon: "⚔️" },
 ];
 
 const lore = [
@@ -76,7 +71,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * -.28}px)` }}><span className="animal-sprite sprite-fox" role="img" aria-label="狐狸嚮導" /><i>任務準備好了嗎？</i></div>
+        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * -.28}px)` }}><span className="animal-sprite sprite-jelly" role="img" aria-label="史萊姆嚮導" /><i>任務準備好了嗎？</i></div>
         <button className="rpg-scroll" onClick={() => jumpTo("onboarding")}><i>⌄</i><span>向下探索</span></button>
       </section>
 
@@ -85,15 +80,7 @@ export default function Home() {
         <div className="parallax-hills hills-front" style={{ transform: `translateY(${(scrollY - 650) * .12}px)` }} />
         <div className="zone-content">
           <div className="zone-title"><p>✦ ADVENTURER&apos;S QUEST BOARD ✦</p><h2>選擇今日任務</h2><span>每一份測試文件，都是讓產品世界更加安定的冒險紀錄。</span></div>
-          <div className="quest-grid">
-            {quests.map((quest, index) => (
-              <article className={`quest-card ${quest.color}`} id={index === 1 ? "regression" : undefined} key={quest.title}>
-                <div className="quest-pin">●</div><div className="quest-icon">{quest.icon}</div>
-                <small>{quest.type}</small><h3>{quest.title}</h3><p>{quest.description}</p>
-                <footer><span>{quest.progress}</span><b>{quest.reward}</b><button>接受任務</button></footer>
-              </article>
-            ))}
-          </div>
+          <div id="regression"><QuestBookCarousel /></div>
         </div>
         <div className="critter owl" style={{ transform: `translate(${Math.sin(scrollY * .01) * 14}px, ${(scrollY - 800) * -.06}px)` }}><span className="animal-sprite sprite-owl" role="img" aria-label="飛行的貓頭鷹" /><i>HOOT!</i></div>
       </section>
