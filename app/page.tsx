@@ -2,39 +2,36 @@
 
 import { useEffect, useState } from "react";
 
-const destinations = [
-  { id: "onboarding", code: "01", title: "ONBOARDING", subtitle: "新成員導航", className: "planet-cyan" },
-  { id: "regression", code: "02", title: "REGRESSION", subtitle: "產品測試星系", className: "planet-violet" },
-  { id: "knowhow", code: "03", title: "KNOW-HOW", subtitle: "知識資料庫", className: "planet-amber" },
+const fruits = [
+  { id: "onboarding", className: "fruit-pink", icon: "✦", title: "新手村", subtitle: "ONBOARDING" },
+  { id: "regression", className: "fruit-blue", icon: "◆", title: "試煉之森", subtitle: "REGRESSION" },
+  { id: "knowhow", className: "fruit-green", icon: "✧", title: "賢者書庫", subtitle: "KNOW-HOW" },
 ];
 
-const documents = [
-  { category: "ONBOARDING", title: "QA 新人啟航手冊", description: "環境、權限、測試流程與第一週任務。", meta: "12 篇 · 更新於 2 天前", accent: "cyan" },
-  { category: "REGRESSION", title: "Console Web — Release 4.8", description: "核心流程、權限矩陣與跨瀏覽器回歸清單。", meta: "84 cases · P0 18", accent: "violet" },
-  { category: "REGRESSION", title: "Mobile App — Checkout", description: "iOS / Android 結帳、支付與錯誤恢復測試。", meta: "63 cases · P0 12", accent: "violet" },
-  { category: "KNOW-HOW", title: "API 測試作戰指南", description: "Contract testing、測試資料與常見除錯路徑。", meta: "8 分鐘閱讀", accent: "amber" },
-  { category: "KNOW-HOW", title: "缺陷分級與回報標準", description: "Severity、priority、證據與可重現步驟範例。", meta: "團隊規範 · v3.2", accent: "amber" },
-  { category: "ONBOARDING", title: "測試環境星圖", description: "Dev、Staging、UAT 服務與負責人一覽。", meta: "9 個環境", accent: "cyan" },
+const quests = [
+  { type: "新手任務", title: "QA 冒險者啟程指南", description: "完成環境建置、權限申請與第一週修行。", progress: "12 個章節", reward: "+120 EXP", color: "mint", icon: "🧭" },
+  { type: "團隊副本", title: "Console Web · Release 4.8", description: "核心流程、權限矩陣與跨瀏覽器回歸試煉。", progress: "84 Cases", reward: "P0 · 18", color: "blue", icon: "🛡️" },
+  { type: "限時挑戰", title: "Mobile App · Checkout", description: "iOS / Android 結帳與錯誤恢復測試。", progress: "63 Cases", reward: "P0 · 12", color: "peach", icon: "⚔️" },
+];
+
+const lore = [
+  { number: "I", title: "API 測試魔法書", text: "Contract testing、測試資料與常見除錯咒語。", badge: "8 MIN" },
+  { number: "II", title: "缺陷鑑定圖鑑", text: "Severity、priority 與可靠證據的判定方式。", badge: "V3.2" },
+  { number: "III", title: "測試環境世界地圖", text: "Dev、Staging、UAT 的入口與守門人。", badge: "9 MAPS" },
 ];
 
 export default function Home() {
-  const [query, setQuery] = useState("");
+  const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const update = (event: PointerEvent) => {
-      const x = (event.clientX / window.innerWidth - 0.5) * 2;
-      const y = (event.clientY / window.innerHeight - 0.5) * 2;
-      document.documentElement.style.setProperty("--mx", x.toFixed(3));
-      document.documentElement.style.setProperty("--my", y.toFixed(3));
+    let frame = 0;
+    const update = () => {
+      if (!frame) frame = requestAnimationFrame(() => { setScrollY(window.scrollY); frame = 0; });
     };
-    window.addEventListener("pointermove", update, { passive: true });
-    return () => window.removeEventListener("pointermove", update);
+    window.addEventListener("scroll", update, { passive: true });
+    return () => { window.removeEventListener("scroll", update); cancelAnimationFrame(frame); };
   }, []);
-
-  const filtered = documents.filter((doc) =>
-    `${doc.category} ${doc.title} ${doc.description}`.toLowerCase().includes(query.toLowerCase()),
-  );
 
   const jumpTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -42,80 +39,82 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <section className="cockpit" aria-label="QA Mission Control 首頁">
-        <div className="stars stars-back" aria-hidden="true" />
-        <div className="stars stars-front" aria-hidden="true" />
-        <header className="topbar">
-          <button className="brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="返回首頁">
-            <span className="brand-mark">Q</span>
-            <span><b>QA</b> MISSION CONTROL<small>QUALITY KNOWLEDGE SYSTEM</small></span>
-          </button>
-          <nav className={menuOpen ? "nav open" : "nav"} aria-label="主選單">
-            <button onClick={() => jumpTo("onboarding")}>ONBOARDING</button>
-            <button onClick={() => jumpTo("regression")}>REGRESSION</button>
-            <button onClick={() => jumpTo("knowhow")}>KNOW-HOW</button>
-            <button onClick={() => jumpTo("architecture")}>ARCHITECTURE</button>
-          </nav>
-          <div className="system-status"><i /> ALL SYSTEMS NOMINAL</div>
-          <button className="menu" onClick={() => setMenuOpen((value) => !value)} aria-label="切換選單" aria-expanded={menuOpen}>☰</button>
-        </header>
+    <main className="rpg-world">
+      <header className="rpg-nav">
+        <button className="rpg-brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <span className="crest">Q</span><span><b>QA STORMING</b><small>Guild Knowledge Archive</small></span>
+        </button>
+        <nav className={menuOpen ? "rpg-links open" : "rpg-links"}>
+          <button onClick={() => jumpTo("onboarding")}>新手村</button>
+          <button onClick={() => jumpTo("regression")}>試煉之森</button>
+          <button onClick={() => jumpTo("knowhow")}>賢者書庫</button>
+        </nav>
+        <div className="guild-level"><span>GUILD LV.</span><b>25</b><i><em /></i></div>
+        <button className="rpg-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="切換選單">☰</button>
+      </header>
 
-        <div className="window-frame" aria-hidden="true"><span /><span /><span /><span /></div>
-        <div className="orbit orbit-one" aria-hidden="true" />
-        <div className="orbit orbit-two" aria-hidden="true" />
+      <section className="tree-hero">
+        <div className="sky-layer" style={{ transform: `translateY(${scrollY * .08}px)` }} />
+        <div className="tree-art" style={{ transform: `translateY(${scrollY * .15}px) scale(${1 + Math.min(scrollY, 500) * .00008})` }} />
+        <div className="mist mist-one" style={{ transform: `translate3d(${-scrollY * .04}px, ${scrollY * .22}px, 0)` }} />
+        <div className="mist mist-two" style={{ transform: `translate3d(${scrollY * .05}px, ${scrollY * .3}px, 0)` }} />
+        <div className="hero-leaves" style={{ transform: `translateY(${scrollY * .45}px)` }} aria-hidden="true">❧　•　❧　　•　❧</div>
 
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> MISSION 025 — KNOWLEDGE FRONTIER</p>
-          <h1>EXPLORE.<br /><em>VERIFY.</em><br />DELIVER.</h1>
-          <p className="intro">探索團隊知識星系，建立可靠的測試航線。<br />每一次發佈，都從清晰的資訊開始。</p>
-          <button className="primary" onClick={() => jumpTo("documents")}>啟動探索 <span>↗</span></button>
+        <div className="hero-copy-rpg" style={{ transform: `translateY(${scrollY * .12}px)` }}>
+          <p className="rpg-kicker"><span>✦</span> THE GREAT TREE OF QUALITY <span>✦</span></p>
+          <h1>知識之樹，<br /><em>守護每次冒險。</em></h1>
+          <p>在世界樹的枝葉之間，探索團隊累積的測試智慧。<br />採下果實，選擇你的任務旅程。</p>
+          <button className="rpg-primary" onClick={() => jumpTo("onboarding")}><span>開始冒險</span><i>➜</i></button>
         </div>
 
-        <div className="planet-system">
-          {destinations.map((destination, index) => (
-            <button key={destination.id} className={`planet-node node-${index + 1}`} onClick={() => jumpTo(destination.id)} aria-label={`前往 ${destination.title}`}>
-              <span className={`planet ${destination.className}`}><i /></span>
-              <span className="planet-label"><small>{destination.code} //</small><b>{destination.title}</b><em>{destination.subtitle}</em></span>
+        <div className="fruit-nav" aria-label="知識區域導航">
+          {fruits.map((fruit) => (
+            <button className={`magic-fruit ${fruit.className}`} key={fruit.id} onClick={() => jumpTo(fruit.id)}>
+              <span className="fruit-orb"><i>{fruit.icon}</i></span>
+              <span className="fruit-name"><small>{fruit.subtitle}</small><b>{fruit.title}</b></span>
             </button>
           ))}
         </div>
 
-        <div className="telemetry left"><span>LAT 25.0330° N</span><span>LNG 121.5654° E</span></div>
-        <div className="telemetry right"><span>VELOCITY 27,580 KM/H</span><span>ORBIT STABLE</span></div>
-        <button className="scroll-cue" onClick={() => jumpTo("documents")}><span /> SCROLL TO NAVIGATE</button>
+        <div className="animal animal-fox" style={{ transform: `translateY(${scrollY * .28}px)` }}><span>🦊</span><i>任務準備好了嗎？</i></div>
+        <div className="animal animal-rabbit" style={{ transform: `translateY(${scrollY * .38}px)` }}><span>🐇</span></div>
+        <button className="rpg-scroll" onClick={() => jumpTo("onboarding")}><i>⌄</i><span>向下探索</span></button>
       </section>
 
-      <section className="knowledge" id="documents">
-        <div className="section-head">
-          <div><p className="eyebrow"><span /> KNOWLEDGE SECTORS</p><h2>選擇你的任務航線</h2></div>
-          <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋文件、產品或關鍵字..." aria-label="搜尋文件" /></label>
+      <section className="quest-zone" id="onboarding">
+        <div className="parallax-hills hills-back" style={{ transform: `translateY(${(scrollY - 650) * .06}px)` }} />
+        <div className="parallax-hills hills-front" style={{ transform: `translateY(${(scrollY - 650) * .12}px)` }} />
+        <div className="zone-content">
+          <div className="zone-title"><p>✦ ADVENTURER&apos;S QUEST BOARD ✦</p><h2>選擇今日任務</h2><span>每一份測試文件，都是讓產品世界更加安定的冒險紀錄。</span></div>
+          <div className="quest-grid">
+            {quests.map((quest, index) => (
+              <article className={`quest-card ${quest.color}`} id={index === 1 ? "regression" : undefined} key={quest.title}>
+                <div className="quest-pin">●</div><div className="quest-icon">{quest.icon}</div>
+                <small>{quest.type}</small><h3>{quest.title}</h3><p>{quest.description}</p>
+                <footer><span>{quest.progress}</span><b>{quest.reward}</b><button>接受任務</button></footer>
+              </article>
+            ))}
+          </div>
         </div>
-        <div className="sector-tabs" aria-label="文件分類">
-          {destinations.map((item) => <button key={item.id} onClick={() => jumpTo(item.id)}>{item.code} <span>{item.title}</span></button>)}
-        </div>
-
-        <div className="doc-grid">
-          {filtered.map((doc, index) => (
-            <article className={`doc-card ${doc.accent}`} id={index === 0 ? "onboarding" : index === 1 ? "regression" : index === 3 ? "knowhow" : undefined} key={doc.title}>
-              <div className="doc-top"><span>{doc.category}</span><i>MD</i></div>
-              <h3>{doc.title}</h3><p>{doc.description}</p>
-              <footer><small>{doc.meta}</small><button aria-label={`開啟 ${doc.title}`}>↗</button></footer>
-            </article>
-          ))}
-          {filtered.length === 0 && <p className="empty">這片星域沒有符合的文件，試試其他關鍵字。</p>}
-        </div>
+        <div className="critter owl" style={{ transform: `translate(${Math.sin(scrollY * .01) * 14}px, ${(scrollY - 800) * -.06}px)` }}>🦉<span>HOOT!</span></div>
       </section>
 
-      <section className="architecture" id="architecture">
-        <p className="eyebrow"><span /> SYSTEM BLUEPRINT</p>
-        <div className="architecture-grid">
-          <div><h2>Markdown 驅動，<br />保持簡單而可靠。</h2><p>文件跟著程式碼一起版本控管，透過 Pull Request 審閱。前端在建置時讀取 Markdown，不需要先維護額外資料庫。</p></div>
-          <div className="pipeline" aria-label="內容發布流程"><span>VS CODE<small>編輯 .md</small></span><i>→</i><span>GIT<small>審閱版本</small></span><i>→</i><span>BUILD<small>產生網站</small></span><i>→</i><span>DEPLOY<small>全球發佈</small></span></div>
+      <section className="library-zone" id="knowhow">
+        <div className="floating-motes" style={{ transform: `translateY(${(scrollY - 1500) * -.08}px)` }}>✦　·　✧　　　·　✦　　✧　·　✦</div>
+        <div className="library-inner">
+          <div className="book-copy"><p className="rpg-kicker"><span>✦</span> THE SAGE&apos;S ARCHIVE</p><h2>賢者的知識書庫</h2><p>把經驗寫成可以傳承的冒險筆記。所有卷軸都以 Markdown 保存，跟著版本一同成長。</p><button className="rpg-secondary">開啟完整圖書館　➜</button></div>
+          <div className="lore-list">
+            {lore.map((item) => <article key={item.title}><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>)}
+          </div>
         </div>
+        <div className="animal-deer" style={{ transform: `translateY(${(scrollY - 1500) * -.04}px)` }}>🦌</div>
       </section>
 
-      <footer className="footer"><span>QA MISSION CONTROL</span><small>Built for teams who verify the future.</small><b>STATUS: OPERATIONAL</b></footer>
+      <section className="camp-zone">
+        <div><p>QUEST COMPLETE</p><h2>與團隊一起，<br />寫下下一頁冒險。</h2></div>
+        <div className="campfire"><span>✦</span><i>🔥</i><small>ALL SYSTEMS<br />NOMINAL</small></div>
+      </section>
+      <footer className="rpg-footer"><b>QA STORMING</b><span>Made for the guild that guards quality.</span><small>© 2026 SWAG QA GUILD</small></footer>
     </main>
   );
 }

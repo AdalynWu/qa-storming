@@ -7,21 +7,21 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://qa-storming.web.app"),
-  title: "QA Mission Control — Knowledge System",
-  description: "QA 團隊的 Onboarding、Regression Test Cases 與產品 Know-how 知識基地。",
+  title: "QA Storming — Guild Knowledge Archive",
+  description: "沿著生命樹探索 QA 團隊的 Onboarding、Regression Test Cases 與產品 Know-how。",
   robots: { index: false, follow: false },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   openGraph: {
-    title: "QA Mission Control",
-    description: "Explore. Verify. Deliver. QA 團隊的知識任務中心。",
+    title: "QA Storming — Guild Knowledge Archive",
+    description: "沿著生命樹，探索團隊累積的測試智慧。",
     type: "website",
-    images: [{ url: "/og.png", width: 1731, height: 909, alt: "QA Mission Control 太空知識基地" }],
+    images: [{ url: "/rpg-life-tree.png", width: 1672, height: 941, alt: "QA Storming 奇幻生命樹知識基地" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "QA Mission Control",
-    description: "Explore. Verify. Deliver. QA 團隊的知識任務中心。",
-    images: ["/og.png"],
+    title: "QA Storming — Guild Knowledge Archive",
+    description: "沿著生命樹，探索團隊累積的測試智慧。",
+    images: ["/rpg-life-tree.png"],
   },
 };
 
