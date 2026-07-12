@@ -11,13 +11,16 @@
     "start": "next start",
     "deploy": "npm run build && firebase deploy --only hosting",
     "test": "npm run build",
-    "lint": "eslint . --ignore-pattern out --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern out --ignore-pattern .next --ignore-pattern dist --ignore-pattern .vinext --ignore-pattern .wrangler",
+    "sync:regression": "tsx scripts/sync-regression.ts",
+    "test:regression": "tsx --test scripts/sync-regression.test.ts"
   },
   "dependencies": {
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "swiper": "^14.0.5"
+    "swiper": "^14.0.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.1",
@@ -26,7 +29,9 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
+    "googleapis": "^173.0.0",
     "tailwindcss": "4.2.1",
+    "tsx": "^4.23.0",
     "typescript": "5.9.3"
   },
   "type": "module"

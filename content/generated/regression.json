@@ -1,0 +1,2308 @@
+{
+  "_meta": {
+    "schemaVersion": 2,
+    "contentHash": "c3dc0bd954014957"
+  },
+  "suites": [
+    {
+      "id": "web-production",
+      "title": "Web Production",
+      "subtitle": "瀏覽器海岸巡查",
+      "product": "SWAG",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "description": "SWAG Web Production（swag.live）PC Web 核心回歸範圍：登入與驗證、探索首頁、直播、影片與短影音、搜尋與分類、個人頁與日誌、聊天、鑽石相關流程。依 2026-07-12 八支螢幕錄影與越南外包 QA Need Clarification 案例整理，Mobile Web 差異尚未涵蓋。",
+      "status": "active"
+    }
+  ],
+  "cases": [
+    {
+      "id": "WEB-LOGIN-001",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "有效帳號密碼可成功登入 Web Production",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "已有可用的測試帳號（帳號密碼登入方式）",
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [
+        "一般會員測試帳號（帳號密碼類型）"
+      ],
+      "steps": [
+        "開啟 swag.live 首頁",
+        "點擊「帳號註冊 / 登入」",
+        "點擊「帳號密碼登入」",
+        "輸入有效的用戶名稱與密碼",
+        "點擊「登入」",
+        "依畫面指示完成 GEETEST 滑塊拼圖驗證"
+      ],
+      "expectedResults": [
+        "滑塊驗證顯示「驗證通過」",
+        "登入成功並進入探索首頁",
+        "顯示歡迎 toast「歡迎來到亞洲最大的私密成人平台！」",
+        "開啟頭像選單時顯示登入帳號的正確用戶名稱"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-002",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "Email 驗證碼可成功登入並出現快速登入開通提示",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "已有可收信的測試 Email 帳號",
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [
+        "可收取驗證碼的測試 Email 信箱"
+      ],
+      "steps": [
+        "開啟登入視窗（登入或建立帳戶）",
+        "於「手機號碼或 Email」欄位輸入測試 Email",
+        "點擊「取得驗證碼」",
+        "完成 GEETEST 滑塊驗證",
+        "於收到的信件中取得 6 位數驗證碼",
+        "在驗證碼欄位依序輸入 6 位數字"
+      ],
+      "expectedResults": [
+        "進入「輸入 Email 驗證碼」頁，顯示驗證碼已發送至輸入的 Email",
+        "頁面說明驗證碼須於 10 分鐘內完成驗證",
+        "輸入完第 6 碼後自動送出驗證",
+        "驗證成功後完成登入",
+        "顯示快速登入（臉部 / 指紋）開通提示，含「立即開通」與「稍後開通」選項"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-003",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "手機號碼自動辨識國碼並可以簡訊驗證碼登入",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "已有可收簡訊的測試手機門號",
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [
+        "可收取簡訊驗證碼的台灣測試門號"
+      ],
+      "steps": [
+        "開啟登入視窗（登入或建立帳戶）",
+        "於「手機號碼或 Email」欄位輸入台灣手機號碼（09 開頭）",
+        "點擊「取得驗證碼」",
+        "完成 GEETEST 滑塊驗證",
+        "於「輸入手機驗證碼」頁輸入收到的 6 位數簡訊驗證碼",
+        "點擊「驗證並繼續」"
+      ],
+      "expectedResults": [
+        "輸入手機號碼後，欄位自動辨識為手機並顯示 +886 國碼前綴",
+        "驗證碼頁顯示完整國際格式門號（+886 開頭）",
+        "頁面說明驗證碼須於 10 分鐘內完成驗證",
+        "驗證成功後完成登入並進入探索首頁"
+      ],
+      "tags": [
+        "critical-path",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-004",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "Google 帳號可成功登入 Web Production",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試環境已可使用測試用 Google 帳號",
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [
+        "測試用 Google 帳號"
+      ],
+      "steps": [
+        "開啟登入視窗（登入或建立帳戶）",
+        "點擊「Google」按鈕",
+        "於 Google 帳號選擇頁選擇測試帳號"
+      ],
+      "expectedResults": [
+        "跳轉至 accounts.google.com 的「Choose an account」頁，顯示 to continue to SWAG",
+        "選擇帳號後導回 swag.live 並完成登入",
+        "顯示歡迎 toast，頭像選單顯示對應帳號名稱"
+      ],
+      "tags": [
+        "critical-path",
+        "compatibility"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-005",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "Apple 帳號可透過通行密鑰成功登入 Web Production",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試裝置已設定可用的 Apple 帳號與通行密鑰（Touch ID）",
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [
+        "測試用 Apple 帳號（已綁定通行密鑰）"
+      ],
+      "steps": [
+        "開啟登入視窗（登入或建立帳戶）",
+        "點擊「Apple」按鈕",
+        "於 appleid.apple.com 頁面選擇「使用通行密鑰登入」",
+        "完成 Touch ID 通行密鑰驗證",
+        "於確認頁點擊「繼續」"
+      ],
+      "expectedResults": [
+        "跳轉至 appleid.apple.com 的 Apple 帳號登入頁（Sign in With Apple Id for web）",
+        "通行密鑰驗證顯示「登入中」後顯示「完成」",
+        "確認頁詢問是否以該 Apple 帳號繼續使用",
+        "確認後導回 swag.live 並完成登入"
+      ],
+      "tags": [
+        "critical-path",
+        "compatibility"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-006",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "登出後再登入時「歡迎回來」記住上次帳號與登入方式",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "此裝置先前曾以任一方式成功登入並登出",
+        "未勾選「不要在此裝置記住我」"
+      ],
+      "testData": [
+        "曾於此裝置登入過的測試帳號（帳號密碼、Email、手機、Google、Apple 任一）"
+      ],
+      "steps": [
+        "以任一方式登入後執行登出",
+        "再次點擊「帳號註冊 / 登入」或「登入 / 註冊」"
+      ],
+      "expectedResults": [
+        "顯示「歡迎回來！」視窗，帶出上次登入帳號的用戶名稱與頭像",
+        "依上次登入方式顯示對應主按鈕（例如「使用帳號密碼登入」「使用 Email 登入」「使用手機號碼登入」「Google 帳號登入」「Apple 帳號登入」）",
+        "提供「使用其他方式」切換完整登入選項",
+        "顯示「不要在此裝置重記住我」選項"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-007",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "登出需經確認對話框且登出後回到未登入狀態",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟頭像選單並進入「設定」",
+        "點擊頁面底部的「登出」",
+        "於確認對話框點擊「登出」"
+      ],
+      "expectedResults": [
+        "顯示確認對話框「真的要登出了嗎？」，提供「登出」與「取消」",
+        "點擊「取消」時維持登入狀態（對話框關閉）",
+        "點擊「登出」後回到未登入狀態，設定頁改顯示「登入 / 註冊」",
+        "與鑽石、帳號相關的設定項目（如購買鑽石區塊的帳號專屬項目）不再以登入身分顯示"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-008",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "OTP 驗證碼頁顯示重新發送倒數計時",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "已於登入流程送出 Email 或手機驗證碼請求"
+      ],
+      "testData": [
+        "可收取驗證碼的測試 Email 或測試門號"
+      ],
+      "steps": [
+        "進入「輸入 Email 驗證碼」或「輸入手機驗證碼」頁",
+        "觀察「重新發送驗證碼」文字"
+      ],
+      "expectedResults": [
+        "顯示「重新發送驗證碼（60 秒）」並逐秒倒數",
+        "倒數期間重新發送選項為不可用（灰色）狀態"
+      ],
+      "tags": [
+        "ui",
+        "boundary"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LOGIN-009",
+      "suiteId": "web-production",
+      "module": "Authentication",
+      "title": "訪客進站自動建立訪客帳號並提示綁定保留鑽石",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "瀏覽器為未登入狀態"
+      ],
+      "testData": [],
+      "steps": [
+        "開啟 swag.live 首頁",
+        "點擊「訪客進站」"
+      ],
+      "expectedResults": [
+        "自動以訪客身分進站，頭像選單顯示 @guest_ 開頭的訪客帳號",
+        "訪客鑽石餘額顯示為 0",
+        "顯示「立即綁定帳號保留鑽石」警示提示"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-001",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "登入後探索首頁顯示導覽列與核心內容區塊",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "登入後停留於探索首頁",
+        "檢視頁面頂部與主要內容區塊"
+      ],
+      "expectedResults": [
+        "頂部導覽列顯示：探索、追蹤中、分類、直播、影片與搜尋框",
+        "顯示「熱門直播中 LIVE」區塊，直播卡片含封面、觀看人數、標題、主播名稱與評分",
+        "顯示「熱門短影音」區塊"
+      ],
+      "tags": [
+        "critical-path",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-002",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "未完成年齡驗證時顯示驗證橫幅且短影音預覽模糊",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入但尚未完成年齡驗證"
+      ],
+      "testData": [
+        "未完成年齡驗證的測試帳號"
+      ],
+      "steps": [
+        "登入後停留於探索首頁",
+        "檢視頁面底部橫幅與熱門短影音縮圖"
+      ],
+      "expectedResults": [
+        "顯示紫色橫幅「完成年齡驗證，立即清晰預覽」",
+        "橫幅提供「驗證手機」與「購買鑽石」兩個按鈕",
+        "熱門短影音縮圖以模糊方式呈現"
+      ],
+      "tags": [
+        "permission",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-003",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "熱門直播中「更多」導向即時熱門直播列表",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於探索首頁的「熱門直播中 LIVE」區塊點擊「更多」"
+      ],
+      "expectedResults": [
+        "導向即時熱門直播列表頁（網址含 user-feed-grid/user_livestream）",
+        "以格狀清單顯示直播卡片，含封面、觀看人數、標題、主播名稱與評分"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-004",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "追蹤中頁顯示最新上線、追蹤貼文與追蹤清單",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已追蹤至少一位創作者"
+      ],
+      "testData": [
+        "已追蹤多位創作者的測試帳號"
+      ],
+      "steps": [
+        "點擊導覽列「追蹤中」",
+        "檢視「最新上線」區塊",
+        "向下捲動檢視「貼文」動態",
+        "進入追蹤清單（追蹤創作者格狀列表）"
+      ],
+      "expectedResults": [
+        "「最新上線」顯示近期上線的已追蹤創作者",
+        "「貼文」顯示已追蹤創作者的貼文動態，付費貼文顯示「以 💎{價格} 觀看貼文」按鈕",
+        "追蹤清單以格狀顯示所有已追蹤帳號"
+      ],
+      "tags": [
+        "ui",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-005",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "首頁顯示推薦影片與熱門創作者區塊",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於探索首頁向下捲動",
+        "檢視「推薦影片」與「熱門創作者」區塊"
+      ],
+      "expectedResults": [
+        "推薦影片卡片顯示封面、時長、標題、創作者、解鎖數、好評率與鑽石價格",
+        "熱門創作者以名次排序顯示，直播中的創作者帶「表演中」標記"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-HOME-006",
+      "suiteId": "web-production",
+      "module": "Home",
+      "title": "選單「重新整理」重新載入頁面並顯示最新帳號狀態",
+      "priority": "P3",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟頭像選單",
+        "點擊「重新整理」"
+      ],
+      "expectedResults": [
+        "頁面觸發重新載入並顯示載入過程",
+        "重新載入後維持登入狀態並顯示最新帳號資訊"
+      ],
+      "tags": [
+        "ui",
+        "recovery"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-001",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "點擊頭像開啟漢堡選單並顯示完整功能入口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於任一頁面點擊右上角頭像",
+        "檢視展開的漢堡選單內容"
+      ],
+      "expectedResults": [
+        "選單頂部顯示目前帳號名稱與「管理個人資料」入口",
+        "顯示我的鑽石餘額（含儲值入口）、Level（含升級入口）、邀請好友、下載 App、成為創作者區塊",
+        "依序顯示功能項目：建立、任務活動、背包、解鎖項目、通知、日誌、回家的路、設定、語言、線上客服、重新整理"
+      ],
+      "tags": [
+        "ui",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-002",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "漢堡選單顯示與帳號一致的鑽石餘額及儲值入口",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且帳號有已知的鑽石餘額"
+      ],
+      "testData": [
+        "兩個鑽石餘額不同的測試帳號（用於交叉比對）"
+      ],
+      "steps": [
+        "以帳號 A 登入並開啟漢堡選單，記下顯示的鑽石餘額",
+        "登出後以帳號 B 登入並開啟漢堡選單",
+        "比對兩帳號顯示的餘額"
+      ],
+      "expectedResults": [
+        "選單「我的鑽石」顯示目前登入帳號的鑽石餘額",
+        "切換帳號後餘額隨帳號更新，不殘留前一帳號數值",
+        "餘額旁提供「儲值」入口"
+      ],
+      "tags": [
+        "payment",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-003",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "漢堡選單「設定」導向 SWAG 設定頁",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟漢堡選單",
+        "點擊「設定」"
+      ],
+      "expectedResults": [
+        "導向 SWAG 設定頁（/settings）",
+        "設定頁正確顯示帳號、鑽石與關於區塊"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-004",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "訪客帳號漢堡選單顯示綁定提醒且鑽石為 0",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "以「訪客進站」進入且未綁定帳號"
+      ],
+      "testData": [],
+      "steps": [
+        "以訪客身分進站",
+        "點擊右上角頭像開啟漢堡選單"
+      ],
+      "expectedResults": [
+        "選單頂部顯示 @guest_ 開頭的訪客帳號",
+        "顯示黃色警示「立即綁定帳號保留鑽石」（避免更換裝置或離開後遺失鑽石）",
+        "我的鑽石顯示 0、Level 顯示 0"
+      ],
+      "tags": [
+        "ui",
+        "permission"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-005",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "漢堡選單於任務活動與通知有更新時顯示紅點提示",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "帳號有未讀通知或未領取的任務活動"
+      ],
+      "testData": [
+        "有未讀通知或可領取任務的測試帳號"
+      ],
+      "steps": [
+        "開啟漢堡選單",
+        "檢視「任務活動」與「通知」項目"
+      ],
+      "expectedResults": [
+        "有未處理內容的項目右側顯示紅點提示",
+        "紅點僅出現在有更新的項目上"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-006",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "漢堡選單「語言」項顯示目前介面語言",
+      "priority": "P3",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且介面語言為繁體中文"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟漢堡選單",
+        "檢視「語言」項目"
+      ],
+      "expectedResults": [
+        "「語言」項目右側顯示目前介面語言（繁體中文）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-007",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "頂部導覽列各分頁正確導向對應頁面",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "依序點擊頂部導覽列分頁：探索、追蹤中、分類、直播、影片",
+        "觀察各頁網址與內容"
+      ],
+      "expectedResults": [
+        "探索導向首頁（swag.live/）",
+        "追蹤中導向 /following",
+        "分類導向分類總覽（/category-overview）",
+        "直播導向 /livestream",
+        "影片導向 /video",
+        "目前所在分頁以底線 / 高亮標示"
+      ],
+      "tags": [
+        "ui",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-008",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "導覽列「直播」分頁顯示 New 標記",
+      "priority": "P3",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "檢視頂部導覽列的「直播」分頁"
+      ],
+      "expectedResults": [
+        "「直播」分頁右上角顯示紅色 New 標記"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-009",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "頁尾顯示完整連結群組、合規標章與版本資訊",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者位於顯示頁尾的頁面（如首頁或分類總覽）"
+      ],
+      "testData": [],
+      "steps": [
+        "捲動至頁面底部",
+        "檢視頁尾各連結群組與標章"
+      ],
+      "expectedResults": [
+        "「關於」群組顯示：服務條款、隱私權政策、反奴隸制和反人口販運聲明、投訴政策、關於 SWAG、2257 合規聲明",
+        "「客服與協助」群組顯示：常見問答、聯繫客服",
+        "「工作機會」群組顯示：工作機會、聯盟夥伴計畫、業務合作洽詢、廣告版位採買、成為創作者",
+        "「探索」群組顯示：SWAG 部落格、SWAG 周邊商品",
+        "顯示社群平台圖示（Instagram、YouTube、X、Discord、Telegram、TikTok）",
+        "顯示 RTA、ASACP 標章與公司資訊、版本號"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-NAV-010",
+      "suiteId": "web-production",
+      "module": "Navigation",
+      "title": "頁尾語言切換入口顯示目前介面語言",
+      "priority": "P3",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "介面語言為繁體中文"
+      ],
+      "testData": [],
+      "steps": [
+        "捲動至頁尾",
+        "檢視語言切換按鈕"
+      ],
+      "expectedResults": [
+        "頁尾顯示語言切換入口且標示目前語言（繁體中文）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-SEARCH-001",
+      "suiteId": "web-production",
+      "module": "Search",
+      "title": "搜尋頁顯示熱門 Hashtags 與內容分頁",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "點擊頂部搜尋框進入搜尋頁",
+        "檢視預設內容",
+        "依序切換分頁：所有、影片、創作者、限時動態"
+      ],
+      "expectedResults": [
+        "搜尋頁顯示「熱門 Hashtags」與分類標籤群組（如 衣著）",
+        "各分頁可正常切換並顯示對應內容"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-SEARCH-002",
+      "suiteId": "web-production",
+      "module": "Search",
+      "title": "搜尋框輸入時顯示自動完成建議",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "點擊頂部搜尋框",
+        "輸入部分帳號關鍵字（如單一字母）",
+        "觀察下拉建議"
+      ],
+      "expectedResults": [
+        "未輸入時顯示熱門搜尋建議",
+        "輸入後即時顯示符合關鍵字的建議清單",
+        "點擊建議可直接前往對應結果"
+      ],
+      "tags": [
+        "ui",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-SEARCH-003",
+      "suiteId": "web-production",
+      "module": "Search",
+      "title": "以帳號關鍵字搜尋創作者並進入其個人頁",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號",
+        "已知存在的創作者帳號關鍵字"
+      ],
+      "steps": [
+        "於搜尋框輸入完整創作者帳號並送出",
+        "切換至「創作者」分頁",
+        "點擊目標創作者"
+      ],
+      "expectedResults": [
+        "創作者分頁列出符合關鍵字的帳號，各附「追蹤」按鈕",
+        "點擊後進入該創作者個人頁，顯示貼文數、粉絲數與內容分頁"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-001",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "從首頁進入直播間可成功載入並播放直播",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production",
+        "至少有一個進行中的直播"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於探索首頁點擊任一「熱門直播中」卡片",
+        "等待直播間載入"
+      ],
+      "expectedResults": [
+        "導向該主播的直播間頁面（網址格式 /u/{主播帳號}/livestream）",
+        "播放器顯示 Player loading 後開始播放直播畫面",
+        "頁面顯示主播名稱、觀看人數、聊天室與禮物、互動菜單、私密邀請入口"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-002",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "直播間可發送聊天訊息並即時顯示",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間",
+        "帳號具備發言權限"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "點擊聊天輸入框「打招呼...」",
+        "輸入訊息內容",
+        "點擊送出按鈕"
+      ],
+      "expectedResults": [
+        "訊息送出後即時顯示於聊天室訊息列表",
+        "訊息前帶出自己的帳號名稱與徽章"
+      ],
+      "tags": [
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-003",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "直播間禮物面板顯示分類與鑽石價格",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊「禮物」",
+        "切換不同禮物分類 tab"
+      ],
+      "expectedResults": [
+        "顯示禮物面板，含多個分類 tab（如 520 說愛你、情趣用品等活動分類）",
+        "每個禮物顯示對應鑽石價格",
+        "選取禮物後顯示「送出」按鈕"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-004",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "互動菜單顯示挑戰表演項目、秒數與鑽石價格",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間",
+        "主播已設定互動菜單項目"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊「互動菜單」",
+        "檢視各分頁內容"
+      ],
+      "expectedResults": [
+        "顯示分頁：挑戰表演、震動控制、待執行、已執行",
+        "挑戰表演項目顯示名稱、持續秒數與鑽石價格（例如：讓觀眾入鏡飲料 20 秒 / 600 鑽）"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-005",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "私密邀請顯示一對一與一對多選項及費率",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間",
+        "主播已開啟私密邀請功能"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊「私密邀請」",
+        "檢視選項內容與說明入口"
+      ],
+      "expectedResults": [
+        "顯示「一對一邀請」，含說明與費率（例如 1,800 鑽 / 5 分）",
+        "顯示「一對多邀請」，含說明與費率（例如 180 鑽 / 60 秒）",
+        "提供「什麼是私密邀請？」說明入口"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-006",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "超級留言依秒數顯示對應價格與字數上限",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間開啟「超級留言」",
+        "拖動秒數滑桿切換不同上牆秒數",
+        "檢視價格與字數計數"
+      ],
+      "expectedResults": [
+        "顯示超級留言設定視窗，含直播時間（秒數）滑桿、每則鑽石價格與字數計數（0 / 56）",
+        "切換秒數時，每則價格隨之更新（例如 3 秒 2000 鑽、5 秒 3000 鑽、15 秒 10000 鑽）",
+        "視窗說明超級留言可快速上牆並置頂顯示"
+      ],
+      "tags": [
+        "payment",
+        "boundary",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-007",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "直播間貢獻排行榜可切換時間區間並正確顯示",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊排行榜（獎盃）入口",
+        "依序切換分頁：本場直播、24 小時、7 日、30 日"
+      ],
+      "expectedResults": [
+        "各分頁載入時顯示 Loading 狀態",
+        "有資料時顯示排名、用戶名稱與鑽石數，前三名以特殊樣式呈現",
+        "無資料時顯示提示文案（主播尚未收到禮物的引導文字）",
+        "24 小時等區間分頁顯示「每小時更新」說明"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-008",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "直播間遊戲面板顯示可遊玩項目",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入直播間"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊遊戲（手把）入口",
+        "檢視遊戲清單"
+      ],
+      "expectedResults": [
+        "顯示遊戲清單，每個遊戲含名稱、說明與「馬上玩」按鈕"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-009",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "直播列表篩選條件即時更新結果數並可清除",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入並位於直播列表頁"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播列表頁開啟「篩選」面板",
+        "勾選任一「表演狀態」條件（如 一對多）",
+        "觀察「顯示 N 個結果」按鈕數字變化",
+        "點擊「清除」",
+        "點擊「顯示 N 個結果」套用篩選"
+      ],
+      "expectedResults": [
+        "篩選面板顯示身材、直播主題、國家、表演狀態等條件群組",
+        "勾選條件後結果數即時重新計算（顯示載入後更新數字）",
+        "清除後條件重置、結果數恢復",
+        "套用後列表更新且網址帶入對應 filters 參數"
+      ],
+      "tags": [
+        "ui",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-010",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "熱門主播榜可切換榜單類型與時間區間",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟熱門主播榜頁（/leaderboard）",
+        "依序切換分頁：直播榜、聊天榜、解鎖榜、新人榜",
+        "於任一榜切換時間區間：24 小時、7 日、30 日"
+      ],
+      "expectedResults": [
+        "各榜顯示排名清單，前三名帶特殊標記，直播中的主播帶 LIVE 標記",
+        "每列提供聊天入口按鈕",
+        "切換時間區間後榜單內容更新",
+        "頁面顯示「數據每小時更新一次」說明"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-011",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "持直播體驗券可解鎖觀看付費演出",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試帳號已由後台發放直播體驗券",
+        "有進行中的付費演出直播"
+      ],
+      "testData": [
+        "已持有直播體驗券的測試帳號（票券需事先向後台申請發放）"
+      ],
+      "steps": [
+        "登入持有直播體驗券的帳號",
+        "開啟背包確認體驗券存在",
+        "進入付費演出直播間並使用體驗券"
+      ],
+      "expectedResults": [
+        "背包頁顯示已發放的直播體驗券",
+        "使用體驗券後付費演出解鎖，可觀看直播內容"
+      ],
+      "tags": [
+        "payment",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-012",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "持直播體驗券可解鎖觀看私密直播",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試帳號已由後台發放直播體驗券",
+        "有進行中的私密直播"
+      ],
+      "testData": [
+        "已持有直播體驗券的測試帳號（票券需事先向後台申請發放）"
+      ],
+      "steps": [
+        "登入持有直播體驗券的帳號",
+        "開啟背包確認體驗券存在",
+        "進入私密直播間並使用體驗券"
+      ],
+      "expectedResults": [
+        "背包頁顯示已發放的直播體驗券",
+        "使用體驗券後私密直播解鎖，可觀看直播內容"
+      ],
+      "tags": [
+        "payment",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-LIVESTREAM-013",
+      "suiteId": "web-production",
+      "module": "Live Streaming",
+      "title": "頂部獎盃入口開啟熱門主播榜",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "點擊頂部工具列的獎盃圖示"
+      ],
+      "expectedResults": [
+        "開啟熱門主播榜頁（/leaderboard），預設顯示榜單與時間區間選項"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-001",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "從直播間進入創作者個人頁並顯示完整資訊",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已進入任一直播間"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於直播間點擊主播名稱或頭像",
+        "檢視創作者個人頁內容"
+      ],
+      "expectedResults": [
+        "導向創作者個人頁（網址格式 /u/{主播帳號}）",
+        "顯示頭像（直播中帶 LIVE 標記）、名稱、@帳號、貼文數、粉絲數、追蹤數",
+        "顯示追蹤、聊天、複製連結按鈕與自介",
+        "顯示分頁：首頁、限時動態、影片、短影音、照片",
+        "限時動態卡片顯示剩餘時數標籤（例如「限時 43 小時」）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-002",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "創作者個人頁可切換追蹤與取消追蹤狀態",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入並位於任一創作者個人頁"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "檢視目前追蹤按鈕狀態",
+        "點擊追蹤按鈕",
+        "再次點擊追蹤按鈕"
+      ],
+      "expectedResults": [
+        "已追蹤時按鈕顯示「追蹤中」，未追蹤時顯示「+ 追蹤」",
+        "每次點擊後按鈕狀態在「追蹤中」與「+ 追蹤」之間切換"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-003",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "設定頁顯示帳號、鑽石與關於區塊之管理項目",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入 Web Production"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟頭像選單並進入「設定」",
+        "檢視設定頁各區塊項目"
+      ],
+      "expectedResults": [
+        "帳號區塊顯示：帳號等級、通知設定、管理個人資料",
+        "鑽石區塊顯示：購買鑽石、序號兌換、領取免費鑽石",
+        "關於區塊顯示：成為創作者、工作機會、語言（顯示目前語言）、SWAG 部落格、聯繫客服、更多",
+        "頁面底部顯示紅色「登出」"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-004",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "貼文與短影音的更多選單提供封鎖、追蹤與前往個人檔案",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於短影音播放頁或貼文卡片點擊「...」更多選單"
+      ],
+      "expectedResults": [
+        "選單顯示：封鎖 @{帳號}、追蹤 @{帳號}、前往 @{帳號} 個人檔案、取消"
+      ],
+      "tags": [
+        "ui",
+        "permission"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-005",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "解除封鎖後重新整理頁面該用戶自封鎖名單移除",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試帳號已封鎖另一測試用戶"
+      ],
+      "testData": [
+        "兩個測試帳號（一個作為被封鎖對象）"
+      ],
+      "steps": [
+        "開啟管理個人資料中的封鎖名單",
+        "對已封鎖用戶點擊「解除封鎖」",
+        "重新整理頁面"
+      ],
+      "expectedResults": [
+        "解除封鎖操作完成",
+        "重新整理後該用戶不再顯示於封鎖名單",
+        "（註：目前封鎖名單不會即時更新，需重新整理後移除，此行為已由產品端確認為現況）"
+      ],
+      "tags": [
+        "permission",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-006",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "封鎖名單可正常開啟並顯示已封鎖成員",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試帳號已封鎖至少一位用戶"
+      ],
+      "testData": [
+        "已封鎖其他用戶的測試帳號"
+      ],
+      "steps": [
+        "開啟管理個人資料頁",
+        "點擊進入封鎖名單"
+      ],
+      "expectedResults": [
+        "封鎖名單頁正常開啟",
+        "已封鎖的用戶正確顯示於清單中"
+      ],
+      "tags": [
+        "permission"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-007",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "任務活動入口顯示於個人中心",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟頭像選單（個人中心）",
+        "檢視「任務活動」入口並點擊"
+      ],
+      "expectedResults": [
+        "個人中心選單顯示「任務活動」入口",
+        "點擊後開啟任務與活動頁面",
+        "（註：原影片頁 / Feed 頁 / 聊天列表頁的 UserCampaign 圖示入口已移除，統一改由個人中心進入）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-008",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "追蹤創作者後該帳號出現於追蹤中頁與追蹤清單",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "目標創作者目前未被追蹤"
+      ],
+      "testData": [
+        "任一測試帳號",
+        "一個未追蹤的測試創作者帳號"
+      ],
+      "steps": [
+        "進入目標創作者個人頁並點擊「+ 追蹤」",
+        "前往導覽列「追蹤中」頁",
+        "進入追蹤清單（格狀列表）"
+      ],
+      "expectedResults": [
+        "個人頁按鈕變為「追蹤中」",
+        "追蹤清單包含剛追蹤的帳號",
+        "該創作者上線或發文時出現於追蹤中頁對應區塊（最新上線 / 貼文）"
+      ],
+      "tags": [
+        "critical-path",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PROFILE-009",
+      "suiteId": "web-production",
+      "module": "Profile",
+      "title": "可自搜尋結果與短影音播放頁直接追蹤創作者",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於搜尋「創作者」分頁對任一結果點擊「追蹤」",
+        "開啟任一短影音，對創作者名稱旁的「追蹤」按鈕點擊"
+      ],
+      "expectedResults": [
+        "搜尋結果的按鈕轉為「追蹤中」狀態",
+        "短影音播放頁的追蹤按鈕轉為已追蹤狀態",
+        "兩處追蹤結果與個人頁追蹤狀態一致"
+      ],
+      "tags": [
+        "ui",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-001",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "短影音播放器可按讚並即時更新讚數",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且已開啟任一短影音"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於首頁點擊任一短影音進入播放頁（/shorts/{id}）",
+        "檢視播放器右側互動按鈕",
+        "點擊讚（喜歡）按鈕"
+      ],
+      "expectedResults": [
+        "播放頁顯示讚、不喜歡、留言、送禮、分享按鈕與觀看數",
+        "點擊讚後按鈕變為已按讚狀態，讚數即時 +1",
+        "影片顯示播放進度（目前秒數 / 總長度）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-002",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "付費短影音以鑽石解鎖後可完整觀看",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且鑽石餘額足夠",
+        "目標短影音為未解鎖的付費內容"
+      ],
+      "testData": [
+        "持有足夠鑽石的測試帳號"
+      ],
+      "steps": [
+        "開啟一則顯示「觀看 💎{價格}」按鈕的付費短影音",
+        "點擊「觀看 💎{價格}」按鈕",
+        "等待解鎖完成"
+      ],
+      "expectedResults": [
+        "解鎖前影片畫面為模糊預覽",
+        "點擊後顯示載入狀態",
+        "解鎖完成後畫面解除模糊並正常播放完整內容"
+      ],
+      "tags": [
+        "payment",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-003",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "影片貼文以鑽石解鎖後可完整播放並支援進度拖曳與全螢幕",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且鑽石餘額足夠",
+        "目標影片貼文為未解鎖的付費內容"
+      ],
+      "testData": [
+        "持有足夠鑽石的測試帳號"
+      ],
+      "steps": [
+        "開啟影片貼文頁（/post/{id}）",
+        "點擊「觀看更多 💎{價格}」按鈕",
+        "解鎖後播放影片",
+        "拖曳進度條至影片中段",
+        "點擊全螢幕按鈕"
+      ],
+      "expectedResults": [
+        "解鎖前僅顯示預覽圖與解鎖按鈕",
+        "解鎖後顯示完整影片播放器（播放/暫停、進度條、時間、音量、全螢幕）",
+        "拖曳進度條後從對應時間點繼續播放",
+        "可進入全螢幕模式播放"
+      ],
+      "tags": [
+        "payment",
+        "critical-path"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-004",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "影片播放時顯示觀看者帳號浮水印",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入並已解鎖任一影片貼文"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "播放已解鎖的影片貼文",
+        "觀察影片畫面"
+      ],
+      "expectedResults": [
+        "影片畫面上以半透明浮水印顯示目前觀看者的帳號名稱"
+      ],
+      "tags": [
+        "ui",
+        "encryption"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-005",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "付費照片貼文以鑽石解鎖後顯示完整照片",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且鑽石餘額足夠",
+        "目標照片貼文為未解鎖的付費內容"
+      ],
+      "testData": [
+        "持有足夠鑽石的測試帳號"
+      ],
+      "steps": [
+        "開啟付費照片貼文",
+        "點擊「以 💎{價格} 觀看貼文」按鈕"
+      ],
+      "expectedResults": [
+        "解鎖前照片為模糊預覽",
+        "解鎖後顯示完整清晰照片"
+      ],
+      "tags": [
+        "payment"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-006",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "限時動態檢視器可瀏覽動態並解鎖付費動態",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "目標創作者有進行中的限時動態（含付費動態）"
+      ],
+      "testData": [
+        "持有足夠鑽石的測試帳號"
+      ],
+      "steps": [
+        "於創作者個人頁點擊限時動態卡片",
+        "於動態檢視器中檢視內容",
+        "點擊動態縮圖切換至另一則動態",
+        "對付費動態點擊「觀看 💎{價格}」"
+      ],
+      "expectedResults": [
+        "開啟動態檢視器（/story/{id}），頂部顯示各則動態的進度條",
+        "顯示創作者名稱、發布時間與讚/分享按鈕",
+        "可透過縮圖列切換動態（顯示如 1/2 位置）",
+        "付費動態解鎖後顯示完整內容",
+        "個人頁的限時動態卡片顯示剩餘時數標籤"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-007",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "分類總覽與分類詳情頁正確顯示各內容分頁",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "點擊導覽列「分類」進入分類總覽",
+        "點擊任一分類標籤（如 衣著 群組內的標籤）",
+        "於分類詳情頁依序切換分頁：所有、限時動態、影片、短影音、照片"
+      ],
+      "expectedResults": [
+        "分類總覽依群組（衣著、劇情、身材、地點、其他等）顯示分類標籤",
+        "分類詳情頁顯示分類說明、相關標籤與內容數量",
+        "各分頁顯示對應類型內容，付費內容顯示鑽石價格、免費內容顯示「免費」"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-008",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "創作者個人頁內容可依影片價格排序",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入並位於任一創作者個人頁的內容分頁"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於個人頁切換至「短影音」分頁",
+        "開啟排序選項並選擇「影片價格（由低到高）」"
+      ],
+      "expectedResults": [
+        "網址帶入排序參數（sorts=asc:unlock_price）",
+        "內容依價格由低到高重新排列，免費內容排在最前"
+      ],
+      "tags": [
+        "ui",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-009",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "熱門短影音「更多」導向趨勢短影音列表",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於首頁「熱門短影音」區塊點擊「更多」"
+      ],
+      "expectedResults": [
+        "導向趨勢短影音列表頁（網址含 shorts-categories/shorts_trending）",
+        "卡片顯示標題、觀看數、評分，付費內容顯示鑽石價格、已解鎖內容顯示「已解鎖」標記"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-010",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "限時動態檢視器顯示置頂標記、動態集清單與新動態提示",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "目標創作者有多則進行中的限時動態，且其中一則為置頂"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟創作者的限時動態檢視器",
+        "檢視頂部資訊區",
+        "展開動態集清單並點擊另一則動態縮圖"
+      ],
+      "expectedResults": [
+        "置頂的動態顯示「已置頂的內容」標記與動態名稱",
+        "有未看的動態時顯示「N 則新動態」提示",
+        "動態集清單以縮圖顯示各則動態並標示目前位置（如 1/2），點擊縮圖可切換至該則動態"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-011",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "限時動態檢視器內提供付費私訊輸入並顯示每則價格",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入並開啟任一創作者的限時動態"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "於限時動態檢視器檢視底部訊息輸入區"
+      ],
+      "expectedResults": [
+        "檢視器底部顯示私訊輸入框",
+        "輸入區顯示每則訊息所需鑽石價格（如 以 💎2000 傳送訊息），與該創作者聊天頁定價一致"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-012",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "搜尋頁限時動態分頁顯示熱門限時動態並標示直播中創作者",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "進入搜尋頁",
+        "切換至「限時動態」分頁"
+      ],
+      "expectedResults": [
+        "顯示「熱門限時動態」格狀清單",
+        "直播中的創作者動態卡片帶 LIVE 標記"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-013",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "分類詳情頁顯示層級麵包屑導覽",
+      "priority": "P3",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者位於任一分類詳情頁的內容分頁"
+      ],
+      "testData": [],
+      "steps": [
+        "進入任一分類詳情頁並切換至任一內容分頁（如 照片）",
+        "檢視頁面頂部麵包屑"
+      ],
+      "expectedResults": [
+        "麵包屑依層級顯示：SWAG 分類頁 / {分類群組} / {目前分頁}（例如 SWAG 分類頁 / 和服 / 照片）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CONTENT-014",
+      "suiteId": "web-production",
+      "module": "Content Library",
+      "title": "分類詳情頁的相關標籤可切換至其他分類",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者位於任一分類詳情頁"
+      ],
+      "testData": [],
+      "steps": [
+        "檢視分類詳情頁上方的相關標籤列",
+        "點擊另一個分類標籤"
+      ],
+      "expectedResults": [
+        "標籤列顯示同群組的其他分類（如 眼鏡、和服、制服、水手服等）",
+        "點擊後導向該分類的詳情頁（網址與標題隨之更新）"
+      ],
+      "tags": [
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-CHAT-001",
+      "suiteId": "web-production",
+      "module": "Chat",
+      "title": "聊天頁顯示對話清單與付費私訊價格",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入且有歷史對話"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "從短影音或貼文點擊「私訊 / 聊天」進入聊天頁（/chat/{id}）",
+        "檢視左側對話清單與分頁",
+        "檢視訊息輸入區"
+      ],
+      "expectedResults": [
+        "左側顯示對話清單，分頁含：所有訊息、未讀訊息、最愛",
+        "對話上方顯示平台警語（禁止詐騙與性交易相關訊息、系統 24 小時監控）",
+        "訊息輸入區顯示每則訊息所需鑽石價格（如 💎2400 傳送訊息），價格依對象可能不同"
+      ],
+      "tags": [
+        "payment",
+        "ui"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PAYMENT-001",
+      "suiteId": "web-production",
+      "module": "Payment",
+      "title": "日誌僅記錄鑽石與票券等資產異動",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "帳號近期有鑽石消費或收益紀錄"
+      ],
+      "testData": [
+        "有鑽石消費紀錄的測試帳號"
+      ],
+      "steps": [
+        "於直播間發送一則免費一般指令訊息",
+        "於直播間完成一筆付費指令（互動菜單項目）",
+        "開啟個人中心的「日誌」頁",
+        "檢視最新紀錄"
+      ],
+      "expectedResults": [
+        "付費指令產生的鑽石扣款顯示於日誌最新紀錄",
+        "免費一般指令不會產生日誌紀錄",
+        "日誌內容涵蓋鑽石購買、消費、收益與票券獎勵等資產異動"
+      ],
+      "tags": [
+        "payment",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PAYMENT-002",
+      "suiteId": "web-production",
+      "module": "Payment",
+      "title": "付費演出未達開演條件時票券退款並記錄於日誌",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試主播可建立付費演出（售票）",
+        "測試帳號已購買該演出票券（一般票或早鳥票）"
+      ],
+      "testData": [
+        "可購買演出票券的測試帳號",
+        "可建立付費演出的測試主播帳號"
+      ],
+      "steps": [
+        "以測試帳號購買付費演出票券",
+        "使演出未達開演條件（募資 / 售票階段未達標）",
+        "開啟購票帳號的日誌頁檢視最新紀錄"
+      ],
+      "expectedResults": [
+        "演出未達開演條件時票券自動退款",
+        "日誌顯示對應的退款紀錄（鑽石返還）"
+      ],
+      "tags": [
+        "payment",
+        "recovery",
+        "high-risk"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PAYMENT-003",
+      "suiteId": "web-production",
+      "module": "Payment",
+      "title": "付費演出中斷未完成時票券退款並記錄於日誌",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "測試主播已成功開演付費演出",
+        "測試帳號已購票入場"
+      ],
+      "testData": [
+        "可購買演出票券的測試帳號",
+        "可建立付費演出的測試主播帳號"
+      ],
+      "steps": [
+        "以測試帳號購票並進入付費演出",
+        "使演出於未完成狀態中斷",
+        "開啟購票帳號的日誌頁檢視最新紀錄"
+      ],
+      "expectedResults": [
+        "演出中斷未完成時票券依規則退款",
+        "日誌顯示對應的退款紀錄（鑽石返還）"
+      ],
+      "tags": [
+        "payment",
+        "recovery",
+        "high-risk"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-PAYMENT-004",
+      "suiteId": "web-production",
+      "module": "Payment",
+      "title": "每日免費鑽石於任務活動領取且 24 小時內限領一次",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "本日尚未領取免費鑽石"
+      ],
+      "testData": [
+        "任一測試帳號"
+      ],
+      "steps": [
+        "開啟個人中心的「任務活動」",
+        "領取每日免費鑽石並記下入帳數量",
+        "立即再次嘗試領取"
+      ],
+      "expectedResults": [
+        "首次領取成功，鑽石入帳一次且數量正確",
+        "立即再次領取被阻擋，顯示冷卻 / 稍後再來的提示",
+        "24 小時內無法重複領取"
+      ],
+      "tags": [
+        "payment",
+        "boundary",
+        "negative"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-GAME-001",
+      "suiteId": "web-production",
+      "module": "In-stream Games",
+      "title": "龍虎鬥遊戲遊玩紀錄於 5 分鐘內更新",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用者已登入",
+        "目標直播間已啟用龍虎鬥（DragonTigerFight）遊戲"
+      ],
+      "testData": [
+        "持有足夠鑽石的測試帳號"
+      ],
+      "steps": [
+        "進入已啟用遊戲的直播間",
+        "點擊遊戲入口並開啟龍虎鬥",
+        "完成一局遊玩",
+        "開啟遊玩紀錄（Play Records）並確認更新時間"
+      ],
+      "expectedResults": [
+        "龍虎鬥遊戲視窗正常開啟",
+        "遊玩紀錄於 5 分鐘內更新（實測通常 1 分鐘內即更新）"
+      ],
+      "tags": [
+        "payment",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB-VIP-001",
+      "suiteId": "web-production",
+      "module": "VIP",
+      "title": "VIP 效期自升等當月起保留三個月",
+      "priority": "P2",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "使用測試環境提供的 VIP 測試帳號登入"
+      ],
+      "testData": [
+        "VIP 測試帳號（向產品端申請，不得在測試文件中記錄帳號密碼）"
+      ],
+      "steps": [
+        "以 VIP 測試帳號登入",
+        "開啟帳號等級 / VIP 資訊頁",
+        "檢視 VIP 等級與效期資訊"
+      ],
+      "expectedResults": [
+        "頁面顯示目前 VIP 等級",
+        "VIP 效期顯示為升等當月起共三個月（含升等當月）"
+      ],
+      "tags": [
+        "permission",
+        "validation"
+      ],
+      "lifecycleStatus": "draft",
+      "updatedAt": "2026-07-12"
+    }
+  ]
+}

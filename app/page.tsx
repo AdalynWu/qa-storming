@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { QuestBookCarousel } from "@/components/QuestBookCarousel";
+import { TrialForestPortal } from "@/components/TrialForestPortal";
+import { onboardingQuestBooks } from "@/content/quests";
 
 const fruits = [
   { id: "onboarding", className: "fruit-pink", icon: "✦", title: "新手村", subtitle: "ONBOARDING" },
@@ -13,6 +16,7 @@ const lore = [
   { number: "I", title: "API 測試魔法書", text: "Contract testing、測試資料與常見除錯咒語。", badge: "8 MIN" },
   { number: "II", title: "缺陷鑑定圖鑑", text: "Severity、priority 與可靠證據的判定方式。", badge: "V3.2" },
   { number: "III", title: "測試環境世界地圖", text: "Dev、Staging、UAT 的入口與守門人。", badge: "9 MAPS" },
+  { number: "IV", title: "回歸測試典藏室", text: "依產品、模組與風險查閱 Regression Test Cases。", badge: "OPEN", href: "/regression" },
 ];
 
 export default function Home() {
@@ -79,10 +83,14 @@ export default function Home() {
         <div className="parallax-hills hills-back" style={{ transform: `translateY(${(scrollY - 650) * .06}px)` }} />
         <div className="parallax-hills hills-front" style={{ transform: `translateY(${(scrollY - 650) * .12}px)` }} />
         <div className="zone-content">
-          <div className="zone-title"><p>✦ ADVENTURER&apos;S QUEST BOARD ✦</p><h2>選擇今日任務</h2><span>每一份測試文件，都是讓產品世界更加安定的冒險紀錄。</span></div>
-          <div id="regression"><QuestBookCarousel /></div>
+          <div className="zone-title"><p>✦ ADVENTURER&apos;S BEGINNING ✦</p><h2>新手村任務書</h2><span>從團隊指南與產品世界地圖開始，準備你的第一場 QA 冒險。</span></div>
+          <QuestBookCarousel quests={onboardingQuestBooks} />
         </div>
         <div className="critter bat" style={{ transform: `translate(${(scrollY - 650) * .5}px, ${(scrollY - 650) * -.34}px)` }}><span className="animal-sprite sprite-bat" role="img" aria-label="飛行的蝙蝠" /></div>
+      </section>
+
+      <section className="trial-forest-zone" id="regression">
+        <TrialForestPortal />
       </section>
 
       <section className="library-zone" id="knowhow">
@@ -90,7 +98,10 @@ export default function Home() {
         <div className="library-inner">
           <div className="book-copy"><p className="rpg-kicker"><span>✦</span> THE SAGE&apos;S ARCHIVE</p><h2>賢者的知識書庫</h2><p>把經驗寫成可以傳承的冒險筆記。所有卷軸都以 Markdown 保存，跟著版本一同成長。</p><button className="rpg-secondary">開啟完整圖書館　➜</button></div>
           <div className="lore-list">
-            {lore.map((item) => <article key={item.title}><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>)}
+            {lore.map((item) => {
+              const entry = <article><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>;
+              return item.href ? <Link className="lore-link" href={item.href} key={item.title}>{entry}</Link> : <div key={item.title}>{entry}</div>;
+            })}
           </div>
         </div>
         <div className="animal-wolf" style={{ transform: `translateX(${(scrollY - 1350) * .6}px)` }}><span className="animal-sprite sprite-wolf" role="img" aria-label="奔跑的狼" /></div>

@@ -1,0 +1,10 @@
+{
+  "suites": [
+    ["id", "title", "subtitle", "product", "platforms", "release", "description", "owner", "status"],
+    ["console-web", "Console Web", "管理後台試煉", "Console", "Web", "4.8", "Fixture suite", "QA", "active"]
+  ],
+  "cases": [
+    ["id", "suiteId", "module", "title", "priority", "platforms", "preconditions", "testData", "steps", "expectedResults", "tags", "lifecycleStatus", "owner", "updatedAt"],
+    ["CW-001", "console-web", "Auth", "登入", "P0", "Web, Chrome", "帳號已啟用", "測試帳號", "1. 開啟登入頁\n2. 輸入帳密\n3. 送出登入", "1. 登入成功", "login,critical", "active", "QA", "2026-07-12"]
+  ]
+}

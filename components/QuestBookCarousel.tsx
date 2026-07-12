@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { A11y, Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { questBooks } from "@/content/quests";
+import { questBooks, type QuestBook } from "@/content/quests";
 import "swiper/css";
 import "swiper/css/a11y";
 
@@ -13,12 +13,10 @@ import "swiper/css/a11y";
 // buffer (desktop shows 3-up). If there aren't enough quests, repeat them until there
 // are; once there are enough, use them as-is (no duplication).
 const MIN_LOOP_SLIDES = 7;
-const slides =
-  questBooks.length >= MIN_LOOP_SLIDES
-    ? questBooks
-    : Array.from({ length: Math.ceil(MIN_LOOP_SLIDES / questBooks.length) }, () => questBooks).flat();
-
-export function QuestBookCarousel() {
+export function QuestBookCarousel({ quests = questBooks }: { quests?: QuestBook[] }) {
+  const slides = quests.length >= MIN_LOOP_SLIDES
+    ? quests
+    : Array.from({ length: Math.ceil(MIN_LOOP_SLIDES / quests.length) }, () => quests).flat();
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -68,7 +66,7 @@ export function QuestBookCarousel() {
         ))}
       </Swiper>
       <button className="quest-arrow quest-next" onClick={() => swiperRef.current?.slideNext()} aria-label="下一項任務">›</button>
-      <p className="quest-position" aria-live="polite">{(activeIndex % questBooks.length) + 1} / {questBooks.length}</p>
+      <p className="quest-position" aria-live="polite">{(activeIndex % quests.length) + 1} / {quests.length}</p>
     </div>
   );
 }

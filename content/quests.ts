@@ -1,3 +1,5 @@
+import { regressionStats } from "./regression";
+
 export type QuestBook = {
   id: string;
   category: string;
@@ -38,13 +40,14 @@ export const questBooks: QuestBook[] = [
   {
     id: "console-regression",
     category: "團隊副本",
-    title: "Console Web · Release 4.8",
-    description: "核心流程、權限矩陣與跨瀏覽器回歸試煉。",
-    progress: "84 Cases",
-    reward: "P0 · 18",
+    title: "Regression 試煉圖鑑",
+    description: "依產品與平台探索核心流程、權限、相容性與錯誤恢復案例。",
+    progress: `${regressionStats.suiteCount} Suites · ${regressionStats.caseCount} Cases`,
+    reward: `P0 · ${regressionStats.p0Count}`,
     theme: "blue",
     emblem: "🛡️",
-    cta: "接受任務",
+    cta: "進入試煉",
+    href: "/regression",
   },
   {
     id: "mobile-checkout",
@@ -58,3 +61,7 @@ export const questBooks: QuestBook[] = [
     cta: "接受任務",
   },
 ];
+
+export const onboardingQuestBooks = questBooks.filter((quest) =>
+  ["product-world-map", "qa-onboarding"].includes(quest.id),
+);
