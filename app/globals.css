@@ -689,11 +689,10 @@ button {
   padding: 5px;
   color: #8c7145;
 }
-.animal-deer {
+.animal-wolf {
   position: absolute;
-  right: 1%;
-  bottom: 2%;
-  font-size: 85px;
+  left: 0;
+  bottom: 3%;
   will-change: transform;
   filter: drop-shadow(0 6px 4px #09241c);
 }
@@ -901,7 +900,7 @@ button {
   .parallax-hills,
   .floating-motes,
   .critter,
-  .animal-deer {
+  .animal-wolf {
     transform: none !important;
   }
   .magic-fruit,
@@ -933,14 +932,21 @@ button {
   background-image: url("/sprite-owl.png");
   animation-duration: 0.82s;
 }
-.sprite-deer {
-  --sprite-size: 150px;
-  background-image: url("/sprite-deer.png");
+.sprite-wolf {
+  --sprite-size: 200px;
+  background-image: url("/sprite-wolf.png");
+  background-size: auto var(--sprite-size);
+  animation-name: wolfCycle;
   animation-duration: 1.05s;
 }
 @keyframes animalCycle {
   to {
     background-position-y: calc(var(--sprite-size) * -6);
+  }
+}
+@keyframes wolfCycle {
+  to {
+    background-position-x: calc(var(--sprite-size) * -6);
   }
 }
 .owl i {
@@ -960,8 +966,8 @@ button {
   .sprite-owl {
     --sprite-size: 86px;
   }
-  .sprite-deer {
-    --sprite-size: 112px;
+  .sprite-wolf {
+    --sprite-size: 120px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

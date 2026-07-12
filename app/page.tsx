@@ -93,7 +93,7 @@ export default function Home() {
             {lore.map((item) => <article key={item.title}><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>)}
           </div>
         </div>
-        <div className="animal-deer" style={{ transform: `translateY(${(scrollY - 1500) * -.04}px)` }}><span className="animal-sprite sprite-deer" role="img" aria-label="散步的小鹿" /></div>
+        <div className="animal-wolf" style={{ transform: `translateX(${(scrollY - 1350) * .6}px)` }}><span className="animal-sprite sprite-wolf" role="img" aria-label="奔跑的狼" /></div>
       </section>
 
       <section className="camp-zone">
