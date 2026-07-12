@@ -82,7 +82,7 @@ export default function Home() {
           <div className="zone-title"><p>✦ ADVENTURER&apos;S QUEST BOARD ✦</p><h2>選擇今日任務</h2><span>每一份測試文件，都是讓產品世界更加安定的冒險紀錄。</span></div>
           <div id="regression"><QuestBookCarousel /></div>
         </div>
-        <div className="critter owl" style={{ transform: `translate(${Math.sin(scrollY * .01) * 14}px, ${(scrollY - 800) * -.06}px)` }}><span className="animal-sprite sprite-owl" role="img" aria-label="飛行的貓頭鷹" /><i>HOOT!</i></div>
+        <div className="critter bat" style={{ transform: `translate(${(scrollY - 650) * .5}px, ${(scrollY - 650) * -.34}px)` }}><span className="animal-sprite sprite-bat" role="img" aria-label="飛行的蝙蝠" /></div>
       </section>
 
       <section className="library-zone" id="knowhow">

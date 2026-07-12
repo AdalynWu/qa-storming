@@ -590,15 +590,9 @@ button {
   font-size: 52px;
   will-change: transform;
 }
-.owl {
-  right: 5%;
-  top: 16%;
-}
-.owl span {
-  display: block;
-  font: 9px Arial;
-  color: #fff;
-  text-align: center;
+.bat {
+  left: 8%;
+  bottom: 12%;
 }
 .library-zone {
   min-height: 780px;
@@ -927,9 +921,11 @@ button {
   --sprite-size: 160px;
   background-image: url("/sprite-jelly.png");
 }
-.sprite-owl {
-  --sprite-size: 108px;
-  background-image: url("/sprite-owl.png");
+.sprite-bat {
+  --sprite-size: 150px;
+  background-image: url("/sprite-bat.png");
+  background-size: auto var(--sprite-size);
+  animation-name: batCycle;
   animation-duration: 0.82s;
 }
 .sprite-wolf {
@@ -949,22 +945,17 @@ button {
     background-position-x: calc(var(--sprite-size) * -6);
   }
 }
-.owl i {
-  display: block;
-  margin-top: -14px;
-  text-align: center;
-  color: #fff;
-  font: 9px Arial;
-  font-style: normal;
-  letter-spacing: 0.12em;
-  text-shadow: 0 2px 4px #17352b;
+@keyframes batCycle {
+  to {
+    background-position-x: calc(var(--sprite-size) * -6);
+  }
 }
 @media (max-width: 600px) {
   .sprite-jelly {
     --sprite-size: 128px;
   }
-  .sprite-owl {
-    --sprite-size: 86px;
+  .sprite-bat {
+    --sprite-size: 110px;
   }
   .sprite-wolf {
     --sprite-size: 120px;
