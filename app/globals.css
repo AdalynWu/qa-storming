@@ -465,7 +465,7 @@ button {
   margin: auto;
 }
 .zone-title {
-  text-align: center;
+  text-align: left;
   color: #fff8dd;
 }
 .zone-title p {
@@ -637,213 +637,6 @@ button {
   color: #d7e6c4;
   font-size: 14px;
 }
-.portal-machine {
-  width: min(660px, 100%);
-  position: relative;
-  margin: 44px auto 0;
-  padding: 38px 44px 32px;
-  border: 5px solid #69472e;
-  border-radius: 46% 46% 26px 26px/18% 18% 26px 26px;
-  background: linear-gradient(
-    90deg,
-    #5c3725,
-    #8a5b36 14%,
-    #684028 50%,
-    #8a5b36 86%,
-    #4d2f22
-  );
-  box-shadow:
-    0 15px 0 #231b17,
-    0 34px 60px #020f0ccc,
-    inset 0 0 0 4px #bb8b5266;
-}
-.portal-machine:after {
-  content: "";
-  position: absolute;
-  inset: 14px;
-  border: 1px solid #d4a56840;
-  border-radius: inherit;
-  pointer-events: none;
-}
-.portal-window {
-  height: 270px;
-  position: relative;
-  overflow: hidden;
-  border: 10px solid #3f291f;
-  border-radius: 50% 50% 14px 14px/30% 30% 14px 14px;
-  background-position: center;
-  background-size: cover;
-  box-shadow:
-    inset 0 0 35px #1a1712aa,
-    0 7px 0 #291d18;
-  transition:
-    filter 0.24s,
-    opacity 0.24s;
-}
-.scenery-explore {
-  background-image:
-    linear-gradient(#f8db7c22, #315e3b33), url("/rpg-life-tree.png");
-  background-position: 50% 74%;
-}
-.scenery-identity {
-  background-image:
-    linear-gradient(#4bd2df25, #17394f55), url("/rpg-product-world-map.png");
-  background-position: 14% 43%;
-}
-.scenery-live {
-  background-image:
-    linear-gradient(#ff8e4b38, #5b203b55), url("/rpg-product-world-map.png");
-  background-position: 82% 50%;
-}
-.scenery-library {
-  background-image:
-    linear-gradient(#142c2ecc, #6c5a2744), url("/rpg-life-tree.png");
-  background-position: 50% 18%;
-}
-.window-bars {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      transparent 31%,
-      #412c22 31% 34%,
-      transparent 34% 65%,
-      #412c22 65% 68%,
-      transparent 68%
-    ),
-    linear-gradient(transparent 57%, #412c22 57% 62%, transparent 62%);
-}
-.scenery-label {
-  position: absolute;
-  inset: auto 18px 16px;
-  padding: 10px 14px;
-  border: 1px solid #f8dfa077;
-  border-radius: 8px;
-  background: #102b24c9;
-  backdrop-filter: blur(5px);
-}
-.scenery-label small,
-.scenery-label strong {
-  display: block;
-}
-.scenery-label small {
-  color: #ecd58d;
-  font: 9px Arial;
-  letter-spacing: 0.12em;
-}
-.scenery-label strong {
-  margin-top: 4px;
-  font-size: 20px;
-}
-.scenery-label span {
-  position: absolute;
-  right: 13px;
-  bottom: 13px;
-  color: #d8e7be;
-  font: 9px Arial;
-}
-.portal-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  margin: 31px auto 18px;
-}
-.dial-wrap {
-  width: min(285px, 58vw);
-  aspect-ratio: 1;
-  position: relative;
-}
-.dial-pin {
-  position: absolute;
-  z-index: 5;
-  top: -15px;
-  left: 50%;
-  translate: -50% 0;
-  color: #18211f;
-  font-size: 38px;
-  filter: drop-shadow(0 3px 0 #b98b52);
-}
-.realm-dial {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  border: 8px solid #2d2925;
-  border-radius: 50%;
-  box-shadow:
-    0 10px 0 #211916,
-    0 18px 25px #1d120daa,
-    inset 0 0 0 4px #fff4;
-  transition: transform 780ms cubic-bezier(0.2, 0.78, 0.2, 1.08);
-  touch-action: none;
-  cursor: grab;
-}
-.realm-dial:active {
-  cursor: grabbing;
-}
-.dial-sector {
-  width: 50%;
-  height: 50%;
-  position: absolute;
-  display: grid;
-  place-items: center;
-  border: 2px solid #292b27;
-  cursor: pointer;
-}
-.dial-sector span {
-  color: #fff9d2;
-  font-size: 28px;
-  filter: drop-shadow(0 2px 2px #17221c);
-}
-.sector-0 {
-  top: 0;
-  left: 0;
-  border-radius: 100% 0 0;
-}
-.sector-1 {
-  top: 0;
-  right: 0;
-  border-radius: 0 100% 0 0;
-}
-.sector-2 {
-  right: 0;
-  bottom: 0;
-  border-radius: 0 0 100%;
-}
-.sector-3 {
-  left: 0;
-  bottom: 0;
-  border-radius: 0 0 0 100%;
-}
-.sector-green {
-  background: linear-gradient(135deg, #90ca57, #4d943e);
-}
-.sector-blue {
-  background: linear-gradient(135deg, #39aadb, #2470ac);
-}
-.sector-red {
-  background: linear-gradient(135deg, #ef7957, #bd3f39);
-}
-.sector-black {
-  background: linear-gradient(135deg, #3f4a49, #182423);
-}
-.dial-sector[aria-pressed="true"] {
-  filter: brightness(1.18);
-}
-.dial-hub {
-  position: absolute;
-  z-index: 4;
-  inset: 50% auto auto 50%;
-  width: 38px;
-  height: 38px;
-  translate: -50% -50%;
-  border: 5px solid #6c4227;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f8ca75, #9c6235);
-  box-shadow: 0 3px 5px #1a110d;
-}
 .dial-step {
   width: 46px;
   height: 46px;
@@ -859,40 +652,9 @@ button {
   box-shadow: 0 4px 0 #18251f;
 }
 .dial-step:focus-visible,
-.dial-sector:focus-visible,
 .portal-enter:focus-visible {
   outline: 3px solid #ffeca5;
   outline-offset: 4px;
-}
-.portal-status {
-  position: absolute;
-  right: 52px;
-  bottom: 82px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #ddc990;
-  font: 9px Arial;
-  letter-spacing: 0.08em;
-}
-.portal-status i {
-  width: 12px;
-  height: 12px;
-  border: 2px solid #2b1e18;
-  border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
-}
-.status-green {
-  background: #80d15a;
-}
-.status-blue {
-  background: #55b9e6;
-}
-.status-red {
-  background: #ed7157;
-}
-.status-black {
-  background: #5f7470;
 }
 .portal-enter {
   width: max-content;
@@ -920,29 +682,6 @@ button {
   color: #d5c59c;
   font-size: 11px;
 }
-.trial-portal.is-turning .portal-machine {
-  animation: machine-catch 920ms ease-out;
-}
-.trial-portal.is-turning .portal-window {
-  animation: window-shift 620ms steps(3, end);
-}
-.trial-portal.is-turning .dial-pin {
-  animation: pin-catch 780ms ease-out;
-}
-@keyframes machine-catch {
-  45% {
-    translate: 1px 0;
-  }
-  52% {
-    translate: -3px 1px;
-  }
-  59% {
-    translate: 2px -1px;
-  }
-  67% {
-    translate: -1px 0;
-  }
-}
 @keyframes window-shift {
   45% {
     filter: blur(2px) brightness(0.7);
@@ -956,16 +695,14 @@ button {
     filter: none;
   }
 }
-@keyframes pin-catch {
-  55% {
-    transform: rotate(8deg) translateY(4px);
-  }
-  66% {
-    transform: rotate(-5deg);
-  }
-  76% {
-    transform: rotate(2deg);
-  }
+.trial-dragon {
+  position: absolute;
+  bottom: 4%;
+  right: 20%;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 10px 8px #05161199);
 }
 .library-zone {
   min-height: 780px;
@@ -1260,6 +997,373 @@ button {
     gap: 10px;
   }
 }
+
+/* Trial forest — image-led ancient portal */
+.trial-forest-zone {
+  min-height: auto;
+  display: block;
+  padding: 0;
+  background: #071f24 url("/rpg-trial-portal.png") center / cover no-repeat;
+}
+.trial-forest-zone:before {
+  display: none;
+}
+.trial-portal {
+  width: 100%;
+}
+.portal-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  min-height: 720px;
+  overflow: hidden;
+  background: transparent;
+}
+.portal-scene .realm-window {
+  position: absolute;
+  z-index: 2;
+  left: 34.6%;
+  top: 25.2%;
+  width: 30.8%;
+  height: 48.5%;
+  overflow: hidden;
+  border: 0;
+  border-radius: 49% 49% 43% 43%;
+  box-shadow:
+    inset 0 0 38px 18px #02232eaa,
+    0 0 24px #57d8c744;
+  transition:
+    filter 0.24s,
+    opacity 0.24s;
+}
+.realm-landscape-image {
+  object-fit: cover;
+  animation: realm-landscape-arrive 620ms steps(3, end);
+}
+@keyframes realm-landscape-arrive {
+  0% {
+    opacity: 0.35;
+    filter: blur(5px) brightness(0.65);
+  }
+  70% {
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+}
+.portal-mist {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 24%,
+    #baf8ed44 47%,
+    transparent 66%
+  );
+  translate: -70% 0;
+  animation: portal-mist-drift 8s ease-in-out infinite;
+}
+@keyframes portal-mist-drift {
+  50% {
+    translate: 65% 0;
+  }
+}
+.portal-scene .portal-copy {
+  position: absolute;
+  z-index: 5;
+  top: 8%;
+  left: 5.5%;
+  width: min(390px, 29%);
+  text-align: left;
+}
+.portal-scene .portal-copy h2 {
+  font-size: clamp(34px, 4vw, 62px);
+}
+.stone-dial {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 73%;
+  width: clamp(270px, 27vw, 450px);
+  aspect-ratio: 1.85;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: transparent;
+  touch-action: none;
+  cursor: grab;
+}
+.stone-dial:active {
+  cursor: grabbing;
+}
+.stone-dial-energy {
+  position: absolute;
+  inset: 2%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 20deg,
+    transparent 0 12%,
+    #fff1aacc 18%,
+    transparent 25% 47%,
+    #76f5d599 53%,
+    transparent 60% 100%
+  );
+  -webkit-mask: radial-gradient(
+    ellipse,
+    transparent 0 55%,
+    #000 59% 67%,
+    transparent 71%
+  );
+  mask: radial-gradient(
+    ellipse,
+    transparent 0 55%,
+    #000 59% 67%,
+    transparent 71%
+  );
+  filter: drop-shadow(0 0 8px #b8ffe7) drop-shadow(0 0 12px #ffe37a);
+  pointer-events: none;
+  transition: transform 820ms cubic-bezier(0.18, 0.78, 0.16, 1.12);
+}
+.stone-rune {
+  position: absolute;
+  z-index: 3;
+  width: 16%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d5f7c788;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff6b8cc,
+    #66c9a166 45%,
+    transparent 72%
+  );
+  color: #fff7bd;
+  font-size: clamp(15px, 1.4vw, 24px);
+  text-shadow: 0 0 8px #fff2a0;
+  box-shadow: 0 0 10px #6ff4c744;
+  cursor: pointer;
+  transition:
+    filter 0.2s,
+    scale 0.2s,
+    box-shadow 0.2s;
+}
+.stone-rune:hover {
+  filter: brightness(1.25);
+  scale: 1.08;
+}
+.stone-rune:focus-visible {
+  outline: 3px solid #fff0a0;
+  outline-offset: 3px;
+}
+.stone-rune[aria-pressed="true"] {
+  scale: 1.12;
+  box-shadow:
+    0 0 18px 7px #ffe36a99,
+    0 0 30px #8cffe3aa;
+}
+.stone-rune-0 {
+  top: 0;
+  left: 42%;
+}
+.stone-rune-1 {
+  top: 39%;
+  right: 3%;
+}
+.stone-rune-2 {
+  bottom: 0;
+  left: 42%;
+}
+.stone-rune-3 {
+  top: 39%;
+  left: 3%;
+}
+.realm-info-panel {
+  position: absolute;
+  z-index: 8;
+  right: 5.5%;
+  bottom: 6.5%;
+  width: min(340px, 27vw);
+  padding: 19px 20px 17px;
+  border: 1px solid #d7eabf88;
+  border-radius: 10px 28px 10px 10px;
+  background: linear-gradient(135deg, #092e32e8, #173f36dc);
+  color: #fff6d2;
+  box-shadow:
+    0 10px 28px #00191dcc,
+    inset 0 0 24px #a8f4ca16;
+  backdrop-filter: blur(7px);
+}
+.realm-info-panel > small {
+  color: #ebd58d;
+  font: 9px Arial;
+  letter-spacing: 0.14em;
+}
+.realm-info-panel h3 {
+  margin: 7px 0 5px;
+  font-size: clamp(23px, 2vw, 31px);
+}
+.realm-info-panel > p {
+  margin: 0;
+  color: #d0dfc2;
+  font-size: 12px;
+}
+.realm-info-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 15px 0;
+  padding: 10px 0;
+  border-block: 1px solid #cde5b844;
+  font: 9px Arial;
+  letter-spacing: 0.08em;
+}
+.realm-info-meta span {
+  color: #b7dfce;
+}
+.realm-info-meta b {
+  color: #ffe595;
+}
+.realm-info-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.realm-info-actions .portal-enter {
+  margin: 0;
+  flex: 1;
+  justify-content: center;
+  padding-inline: 12px;
+}
+.realm-info-panel .dial-hint {
+  margin: 12px 0 0;
+  color: #b8ccaf;
+  font-size: 10px;
+  text-align: center;
+}
+.trial-portal.is-turning .portal-scene {
+  animation: none;
+}
+.trial-portal.is-turning .realm-window {
+  animation: window-shift 620ms steps(3, end);
+}
+.trial-portal.is-turning .stone-dial {
+  animation: stone-dial-catch 920ms ease-out;
+}
+.trial-portal.is-turning .stone-rune {
+  animation: stone-rune-sequence 480ms ease-out;
+}
+.trial-portal.is-turning .stone-rune:nth-of-type(2) {
+  animation-delay: 70ms;
+}
+.trial-portal.is-turning .stone-rune:nth-of-type(3) {
+  animation-delay: 140ms;
+}
+.trial-portal.is-turning .stone-rune:nth-of-type(4) {
+  animation-delay: 210ms;
+}
+@keyframes stone-dial-catch {
+  44% {
+    translate: calc(-50% + 2px) 0;
+  }
+  53% {
+    translate: calc(-50% - 4px) 1px;
+  }
+  62% {
+    translate: calc(-50% + 2px) -1px;
+  }
+  72% {
+    translate: -50% 0;
+  }
+}
+@keyframes stone-rune-sequence {
+  45% {
+    filter: brightness(1.7);
+    scale: 1.14;
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .portal-scene {
+    min-height: 820px;
+    aspect-ratio: auto;
+  }
+  .portal-scene .realm-window {
+    left: 25%;
+    top: 23%;
+    width: 50%;
+    height: 42%;
+  }
+  .portal-scene .portal-copy {
+    top: 5%;
+    left: 7%;
+    width: 86%;
+    text-align: center;
+  }
+  .stone-dial {
+    top: 60%;
+    width: min(48vw, 360px);
+  }
+  .realm-info-panel {
+    left: 7%;
+    right: 7%;
+    bottom: 3%;
+    width: auto;
+  }
+}
+@media (max-width: 600px) {
+  .portal-scene {
+    min-height: 980px;
+  }
+  .portal-scene .realm-window {
+    left: 16%;
+    top: 24%;
+    width: 68%;
+    height: 38%;
+  }
+  .portal-scene .portal-copy {
+    top: 4%;
+  }
+  .portal-scene .portal-copy h2 {
+    margin: 7px 0;
+  }
+  .portal-scene .portal-copy span {
+    font-size: 12px;
+  }
+  .stone-dial {
+    top: 58%;
+    width: min(64vw, 300px);
+  }
+  .realm-info-panel {
+    left: 5%;
+    right: 5%;
+    bottom: 2.5%;
+    padding: 17px;
+  }
+  .realm-info-actions .portal-enter {
+    max-width: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal-mist {
+    animation: none;
+    translate: 0;
+  }
+  .stone-dial-energy {
+    transition-duration: 1ms;
+  }
+  .trial-portal.is-turning .stone-dial,
+  .trial-portal.is-turning .stone-rune {
+    animation: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1272,46 +1376,22 @@ button {
   .parallax-hills,
   .floating-motes,
   .critter,
-  .animal-wolf {
+  .animal-wolf,
+  .trial-dragon {
     transform: none !important;
   }
   .magic-fruit,
   .rpg-scroll i,
   .campfire i,
-  .trial-portal.is-turning .portal-machine,
-  .trial-portal.is-turning .portal-window,
-  .trial-portal.is-turning .dial-pin {
+  .trial-portal.is-turning .realm-window {
     animation: none;
-  }
-  .realm-dial {
-    transition-duration: 1ms;
   }
 }
 @media (max-width: 600px) {
-  .trial-forest-zone {
-    min-height: 870px;
-    padding-top: 90px;
-  }
-  .portal-machine {
-    padding: 26px 18px 27px;
-    border-radius: 38% 38% 22px 22px/12% 12% 22px 22px;
-  }
-  .portal-window {
-    height: 215px;
-    border-width: 7px;
-  }
-  .portal-controls {
-    gap: 9px;
-  }
   .dial-step {
     width: 38px;
     height: 38px;
     font-size: 27px;
-  }
-  .portal-status {
-    position: static;
-    justify-content: center;
-    margin: 0 0 13px;
   }
 }
 
@@ -1331,6 +1411,11 @@ button {
 .sprite-jelly {
   --sprite-size: 160px;
   background-image: url("/sprite-jelly.png");
+}
+.sprite-lol-dragon {
+  --sprite-size: 260px;
+  background-image: url("/sprite-lol-dragon.png");
+  animation-duration: 1.15s;
 }
 .sprite-bat {
   --sprite-size: 150px;
@@ -1364,6 +1449,9 @@ button {
 @media (max-width: 600px) {
   .sprite-jelly {
     --sprite-size: 128px;
+  }
+  .sprite-lol-dragon {
+    --sprite-size: 150px;
   }
   .sprite-bat {
     --sprite-size: 110px;
@@ -1782,5 +1870,395 @@ button {
   }
   .book-cover p {
     font-size: 11px;
+  }
+}
+
+/* Pseudo-3D quest orbit. Swiper owns the circular index and gestures while
+   coverflow positions the five books nearest to the reader. */
+.quest-orbit {
+  isolation: isolate;
+  max-width: 1240px;
+  min-height: 570px;
+  padding: 32px 74px 68px;
+  perspective: 1400px;
+}
+.quest-orbit:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 13%;
+  right: 13%;
+  bottom: 66px;
+  height: 118px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #f5df8252, #78b47724 42%, transparent 72%);
+  filter: blur(18px);
+  transform: rotateX(68deg);
+  pointer-events: none;
+}
+.quest-orbit .swiper {
+  z-index: 2;
+  width: 100%;
+  overflow: visible;
+  padding: 28px 0 48px;
+}
+.quest-orbit .swiper-wrapper {
+  align-items: center;
+  transform-style: preserve-3d;
+}
+.quest-orbit .swiper-slide {
+  width: 315px;
+  height: auto;
+  opacity: 0.58;
+  scale: 1;
+  filter: saturate(0.72) brightness(0.8);
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.5s ease,
+    filter 0.5s ease;
+}
+.quest-orbit .swiper-slide-active {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+}
+.quest-orbit .swiper-slide-shadow-left,
+.quest-orbit .swiper-slide-shadow-right {
+  border-radius: 22px;
+  background-image: linear-gradient(to var(--swiper-slide-shadow-direction), #10291fc4, transparent 62%);
+}
+.quest-book-reveal {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(86px) scale(0.78);
+  transform-origin: 50% 100%;
+}
+.quest-orbit.is-entered .quest-book-reveal {
+  animation: orbitBookReveal 0.72s cubic-bezier(0.2, 0.82, 0.32, 1.08) both;
+  animation-delay: calc(var(--reveal-order) * 110ms);
+}
+.quest-orbit .quest-book {
+  width: 315px;
+  max-width: 100%;
+  cursor: grab;
+  backface-visibility: hidden;
+  transform-origin: 50% 72%;
+}
+.quest-orbit .quest-book:active {
+  cursor: grabbing;
+}
+.quest-orbit .quest-book.is-sealed {
+  cursor: default;
+  filter: drop-shadow(0 19px 15px #102d2275);
+}
+.quest-orbit .quest-book.is-sealed .book-cover {
+  background-image:
+    linear-gradient(#173b35a8, #294f4396),
+    url("/rpg-quest-book.png");
+  filter: saturate(0.5) brightness(0.73);
+}
+.quest-orbit .swiper-slide-active .quest-book.is-sealed .book-cover {
+  filter: saturate(0.58) brightness(0.82);
+  box-shadow: 0 0 34px #a9d99f24;
+}
+.book-seal {
+  position: absolute;
+  z-index: 3;
+  top: 82px;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #d8c17d99;
+  border-radius: 50%;
+  color: #f5db8c;
+  background: radial-gradient(circle, #6f8d6d 0 24%, #244d43 25% 64%, #d3bd7566 66% 69%, transparent 71%);
+  box-shadow: 0 0 24px #e4d0844d;
+  text-shadow: 0 0 9px #fff4a8;
+  transform: translateX(-50%);
+}
+.book-cta.is-disabled {
+  border-color: #7a755d;
+  background: linear-gradient(#c9c6a8, #989a78);
+  color: #43564a;
+  box-shadow:
+    0 4px 0 #4d493b,
+    0 8px 16px #263c3040;
+  cursor: not-allowed;
+}
+.quest-particles {
+  position: absolute;
+  z-index: 1;
+  inset: 6% 4% 9%;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 82%, transparent);
+  mask-image: linear-gradient(transparent, #000 12%, #000 82%, transparent);
+}
+.quest-particles i {
+  position: absolute;
+  left: var(--particle-x);
+  bottom: -12px;
+  width: var(--particle-size);
+  height: var(--particle-size);
+  border-radius: 50%;
+  background: #ffe680;
+  box-shadow:
+    0 0 6px #fff4a1,
+    0 0 14px #9ee79c;
+  opacity: 0;
+}
+.quest-orbit.is-entered .quest-particles i {
+  animation: questParticleRise var(--particle-duration) linear var(--particle-delay) infinite;
+}
+.quest-orbit .quest-arrow {
+  top: 48%;
+}
+
+@keyframes orbitBookReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(86px) scale(0.78);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(-9px) scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes questParticleRise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.45);
+  }
+  16% {
+    opacity: 0.82;
+  }
+  78% {
+    opacity: 0.46;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--particle-drift), -480px, 0) scale(1.15);
+  }
+}
+
+@media (max-width: 900px) {
+  .quest-orbit {
+    min-height: 530px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  .quest-orbit .swiper-slide {
+    width: 280px;
+  }
+  .quest-orbit .quest-book {
+    width: 280px;
+    height: 418px;
+  }
+  .quest-orbit .book-cover {
+    padding: 142px 50px 24px;
+  }
+}
+@media (max-width: 680px) {
+  .quest-orbit {
+    min-height: 480px;
+    margin-top: 30px;
+    padding: 20px 32px 58px;
+  }
+  .quest-orbit .swiper {
+    padding-top: 18px;
+  }
+  .quest-orbit .swiper-slide {
+    width: min(72vw, 270px);
+    opacity: 0.42;
+  }
+  .quest-orbit .quest-book {
+    width: min(72vw, 270px);
+    height: 402px;
+  }
+  .quest-orbit .book-cover {
+    padding: 130px 42px 23px 48px;
+  }
+  .quest-orbit .book-cover h3 {
+    font-size: 18px;
+  }
+  .quest-orbit .book-cover p {
+    min-height: 56px;
+    line-height: 1.45;
+  }
+  .quest-orbit .book-meta {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .quest-orbit .quest-prev {
+    left: -2px;
+  }
+  .quest-orbit .quest-next {
+    right: -2px;
+  }
+  .quest-particles {
+    inset-inline: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-orbit .quest-book-reveal,
+  .quest-orbit.is-entered .quest-book-reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .quest-orbit .quest-particles {
+    display: none;
+  }
+  .quest-orbit .swiper-slide,
+  .quest-orbit .swiper-wrapper {
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* The visible books use fixed, symmetrical orbit slots. The transparent
+   Swiper layer underneath remains the gesture and circular-index controller. */
+.quest-orbit-stage {
+  position: relative;
+  z-index: 2;
+  height: 500px;
+  perspective: 1350px;
+  transform-style: preserve-3d;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.quest-orbit-stage:active {
+  cursor: grabbing;
+}
+.quest-orbit-slot {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  z-index: 0;
+  width: 315px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) translate3d(0, 40px, -380px) scale(0.35);
+  transform-style: preserve-3d;
+  transform-origin: 50% 60%;
+  transition:
+    transform 0.72s cubic-bezier(0.2, 0.76, 0.24, 1),
+    opacity 0.42s ease,
+    filter 0.52s ease,
+    visibility 0s linear 0.72s;
+  will-change: transform, opacity;
+}
+.quest-orbit-slot.is-front,
+.quest-orbit-slot.is-left-1,
+.quest-orbit-slot.is-right-1,
+.quest-orbit-slot.is-left-2,
+.quest-orbit-slot.is-right-2 {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.quest-orbit-slot.is-front {
+  z-index: 6;
+  filter: none;
+  transform: translate(-50%, -50%) translate3d(0, 0, 210px) rotateY(0deg) scale(1);
+}
+.quest-orbit-slot.is-left-1 {
+  z-index: 4;
+  filter: saturate(0.76) brightness(0.82);
+  transform: translate(-50%, -50%) translate3d(-270px, 13px, 20px) rotateY(-50deg) scale(0.82);
+}
+.quest-orbit-slot.is-right-1 {
+  z-index: 4;
+  filter: saturate(0.76) brightness(0.82);
+  transform: translate(-50%, -50%) translate3d(270px, 13px, 20px) rotateY(50deg) scale(0.82);
+}
+.quest-orbit-slot.is-left-2 {
+  z-index: 2;
+  filter: saturate(0.55) brightness(0.68);
+  transform: translate(-50%, -50%) translate3d(-438px, 32px, -170px) rotateY(-74deg) scale(0.64);
+}
+.quest-orbit-slot.is-right-2 {
+  z-index: 2;
+  filter: saturate(0.55) brightness(0.68);
+  transform: translate(-50%, -50%) translate3d(438px, 32px, -170px) rotateY(74deg) scale(0.64);
+}
+.quest-orbit-slot.is-behind {
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  filter: saturate(0.35) brightness(0.48);
+}
+.quest-orbit-slot .quest-book-reveal {
+  width: 100%;
+}
+.quest-orbit-slot.is-front .book-cta:not(.is-disabled) {
+  pointer-events: auto;
+}
+.quest-orbit .quest-arrow {
+  z-index: 20;
+  pointer-events: auto;
+}
+.quest-orbit:focus-visible {
+  outline: 3px solid #f7dfa0;
+  outline-offset: 5px;
+}
+
+@media (max-width: 900px) {
+  .quest-orbit-stage {
+    height: 460px;
+  }
+  .quest-orbit-slot {
+    width: 280px !important;
+  }
+  .quest-orbit-slot.is-front {
+    transform: translate(-50%, -50%) translate3d(0, 0, 180px) scale(1) !important;
+  }
+  .quest-orbit-slot.is-left-1 {
+    transform: translate(-50%, -50%) translate3d(-215px, 15px, 0) rotateY(-54deg) scale(0.74) !important;
+  }
+  .quest-orbit-slot.is-right-1 {
+    transform: translate(-50%, -50%) translate3d(215px, 15px, 0) rotateY(54deg) scale(0.74) !important;
+  }
+  .quest-orbit-slot.is-left-2 {
+    transform: translate(-50%, -50%) translate3d(-330px, 30px, -180px) rotateY(-76deg) scale(0.53) !important;
+  }
+  .quest-orbit-slot.is-right-2 {
+    transform: translate(-50%, -50%) translate3d(330px, 30px, -180px) rotateY(76deg) scale(0.53) !important;
+  }
+}
+@media (max-width: 680px) {
+  .quest-orbit-stage {
+    height: 420px;
+  }
+  .quest-orbit-slot {
+    top: 48% !important;
+    width: min(72vw, 270px) !important;
+  }
+  .quest-orbit-slot.is-front {
+    transform: translate(-50%, -50%) translate3d(0, 0, 150px) scale(0.94) !important;
+  }
+  .quest-orbit-slot.is-left-1 {
+    transform: translate(-50%, -50%) translate3d(-142px, 18px, -25px) rotateY(-58deg) scale(0.62) !important;
+  }
+  .quest-orbit-slot.is-right-1 {
+    transform: translate(-50%, -50%) translate3d(142px, 18px, -25px) rotateY(58deg) scale(0.62) !important;
+  }
+  .quest-orbit-slot.is-left-2 {
+    transform: translate(-50%, -50%) translate3d(-220px, 31px, -210px) rotateY(-78deg) scale(0.42) !important;
+  }
+  .quest-orbit-slot.is-right-2 {
+    transform: translate(-50%, -50%) translate3d(220px, 31px, -210px) rotateY(78deg) scale(0.42) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-orbit-slot {
+    transition: none !important;
   }
 }

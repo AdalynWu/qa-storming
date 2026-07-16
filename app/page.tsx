@@ -91,6 +91,7 @@ export default function Home() {
 
       <section className="trial-forest-zone" id="regression">
         <TrialForestPortal />
+        <div className="trial-dragon" style={{ transform: `translate(${(scrollY - 1100) * -.04}px, ${(scrollY - 1100) * -.05}px)` }}><span className="animal-sprite sprite-lol-dragon" role="img" aria-label="試煉守護巨龍" /></div>
       </section>
 
       <section className="library-zone" id="knowhow">
