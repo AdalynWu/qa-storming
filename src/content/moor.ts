@@ -32,8 +32,8 @@ export const moorProduct = {
   realmName: "創作者聖域",
   eyebrow: "MOOR · CREATOR SANCTUARY",
   description:
-    "Moor 是創作者使用的 Mobile App，涵蓋直播、貼文、聊天、個人內容管理與數據分析。沿著冒險路徑逐章認識產品，也把容易遺漏的 QA 觀察一起帶走。",
-  sourceLabel: "Moor App 使用手冊",
+    "Moor 是創作者使用的 Mobile App，涵蓋登入、數據、任務、直播、貼文、聊天、個人內容管理與通知設定。沿著冒險路徑逐章認識產品，也把 2026 跨端流程中容易遺漏的 QA 觀察一起帶走。",
+  sourceLabel: "Moor App 使用手冊、MOOR Master Design File 與 2026 跨端設計專案",
 };
 
 export const moorChapters: MoorChapter[] = [
@@ -111,7 +111,7 @@ export const moorChapters: MoorChapter[] = [
     summary: "從開播設定、直播工具與互動，到下播後的完整旅程。",
     duration: "18 分鐘",
     status: "published",
-    sourceUpdatedAt: "2026-07-31",
+    sourceUpdatedAt: "2026-08-02",
     sections: [
       {
         id: "start-live",
@@ -187,6 +187,44 @@ export const moorChapters: MoorChapter[] = [
         ],
       },
       {
+        id: "live-2026",
+        title: "2026 直播介面與跨端流程",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "本節以 2026 專案中的綠色 Mockup／Ready for dev 為主，MOOR Master Design File 只用來補足功能範圍；Sandbox、遺棄版本與較舊方案不列入目前行為。",
+          },
+          {
+            type: "table",
+            title: "近期設計重點",
+            columns: ["範圍", "目前方向", "QA 觀察"],
+            rows: [
+              ["直播首屏", "優先呈現目前直播資訊、釘選內容與必要提示", "新開直播、無歷史資料、蓋版與圖層前後關係"],
+              ["簡化介面", "降低聊天室與工具對直播畫面的遮擋", "直向／橫向定位、滿版狀態、文字對比與安全區"],
+              ["募資互動", "SWAG 觀看端與 MOOR 主播端共用同一場活動狀態", "進度、取得資格、公告、安可與提前結束的狀態同步"],
+              ["排行榜", "前三名需要有足夠的層級差異", "名次、底色、資料延遲與空狀態不可互相誤認"],
+            ],
+          },
+          {
+            type: "list",
+            title: "跨裝置驗證清單",
+            items: [
+              "手機直向與橫向都要保留主要 CTA；內容超高時由內容區捲動，不讓操作被裁切。",
+              "聊天室、公告、置頂內容、指令與活動提示需維持可讀對比，且不遮住關鍵直播內容。",
+              "SWAG 端取得資格、進度或直播狀態改變後，MOOR 端需在合理時間內反映一致狀態。",
+              "新直播、無資料、載入中、網路中斷與活動結束後，都需顯示明確且可恢復的狀態。",
+              "翻譯後文字、數字與排名資料需涵蓋最長內容，避免按鈕、Modal 或橫向畫面爆版。",
+            ],
+          },
+          {
+            type: "callout",
+            tone: "warning",
+            title: "版本判讀",
+            text: "若 Master File 與 2026 專案不同，以 2026 綠色 Mockup／Ready for dev 為準；仍在討論或標為 Enhancement 的項目，不視為已上線功能。",
+          },
+        ],
+      },
+      {
         id: "after-live",
         title: "下播後操作",
         blocks: [
@@ -216,8 +254,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "III",
     title: "Creator Hub",
     subtitle: "CREATOR HALL",
-    summary: "創作者首頁、收益資訊、直播引導與內容捷徑。",
-    duration: "待整理",
+    summary: "創作者首頁、主播任務、收益資訊、直播引導與建立內容入口。",
+    duration: "待安全整理",
     status: "review",
   },
   {
@@ -226,8 +264,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "IV",
     title: "貼文功能",
     subtitle: "CONTENT GARDEN",
-    summary: "建立、排程、編輯、刪除與管理創作者貼文。",
-    duration: "待整理",
+    summary: "建立限時動態或貼文，並管理、更新與刪除已發布內容。",
+    duration: "待安全整理",
     status: "review",
   },
   {
@@ -236,8 +274,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "V",
     title: "聊天功能",
     subtitle: "MESSAGE GROVE",
-    summary: "私訊、聊天室操作與常見互動狀態。",
-    duration: "待整理",
+    summary: "聊天室主頁、單一聊天室與訊息互動功能。",
+    duration: "待安全整理",
     status: "review",
   },
   {
@@ -246,8 +284,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "VI",
     title: "我的頁面",
     subtitle: "PROFILE LODGE",
-    summary: "個人檔案、設定、通知與已發布內容管理。",
-    duration: "待整理",
+    summary: "創作者檔案、直播時段、內容管理、自動回覆、推薦、通知與設定。",
+    duration: "待安全整理",
     status: "review",
   },
   {
@@ -256,8 +294,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "VII",
     title: "數據分析",
     subtitle: "INSIGHT OBSERVATORY",
-    summary: "收益、觀看與成長數據的查看方式。",
-    duration: "待整理",
+    summary: "直播收益、觀看、排名、日期範圍與成長數據的查看方式。",
+    duration: "待安全整理",
     status: "review",
   },
   {
@@ -266,8 +304,8 @@ export const moorChapters: MoorChapter[] = [
     rune: "VIII",
     title: "其他功能",
     subtitle: "HIDDEN PATHS",
-    summary: "推薦計畫、App 連結與跨模組輔助功能。",
-    duration: "待整理",
+    summary: "推薦計畫、通知設定與跨模組輔助功能。",
+    duration: "待安全整理",
     status: "review",
   },
 ];

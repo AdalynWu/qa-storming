@@ -1,0 +1,194 @@
+/* Shared viewport contract; each product keeps its own moor-* or web-* namespace. */
+:is(.moor-hero, .web-hero) {
+  --hub-topbar-height: 72px;
+  --hub-pad-top: clamp(18px, 6svh, 70px);
+  --hub-pad-bottom: clamp(28px, 8svh, 90px);
+  height: calc(100svh - var(--hub-topbar-height));
+  grid-template-columns: minmax(180px, .72fr) minmax(360px, 620px);
+  grid-template-rows: minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 84px);
+  padding: var(--hub-pad-top) clamp(24px, 7vw, 116px) var(--hub-pad-bottom);
+}
+
+:is(.moor-hero-copy, .web-hero-copy) {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  width: 100%;
+  max-height: none;
+  padding: clamp(22px, min(4vw, 4svh), 48px);
+  overflow: visible;
+}
+
+:is(.moor-hero-copy, .web-hero-copy) h1 {
+  font-size: clamp(46px, min(7vw, 9svh), 96px);
+}
+
+:is(.moor-hero-copy, .web-hero-copy) > strong {
+  margin: clamp(8px, 1.5svh, 12px) 0 clamp(12px, 2.4svh, 20px);
+  font-size: clamp(18px, min(2vw, 3svh), 27px);
+}
+
+:is(.moor-hero-copy, .web-hero-copy) > span {
+  font-size: clamp(13px, 1.8svh, 16px);
+  line-height: 1.72;
+}
+
+:is(.moor-hero-stats, .web-hero-stats) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(6px, 1vw, 10px);
+  margin-top: clamp(14px, 3svh, 28px);
+}
+
+:is(.moor-hero-stats, .web-hero-stats) div {
+  min-width: 0;
+  padding: clamp(8px, 1.4svh, 12px) clamp(8px, 1vw, 15px);
+}
+
+:is(.moor-hero-stats, .web-hero-stats) b {
+  max-width: 100%;
+  font-size: clamp(15px, min(2vw, 2.6svh), 22px);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+:is(.moor-hero-stats, .web-hero-stats) small {
+  font-size: clamp(7px, min(.9vw, 1.2svh), 10px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+:is(.moor-sanctuary-mark, .web-sanctuary-mark) {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  width: min(
+    26vw,
+    calc(100svh - var(--hub-topbar-height) - var(--hub-pad-top) - var(--hub-pad-bottom) - 48px),
+    370px
+  );
+  margin: 0;
+  transform: translateY(clamp(-24px, -2svh, -8px));
+}
+
+@media (max-width: 900px) {
+  :is(.moor-topbar, .web-topbar) {
+    height: 62px;
+    min-height: 62px;
+    padding-block: 0;
+  }
+
+  :is(.moor-hero, .web-hero) {
+    --hub-topbar-height: 62px;
+    --hub-pad-top: clamp(16px, 3svh, 28px);
+    --hub-pad-bottom: clamp(38px, 5svh, 52px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, auto) auto;
+    align-content: center;
+    gap: clamp(10px, 2svh, 18px);
+    padding-inline: clamp(16px, 5vw, 40px);
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    width: min(100%, 620px);
+    padding: clamp(16px, 2.6svh, 24px) clamp(18px, 4vw, 28px);
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) h1 {
+    font-size: clamp(38px, min(10vw, 8svh), 64px);
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) > span {
+    font-size: clamp(12px, 1.7svh, 14px);
+    line-height: 1.5;
+  }
+
+  :is(.moor-sanctuary-mark, .web-sanctuary-mark) {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    justify-self: start;
+    width: clamp(92px, min(18svh, 24vw), 150px);
+    transform: none;
+  }
+}
+
+@media (max-height: 620px) {
+  :is(.moor-hero, .web-hero) {
+    --hub-pad-top: 12px;
+    --hub-pad-bottom: 24px;
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) {
+    padding: 12px 18px;
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) > p {
+    font-size: 8px;
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) h1 {
+    margin-top: 5px;
+    font-size: clamp(32px, min(5vw, 7svh), 44px);
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) > strong {
+    margin: 4px 0 7px;
+    font-size: 15px;
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) > span {
+    font-size: 11px;
+    line-height: 1.32;
+  }
+
+  :is(.moor-hero-stats, .web-hero-stats) {
+    margin-top: 8px;
+  }
+
+  :is(.moor-hero-stats, .web-hero-stats) div {
+    padding: 5px 7px;
+  }
+
+  :is(.moor-hero-stats, .web-hero-stats) b {
+    font-size: 15px;
+  }
+
+  :is(.moor-hero-stats, .web-hero-stats) small {
+    font-size: 7px;
+  }
+
+  :is(.moor-sanctuary-mark, .web-sanctuary-mark) {
+    width: min(
+      18vw,
+      calc(100svh - var(--hub-topbar-height) - var(--hub-pad-top) - var(--hub-pad-bottom) - 20px),
+      190px
+    );
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 620px) {
+  :is(.moor-hero, .web-hero) {
+    grid-template-columns: minmax(90px, .5fr) minmax(280px, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  :is(.moor-hero-copy, .web-hero-copy) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  :is(.moor-sanctuary-mark, .web-sanctuary-mark) {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+  }
+}

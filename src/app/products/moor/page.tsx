@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MoorChapterMap } from "@/components/MoorChapterMap";
+import { ProductChapterMap } from "@/components/ProductChapterMap";
 import { moorChapters, moorProduct } from "@/content/moor";
 import "./moor.css";
+import "../product-hub.css";
 
 export const metadata: Metadata = {
   title: "Moor 創作者聖域 | QA Storming",
@@ -49,12 +50,18 @@ export default function MoorProductHubPage() {
           <h2 id="moor-journey-title">沿著創作旅程前進</h2>
           <span>點擊符文查看章節。只有完成整理與 QA 審核的內容才會解封。</span>
         </div>
-        <MoorChapterMap chapters={moorChapters} />
+        <ProductChapterMap
+          chapters={moorChapters}
+          basePath="/products/moor"
+          ariaLabel="Moor 使用手冊章節"
+          classPrefix="moor"
+          openLabel="展開魔法書"
+        />
       </section>
 
       <section className="moor-source-note" aria-label="內容維護說明">
-        <div><p>NOTION · CURATED KNOWLEDGE</p><h2>原始文件持續維護，網站只發布審核版本。</h2></div>
-        <p>目前內容整理自「{moorProduct.sourceLabel}」。內部連結、測試帳號與敏感設定不會進入公開靜態網站。</p>
+        <div><p>FIGMA + NOTION · CURATED KNOWLEDGE</p><h2>Master 定義範圍，2026 專案覆寫新流程。</h2></div>
+        <p>目前內容整理自「{moorProduct.sourceLabel}」。綠色 Mockup／Ready for dev 優先；舊版、討論中項目、內部連結、測試帳號與敏感設定不會進入公開靜態網站。</p>
       </section>
     </main>
   );

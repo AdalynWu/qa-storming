@@ -80,7 +80,7 @@
 .map-stage {
   background:
     linear-gradient(180deg, #f8d77a1a, #0d5c6d18),
-    url("/rpg-product-world-map.png") center / cover no-repeat;
+    var(--image-product-world-map) center / cover no-repeat;
   filter: saturate(0.96) contrast(1.02);
 }
 .map-sea {
@@ -238,20 +238,24 @@
   min-width: 0;
   position: relative;
   z-index: 10;
-  overflow: auto;
+  overflow: hidden;
   background: linear-gradient(90deg, #e2cb91, #fff6d7 7%, #fff9e8 93%, #d2b978);
   box-shadow: -12px 0 28px #082a3377;
   transition:
     width 0.55s ease,
-    min-width 0.55s ease,
-    padding 0.55s ease;
-  padding: 0;
+    min-width 0.55s ease;
   color: #394b3f;
 }
 .product-scroll.is-open {
   width: min(420px, 36vw);
   min-width: 340px;
-  padding: 45px 34px;
+}
+.product-scroll-body {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 45px 34px 54px;
 }
 .product-scroll:before,
 .product-scroll:after {
@@ -260,6 +264,8 @@
   left: 0;
   right: 0;
   height: 18px;
+  z-index: 3;
+  pointer-events: none;
   background: linear-gradient(#7e5c35, #d6ae62, #7e5c35);
   box-shadow: 0 3px 7px #5a3d2677;
 }
@@ -280,6 +286,7 @@
   background: #fff6d3;
   font-size: 20px;
   cursor: pointer;
+  z-index: 4;
 }
 .scroll-kicker {
   font: 9px Arial;
@@ -443,14 +450,16 @@
     max-height: 0;
     border-radius: 24px 24px 0 0;
     transition:
-      max-height 0.5s ease,
-      padding 0.5s ease;
+      max-height 0.5s ease;
   }
   .product-scroll.is-open {
     width: 100%;
     min-width: 0;
     max-height: 58svh;
-    padding: 42px 24px 34px;
+  }
+  .product-scroll-body {
+    max-height: 58svh;
+    padding: 42px 24px 50px;
   }
   .has-selection .map-stage {
     transform: none !important;

@@ -9,6 +9,7 @@ export type Product = {
   technology: string;
   summary: string;
   href?: string;
+  entryLabel?: string;
   environment?: string;
   sections?: ProductSection[];
   notes: string[];
@@ -40,11 +41,14 @@ export const continents: Continent[] = [
         id: "moor",
         name: "Moor",
         technology: "Mobile App",
-        summary: "主播專用 App，涵蓋直播、上傳影片、貼文、限時動態等主播功能。",
+        summary: "創作者專用 App，涵蓋登入、數據、主播任務、直播、貼文、聊天、個人檔案與通知設定。",
         href: "/products/moor",
+        entryLabel: "進入 Moor 創作者聖域",
         environment: "Mobile／主播端",
-        sections: [{ label: "版本", value: "可申請 Beta 版本（Jay）" }],
-        notes: ["Moor 後續版本通常會比 Flutter Web 新。"],
+        sections: [
+          { label: "版本", value: "可申請 Beta 版本（Jay）" },
+        ],
+        notes: ["完整功能、2026 流程與 QA 重點收錄於 Moor 產品頁。"],
         status: "beta",
       },
       {
@@ -120,9 +124,11 @@ export const continents: Continent[] = [
         id: "web-production",
         name: "Web Production",
         technology: "Chrome／Safari",
-        summary: "前端版主要測試環境。",
+        summary: "SWAG Web 主要測試環境，涵蓋帳號、直播、商店、探索、Landing、SEO 與活動入口。",
+        href: "/products/web",
+        entryLabel: "進入 Web 冒險手冊",
         environment: "https://swag.live/",
-        notes: ["瀏覽器端開啟的 swag.live 使用 swag-webapp 的 v3.xxx 分支。"],
+        notes: ["完整 2026 流程、版本判讀與 QA 重點收錄於 Web 產品頁。"],
         status: "active",
       },
       {

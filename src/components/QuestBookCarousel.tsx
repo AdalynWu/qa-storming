@@ -183,10 +183,6 @@ export function QuestBookCarousel({
                     <small>{quest.category}</small>
                     <h3>{quest.title}</h3>
                     <p>{quest.description}</p>
-                    <div className="book-meta">
-                      <span>{quest.progress}</span>
-                      <b>{quest.reward}</b>
-                    </div>
                     {quest.sealed ? (
                       <span className="book-cta is-disabled">
                         {quest.cta}

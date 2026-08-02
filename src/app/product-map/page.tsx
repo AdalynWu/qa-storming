@@ -64,29 +64,31 @@ export default function ProductMapPage() {
           {selected && activeProduct && (
             <>
               <button className="scroll-close" onClick={() => setSelectedId(null)} aria-label="關閉產品詳情">×</button>
-              <p className="scroll-kicker">{selected.subtitle}</p>
-              <h2>{selected.name}</h2>
-              {selected.products.length > 1 && (
-                <div className="product-tabs" role="tablist" aria-label={`${selected.name}產品`}>
-                  {selected.products.map((product, index) => (
-                    <button key={product.id} role="tab" aria-selected={activeProductIndex === index} onClick={() => setActiveProductIndex(index)}>{product.name}</button>
-                  ))}
-                </div>
-              )}
-              <div className="product-status"><span className={`status-dot status-${activeProduct.status ?? "active"}`} />{activeProduct.status === "development" ? "IN DEVELOPMENT" : activeProduct.status === "beta" ? "BETA" : "ACTIVE"}</div>
-              <h3>{activeProduct.name}</h3>
-              <dl className="product-facts">
-                <div><dt>技術類型</dt><dd>{activeProduct.technology}</dd></div>
-                {activeProduct.environment && <div><dt>使用環境</dt><dd>{activeProduct.environment}</dd></div>}
-              </dl>
-              <section><h4>核心說明</h4><p>{activeProduct.summary}</p></section>
-              {activeProduct.sections?.map((section) => <section key={section.label}><h4>{section.label}</h4><p>{section.value}</p></section>)}
-              <section className="qa-notes"><h4>QA 注意事項</h4><ul>{activeProduct.notes.map((note) => <li key={note}>{note}</li>)}</ul></section>
-              {activeProduct.href && (
-                <Link className="product-enter" href={activeProduct.href}>
-                  進入 {activeProduct.name} 創作者聖域 <span aria-hidden="true">→</span>
-                </Link>
-              )}
+              <div className="product-scroll-body">
+                <p className="scroll-kicker">{selected.subtitle}</p>
+                <h2>{selected.name}</h2>
+                {selected.products.length > 1 && (
+                  <div className="product-tabs" role="tablist" aria-label={`${selected.name}產品`}>
+                    {selected.products.map((product, index) => (
+                      <button key={product.id} role="tab" aria-selected={activeProductIndex === index} onClick={() => setActiveProductIndex(index)}>{product.name}</button>
+                    ))}
+                  </div>
+                )}
+                <div className="product-status"><span className={`status-dot status-${activeProduct.status ?? "active"}`} />{activeProduct.status === "development" ? "IN DEVELOPMENT" : activeProduct.status === "beta" ? "BETA" : "ACTIVE"}</div>
+                <h3>{activeProduct.name}</h3>
+                <dl className="product-facts">
+                  <div><dt>技術類型</dt><dd>{activeProduct.technology}</dd></div>
+                  {activeProduct.environment && <div><dt>使用環境</dt><dd>{activeProduct.environment}</dd></div>}
+                </dl>
+                <section><h4>核心說明</h4><p>{activeProduct.summary}</p></section>
+                {activeProduct.sections?.map((section) => <section key={section.label}><h4>{section.label}</h4><p>{section.value}</p></section>)}
+                <section className="qa-notes"><h4>QA 注意事項</h4><ul>{activeProduct.notes.map((note) => <li key={note}>{note}</li>)}</ul></section>
+                {activeProduct.href && (
+                  <Link className="product-enter" href={activeProduct.href}>
+                    {activeProduct.entryLabel ?? `展開 ${activeProduct.name} 產品手冊`} <span aria-hidden="true">→</span>
+                  </Link>
+                )}
+              </div>
             </>
           )}
         </aside>
