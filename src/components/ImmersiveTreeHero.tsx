@@ -178,17 +178,26 @@ export function ImmersiveTreeHero() {
     window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     let visible = true;
+    let textureReady = false;
+    let isLoopRunning = false;
+    let disposed = false;
+    const syncAnimationLoop = () => {
+      const shouldRun = textureReady && visible && !document.hidden;
+      if (shouldRun === isLoopRunning) return;
+      renderer.setAnimationLoop(shouldRun ? render : null);
+      isLoopRunning = shouldRun;
+    };
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      syncAnimationLoop();
     });
     intersectionObserver.observe(host);
 
-    let animationFrame = 0;
-    const startedAt = performance.now();
-    const render = () => {
-      animationFrame = window.requestAnimationFrame(render);
-      if (!visible || document.hidden) return;
+    const onVisibilityChange = () => syncAnimationLoop();
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
+    const startedAt = performance.now();
+    function render() {
       const elapsed = (performance.now() - startedAt) / 1000;
       const scrollProgress = Math.min(window.scrollY / Math.max(height, 1), 1.2);
       pointer.lerp(pointerTarget, 0.035);
@@ -212,25 +221,35 @@ export function ImmersiveTreeHero() {
       });
 
       renderer.render(scene, camera);
-    };
+    }
 
     new THREE.TextureLoader().load(
-      "/rpg-life-tree.png",
+      "/rpg-life-tree.webp",
       (texture) => {
+        if (disposed) {
+          texture.dispose();
+          return;
+        }
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.minFilter = THREE.LinearFilter;
         backgroundMaterial.uniforms.uTexture.value = texture;
         backgroundMaterial.needsUpdate = true;
         setIsReady(true);
-        render();
+        textureReady = true;
+        syncAnimationLoop();
       },
       undefined,
-      () => renderer.dispose(),
+      () => {
+        textureReady = false;
+        syncAnimationLoop();
+      },
     );
 
     return () => {
-      window.cancelAnimationFrame(animationFrame);
+      disposed = true;
+      renderer.setAnimationLoop(null);
       window.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       layers.forEach(({ points }) => {

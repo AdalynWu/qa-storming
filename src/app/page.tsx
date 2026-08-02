@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ImmersiveTreeHero } from "@/components/ImmersiveTreeHero";
+import { DeferredImmersiveTreeHero } from "@/components/DeferredImmersiveTreeHero";
 import { QuestBookCarousel } from "@/components/QuestBookCarousel";
 import { TrialForestPortal } from "@/components/TrialForestPortal";
 import { onboardingQuestBooks } from "@/content/quests";
@@ -62,7 +62,7 @@ export default function Home() {
       <section className="tree-hero">
         <div className="sky-layer" style={{ transform: `translateY(${scrollY * .08}px)` }} />
         <div className="tree-art" style={{ transform: `translateY(${scrollY * .15}px) scale(${1 + Math.min(scrollY, 500) * .00008})` }} />
-        <ImmersiveTreeHero />
+        <DeferredImmersiveTreeHero />
         <div className="mist mist-one" style={{ transform: `translate3d(${-scrollY * .04}px, ${scrollY * .22}px, 0)` }} />
         <div className="mist mist-two" style={{ transform: `translate3d(${scrollY * .05}px, ${scrollY * .3}px, 0)` }} />
         <div className="hero-leaves" style={{ transform: `translateY(${scrollY * .45}px)` }} aria-hidden="true">❧　•　❧　　•　❧</div>
