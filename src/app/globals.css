@@ -16,6 +16,9 @@
 html {
   scroll-behavior: smooth;
 }
+section[id] {
+  scroll-margin-top: 82px;
+}
 body {
   margin: 0;
   color: var(--ink);
@@ -51,6 +54,8 @@ button {
   background: none;
   cursor: pointer;
   text-align: left;
+  color: inherit;
+  text-decoration: none;
 }
 .crest {
   display: grid;
@@ -81,15 +86,16 @@ button {
   display: flex;
   gap: 10px;
 }
-.rpg-links button {
+.rpg-links a {
   padding: 10px 18px;
   border: 0;
   background: none;
   color: #556c57;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
 }
-.rpg-links button:hover {
+.rpg-links a:hover {
   color: #b27b36;
 }
 .guild-level {
@@ -120,6 +126,9 @@ button {
   background: linear-gradient(90deg, #68b786, #bee37c);
 }
 .rpg-menu {
+  display: none;
+}
+.rpg-mobile-nav {
   display: none;
 }
 .tree-hero {
@@ -255,6 +264,13 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+.rpg-primary {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
 .rpg-primary i {
   display: inline-grid;
   place-items: center;
@@ -282,6 +298,8 @@ button {
   pointer-events: auto;
   filter: drop-shadow(0 7px 8px #17392780);
   animation: fruitFloat 3s ease-in-out infinite;
+  color: inherit;
+  text-decoration: none;
 }
 .magic-fruit:nth-child(2) {
   animation-delay: -1s;
@@ -413,6 +431,10 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+.rpg-scroll {
+  color: inherit;
+  text-decoration: none;
+}
 .rpg-scroll i,
 .rpg-scroll span {
   display: block;
@@ -427,64 +449,86 @@ button {
   }
 }
 .quest-zone {
-  min-height: 820px;
+  min-height: 940px;
   position: relative;
-  background: linear-gradient(#214b37, #6ea068 45%, #c8d796);
-  padding: 125px 6vw;
+  background:
+    linear-gradient(180deg, #0b332ccd 0%, #2456418f 28%, #8db27670 68%, #173f32e8 100%),
+    url("/rpg-life-tree.png") center 72% / cover no-repeat;
+  padding: 118px 6vw 150px;
   isolation: isolate;
   overflow: hidden;
 }
+.quest-zone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 62%, #fff5a852 0 12%, transparent 43%),
+    linear-gradient(90deg, #092a26ba, transparent 24% 76%, #092a26ba),
+    linear-gradient(180deg, #092b27b8, transparent 30% 72%, #0a2924d6);
+}
+.quest-zone::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 12%;
+  right: 12%;
+  bottom: -9%;
+  height: 35%;
+  pointer-events: none;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 50% 0%, #dcefae73, #274c36db 62%, #0a2925 100%);
+  filter: blur(1px);
+}
 .parallax-hills {
   position: absolute;
-  left: -10%;
-  right: -10%;
-  border-radius: 50% 50% 0 0;
+  left: -6%;
+  right: -6%;
   z-index: -1;
   will-change: transform;
+  pointer-events: none;
 }
 .hills-back {
-  top: 9%;
-  height: 38%;
-  background: #80a96b;
-  clip-path: polygon(
-    0 60%,
-    10% 35%,
-    22% 60%,
-    35% 20%,
-    50% 65%,
-    66% 28%,
-    78% 55%,
-    90% 22%,
-    100% 60%,
-    100% 100%,
-    0 100%
-  );
-  opacity: 0.55;
+  top: 10%;
+  height: 42%;
+  background:
+    radial-gradient(ellipse at 22% 50%, #c9eeb15e, transparent 34%),
+    radial-gradient(ellipse at 78% 45%, #88cfa85c, transparent 32%);
+  filter: blur(28px);
+  opacity: 0.75;
 }
 .hills-front {
-  bottom: -3%;
-  height: 34%;
-  background: #355f3f;
-  clip-path: polygon(
-    0 40%,
-    14% 18%,
-    25% 55%,
-    42% 22%,
-    57% 58%,
-    73% 12%,
-    88% 45%,
-    100% 26%,
-    100% 100%,
-    0 100%
-  );
+  bottom: -11%;
+  height: 38%;
+  background:
+    radial-gradient(ellipse at 50% 5%, transparent 0 23%, #173b2f99 52%, #09251f 76%),
+    linear-gradient(180deg, transparent, #09251f 74%);
 }
 .zone-content {
+  position: relative;
+  z-index: 2;
   max-width: 1220px;
   margin: auto;
 }
 .zone-title {
+  position: relative;
+  max-width: 680px;
+  padding: 0 0 22px 26px;
   text-align: left;
   color: #fff8dd;
+  text-shadow: 0 3px 18px #082b25;
+}
+.zone-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 18px;
+  width: 2px;
+  background: linear-gradient(transparent, #f1d77f 20% 80%, transparent);
+  box-shadow: 0 0 14px #f3d36a;
 }
 .zone-title p {
   font: 10px Arial;
@@ -499,8 +543,9 @@ button {
   text-shadow: 0 3px #33543b;
 }
 .zone-title span {
-  font-size: 14px;
-  color: #e0e8c3;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #f0efd5;
 }
 .quest-grid {
   display: grid;
@@ -668,6 +713,33 @@ button {
   line-height: 1;
   cursor: pointer;
   box-shadow: 0 4px 0 #18251f;
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out, color 160ms ease-out, background 160ms ease-out;
+  touch-action: manipulation;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+}
+.dial-step:hover:not([aria-disabled="true"]) {
+  color: #fff8d0;
+  background: #36594a;
+}
+.dial-step:active:not([aria-disabled="true"]) {
+  transform: translateY(3px) scale(.96);
+  box-shadow: 0 1px 0 #18251f, 0 0 18px #ffe99a66;
+}
+.dial-step[aria-disabled="true"] {
+  cursor: wait;
+  opacity: .72;
+}
+.dial-step.is-confirmed {
+  animation: dial-step-confirm 280ms ease-out;
+}
+@keyframes dial-step-confirm {
+  45% {
+    color: #254238;
+    background: #ffe49a;
+    box-shadow: 0 2px 0 #715331, 0 0 22px #fff0a6;
+  }
 }
 .dial-step:focus-visible,
 .portal-enter:focus-visible {
@@ -694,6 +766,10 @@ button {
 .portal-enter span {
   color: #7a5a31;
 }
+.portal-enter[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: .68;
+}
 .dial-hint {
   margin: 16px 0 0;
   text-align: center;
@@ -715,11 +791,11 @@ button {
 }
 .trial-dragon {
   position: absolute;
-  bottom: 4%;
-  right: 20%;
-  z-index: 2;
+  z-index: 7;
+  left: 50%;
+  top: 72%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  will-change: transform;
   filter: drop-shadow(0 10px 8px #05161199);
 }
 .library-zone {
@@ -880,22 +956,54 @@ button {
   .guild-level {
     display: none;
   }
+  .rpg-mobile-nav {
+    position: relative;
+    display: block;
+  }
   .rpg-menu {
     display: block;
+    min-width: 44px;
+    min-height: 44px;
     border: 1px solid #8f754b;
     border-radius: 6px;
     background: #fff4cf;
     padding: 8px;
+    cursor: pointer;
+    list-style: none;
+    text-align: center;
+    touch-action: manipulation;
   }
-  .rpg-links.open {
+  .rpg-menu::-webkit-details-marker {
+    display: none;
+  }
+  .rpg-mobile-menu {
     display: flex;
     position: absolute;
-    top: 81px;
-    left: 0;
+    top: calc(100% + 12px);
     right: 0;
+    width: min(230px, calc(100vw - 36px));
     flex-direction: column;
+    gap: 4px;
     background: #fff8ddf5;
-    padding: 16px;
+    padding: 10px;
+    border: 1px solid #a68450;
+    border-radius: 10px 4px 18px 10px;
+    box-shadow: 0 12px 32px #17382d55;
+  }
+  .rpg-mobile-menu a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #315b4b;
+    font-weight: 700;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
+  .rpg-mobile-menu a:hover,
+  .rpg-mobile-menu a:focus-visible {
+    background: #e6dba8;
   }
   .tree-art {
     background-position: 55% top;
@@ -919,7 +1027,7 @@ button {
     left: 68%;
   }
   .fruit-name {
-    display: none;
+    display: block;
   }
   .animal-fox {
     left: 10%;
@@ -945,6 +1053,9 @@ button {
   }
 }
 @media (max-width: 600px) {
+  section[id] {
+    scroll-margin-top: 68px;
+  }
   .rpg-nav {
     height: 68px;
     padding: 0 18px;
@@ -973,7 +1084,14 @@ button {
     top: 4%;
   }
   .magic-fruit {
+    flex-direction: column;
+    gap: 8px;
     transform: scale(0.76);
+  }
+  .fruit-name {
+    min-width: 106px;
+    padding: 7px 9px;
+    text-align: center;
   }
   .fruit-pink {
     left: 3%;
@@ -1021,7 +1139,7 @@ button {
   min-height: auto;
   display: block;
   padding: 0;
-  background: #071f24 url("/rpg-trial-portal.png") center / cover no-repeat;
+  background: #071f24;
 }
 .trial-forest-zone:before {
   display: none;
@@ -1035,7 +1153,7 @@ button {
   aspect-ratio: 1672 / 941;
   min-height: 720px;
   overflow: hidden;
-  background: transparent;
+  background: url("/rpg-trial-portal.png") center / cover no-repeat;
 }
 .portal-scene .realm-window {
   position: absolute;
@@ -1099,105 +1217,6 @@ button {
 }
 .portal-scene .portal-copy h2 {
   font-size: clamp(34px, 4vw, 62px);
-}
-.stone-dial {
-  position: absolute;
-  z-index: 6;
-  left: 50%;
-  top: 73%;
-  width: clamp(270px, 27vw, 450px);
-  aspect-ratio: 1.85;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: transparent;
-  touch-action: none;
-  cursor: grab;
-}
-.stone-dial:active {
-  cursor: grabbing;
-}
-.stone-dial-energy {
-  position: absolute;
-  inset: 2%;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 20deg,
-    transparent 0 12%,
-    #fff1aacc 18%,
-    transparent 25% 47%,
-    #76f5d599 53%,
-    transparent 60% 100%
-  );
-  -webkit-mask: radial-gradient(
-    ellipse,
-    transparent 0 55%,
-    #000 59% 67%,
-    transparent 71%
-  );
-  mask: radial-gradient(
-    ellipse,
-    transparent 0 55%,
-    #000 59% 67%,
-    transparent 71%
-  );
-  filter: drop-shadow(0 0 8px #b8ffe7) drop-shadow(0 0 12px #ffe37a);
-  pointer-events: none;
-  transition: transform 820ms cubic-bezier(0.18, 0.78, 0.16, 1.12);
-}
-.stone-rune {
-  position: absolute;
-  z-index: 3;
-  width: 16%;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid #d5f7c788;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    #fff6b8cc,
-    #66c9a166 45%,
-    transparent 72%
-  );
-  color: #fff7bd;
-  font-size: clamp(15px, 1.4vw, 24px);
-  text-shadow: 0 0 8px #fff2a0;
-  box-shadow: 0 0 10px #6ff4c744;
-  cursor: pointer;
-  transition:
-    filter 0.2s,
-    scale 0.2s,
-    box-shadow 0.2s;
-}
-.stone-rune:hover {
-  filter: brightness(1.25);
-  scale: 1.08;
-}
-.stone-rune:focus-visible {
-  outline: 3px solid #fff0a0;
-  outline-offset: 3px;
-}
-.stone-rune[aria-pressed="true"] {
-  scale: 1.12;
-  box-shadow:
-    0 0 18px 7px #ffe36a99,
-    0 0 30px #8cffe3aa;
-}
-.stone-rune-0 {
-  top: 0;
-  left: 42%;
-}
-.stone-rune-1 {
-  top: 39%;
-  right: 3%;
-}
-.stone-rune-2 {
-  bottom: 0;
-  left: 42%;
-}
-.stone-rune-3 {
-  top: 39%;
-  left: 3%;
 }
 .realm-info-panel {
   position: absolute;
@@ -1269,55 +1288,10 @@ button {
 .trial-portal.is-turning .realm-window {
   animation: window-shift 620ms steps(3, end);
 }
-.trial-portal.is-turning .stone-dial {
-  animation: stone-dial-catch 920ms ease-out;
-}
-.trial-portal.is-turning .stone-rune {
-  animation: stone-rune-sequence 480ms ease-out;
-}
-.trial-portal.is-turning .stone-rune:nth-of-type(2) {
-  animation-delay: 70ms;
-}
-.trial-portal.is-turning .stone-rune:nth-of-type(3) {
-  animation-delay: 140ms;
-}
-.trial-portal.is-turning .stone-rune:nth-of-type(4) {
-  animation-delay: 210ms;
-}
-@keyframes stone-dial-catch {
-  44% {
-    translate: calc(-50% + 2px) 0;
-  }
-  53% {
-    translate: calc(-50% - 4px) 1px;
-  }
-  62% {
-    translate: calc(-50% + 2px) -1px;
-  }
-  72% {
-    translate: -50% 0;
-  }
-}
-@keyframes stone-rune-sequence {
-  45% {
-    filter: brightness(1.7);
-    scale: 1.14;
-  }
-  100% {
-    filter: none;
-  }
-}
-
 @media (max-width: 900px) {
   .portal-scene {
-    min-height: 820px;
-    aspect-ratio: auto;
-  }
-  .portal-scene .realm-window {
-    left: 25%;
-    top: 23%;
-    width: 50%;
-    height: 42%;
+    min-height: 0;
+    aspect-ratio: 1672 / 941;
   }
   .portal-scene .portal-copy {
     top: 5%;
@@ -1325,26 +1299,31 @@ button {
     width: 86%;
     text-align: center;
   }
-  .stone-dial {
-    top: 60%;
-    width: min(48vw, 360px);
-  }
   .realm-info-panel {
-    left: 7%;
-    right: 7%;
-    bottom: 3%;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
     width: auto;
+    margin: -14px 7% 28px;
+  }
+  .trial-dragon .sprite-lol-dragon {
+    --sprite-size: clamp(150px, 24vw, 200px);
   }
 }
 @media (max-width: 600px) {
   .portal-scene {
-    min-height: 980px;
+    min-height: 0;
+    aspect-ratio: 941 / 1672;
+    background-image: url("/rpg-trial-portal-mobile.png");
+    background-position: center top;
   }
   .portal-scene .realm-window {
-    left: 16%;
-    top: 24%;
-    width: 68%;
-    height: 38%;
+    left: 17.5%;
+    top: 33.5%;
+    width: 65%;
+    height: 30.5%;
+    border-radius: 49% 49% 43% 43%;
   }
   .portal-scene .portal-copy {
     top: 4%;
@@ -1355,15 +1334,12 @@ button {
   .portal-scene .portal-copy span {
     font-size: 12px;
   }
-  .stone-dial {
-    top: 58%;
-    width: min(64vw, 300px);
-  }
   .realm-info-panel {
-    left: 5%;
-    right: 5%;
-    bottom: 2.5%;
+    margin: -14px 16px 28px;
     padding: 17px;
+  }
+  .trial-dragon {
+    top: 72%;
   }
   .realm-info-actions .portal-enter {
     max-width: none;
@@ -1374,11 +1350,7 @@ button {
     animation: none;
     translate: 0;
   }
-  .stone-dial-energy {
-    transition-duration: 1ms;
-  }
-  .trial-portal.is-turning .stone-dial,
-  .trial-portal.is-turning .stone-rune {
+  .dial-step.is-confirmed {
     animation: none;
   }
 }
@@ -1394,8 +1366,7 @@ button {
   .parallax-hills,
   .floating-motes,
   .critter,
-  .animal-wolf,
-  .trial-dragon {
+  .animal-wolf {
     transform: none !important;
   }
   .magic-fruit,
@@ -1407,8 +1378,8 @@ button {
 }
 @media (max-width: 600px) {
   .dial-step {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     font-size: 27px;
   }
 }
@@ -1686,6 +1657,7 @@ button {
   color: #3d573f;
   font-size: 36px;
   cursor: pointer;
+  touch-action: manipulation;
 }
 .quest-arrow:hover,
 .quest-arrow:focus-visible {
@@ -1722,8 +1694,8 @@ button {
     padding-right: 25px;
   }
   .quest-arrow {
-    width: 39px;
-    height: 39px;
+    width: 44px;
+    height: 44px;
     font-size: 29px;
   }
   .quest-prev {
@@ -1947,8 +1919,8 @@ button {
 }
 .quest-book-reveal {
   width: 100%;
-  opacity: 0;
-  transform: translateY(86px) scale(0.78);
+  opacity: 1;
+  transform: none;
   transform-origin: 50% 100%;
 }
 .quest-orbit.is-entered .quest-book-reveal {
@@ -2279,7 +2251,279 @@ button {
   .immersive-tree-canvas {
     display: none;
   }
+  .quest-zone .parallax-hills,
+  .quest-zone .bat {
+    transform: none !important;
+  }
   .quest-orbit-slot {
     transition: none !important;
+  }
+}
+
+/* Viewport composition
+   Scene-led sections reserve exactly the visible area below the fixed guild
+   navigation. Their focal content scales with height instead of being clipped. */
+:root {
+  --rpg-nav-height: 82px;
+}
+
+.trial-forest-zone,
+.trial-portal,
+.portal-scene {
+  height: calc(100vh - var(--rpg-nav-height));
+  height: calc(100dvh - var(--rpg-nav-height));
+  min-height: 0;
+}
+.portal-scene {
+  aspect-ratio: auto;
+}
+.realm-info-panel {
+  position: absolute;
+  left: auto;
+  right: clamp(24px, 5.5vw, 92px);
+  bottom: clamp(22px, 6.5vh, 64px);
+  width: clamp(286px, 27vw, 340px);
+  margin: 0;
+}
+
+@media (min-width: 901px) {
+  .quest-zone {
+    --quest-book-width: clamp(195px, min(23vw, 38dvh), 280px);
+    height: calc(100vh - var(--rpg-nav-height));
+    height: calc(100dvh - var(--rpg-nav-height));
+    min-height: 0;
+    padding: clamp(24px, 5.5dvh, 60px) 6vw clamp(14px, 2.4dvh, 28px);
+  }
+  .quest-zone .zone-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .quest-zone .zone-title {
+    flex: none;
+    padding-bottom: clamp(8px, 1.5dvh, 18px);
+  }
+  .quest-zone .zone-title p {
+    margin-block: 0 clamp(5px, 1dvh, 10px);
+  }
+  .quest-zone .zone-title h2 {
+    margin: 0 0 clamp(5px, 1dvh, 10px);
+    font-size: clamp(32px, min(4vw, 6dvh), 56px);
+  }
+  .quest-orbit {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    margin-top: clamp(4px, 1.2dvh, 14px);
+    padding: 0 74px clamp(22px, 3dvh, 34px);
+  }
+  .quest-orbit-stage {
+    height: 100%;
+    min-height: 0;
+  }
+  .quest-orbit-slot {
+    top: 50%;
+    width: var(--quest-book-width);
+  }
+  .quest-orbit-slot .quest-book {
+    width: 100%;
+    height: calc(var(--quest-book-width) * 1.46);
+  }
+  .quest-orbit-slot .book-cover {
+    padding: 48.5% 22% 8%;
+  }
+  .quest-orbit-slot .book-cover h3 {
+    min-height: calc(var(--quest-book-width) * 0.14);
+    margin-block: 4px;
+    font-size: clamp(15px, calc(var(--quest-book-width) * 0.06), 18px);
+    line-height: 1.2;
+  }
+  .quest-orbit-slot .book-cover p {
+    min-height: calc(var(--quest-book-width) * 0.18);
+    margin-block: 3px;
+    font-size: clamp(9px, calc(var(--quest-book-width) * 0.036), 11px);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+  .quest-orbit-slot .book-meta {
+    padding: clamp(5px, 1dvh, 8px) 16%;
+  }
+  .quest-orbit-slot .book-cta {
+    padding: clamp(7px, 1.1dvh, 9px);
+  }
+  .quest-orbit-slot.is-front {
+    transform: translate(-50%, -50%) translate3d(0, 0, 115px) rotateY(0deg) scale(1);
+  }
+  .quest-orbit-slot .book-seal {
+    top: 18%;
+    width: clamp(40px, calc(var(--quest-book-width) * 0.165), 52px);
+    height: clamp(40px, calc(var(--quest-book-width) * 0.165), 52px);
+  }
+  .quest-orbit-slot.is-left-1 {
+    transform: translate(-50%, -50%) translate3d(clamp(-270px, -23vw, -205px), 13px, 20px) rotateY(-50deg) scale(0.82);
+  }
+  .quest-orbit-slot.is-right-1 {
+    transform: translate(-50%, -50%) translate3d(clamp(205px, 23vw, 270px), 13px, 20px) rotateY(50deg) scale(0.82);
+  }
+  .quest-orbit-slot.is-left-2 {
+    transform: translate(-50%, -50%) translate3d(clamp(-438px, -38vw, -320px), 32px, -170px) rotateY(-74deg) scale(0.64);
+  }
+  .quest-orbit-slot.is-right-2 {
+    transform: translate(-50%, -50%) translate3d(clamp(320px, 38vw, 438px), 32px, -170px) rotateY(74deg) scale(0.64);
+  }
+}
+
+@media (max-width: 900px) {
+  .quest-zone {
+    min-height: calc(100vh - var(--rpg-nav-height));
+    min-height: calc(100dvh - var(--rpg-nav-height));
+    padding-top: clamp(54px, 7dvh, 72px);
+    padding-bottom: clamp(48px, 7dvh, 72px);
+  }
+  .zone-title,
+  .book-copy {
+    max-width: 680px;
+    margin-inline: auto;
+    padding-left: 0;
+    text-align: center;
+  }
+  .zone-title::before {
+    left: 22%;
+    right: 22%;
+    top: auto;
+    bottom: 8px;
+    width: auto;
+    height: 1px;
+  }
+  .realm-info-panel {
+    position: absolute;
+    left: auto;
+    right: 4%;
+    bottom: 4%;
+    width: min(330px, 43vw);
+    margin: 0;
+  }
+  .library-zone {
+    min-height: auto;
+    padding-top: clamp(64px, 8dvh, 84px);
+    padding-bottom: clamp(72px, 9dvh, 96px);
+  }
+  .library-inner {
+    gap: 0;
+  }
+  .book-copy .rpg-secondary {
+    margin-inline: auto;
+  }
+  .lore-list {
+    margin-top: clamp(42px, 7dvh, 64px);
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --rpg-nav-height: 68px;
+  }
+  .trial-forest-zone,
+  .trial-portal,
+  .portal-scene {
+    height: calc(100vh - var(--rpg-nav-height));
+    height: calc(100dvh - var(--rpg-nav-height));
+  }
+  .portal-scene {
+    aspect-ratio: auto;
+    background-position: center top;
+  }
+  .portal-scene .portal-copy {
+    top: 2.5%;
+    left: 5%;
+    width: 90%;
+  }
+  .portal-scene .portal-copy p {
+    font-size: 8px;
+  }
+  .portal-scene .portal-copy h2 {
+    margin: 5px 0;
+    font-size: clamp(32px, 10vw, 42px);
+  }
+  .portal-scene .portal-copy span {
+    font-size: 11px;
+  }
+  .trial-dragon {
+    top: 61%;
+  }
+  .trial-dragon .sprite-lol-dragon {
+    --sprite-size: clamp(94px, 27vw, 116px);
+  }
+  .realm-info-panel {
+    left: 12px;
+    right: 12px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    width: auto;
+    padding: 12px 14px 13px;
+    border-radius: 10px 22px 10px 10px;
+  }
+  .realm-info-panel > small {
+    font-size: 8px;
+  }
+  .realm-info-panel h3 {
+    margin: 4px 0 2px;
+    font-size: clamp(23px, 7vw, 29px);
+  }
+  .realm-info-panel > p {
+    font-size: 11px;
+  }
+  .realm-info-meta {
+    margin: 8px 0;
+    padding: 7px 0;
+    font-size: 8px;
+  }
+  .realm-info-actions {
+    gap: 8px;
+  }
+  .realm-info-actions .dial-step {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+  .realm-info-actions .portal-enter {
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+  .realm-info-panel .dial-hint {
+    display: none;
+  }
+  .quest-zone {
+    padding: clamp(52px, 7dvh, 66px) 22px clamp(48px, 7dvh, 68px);
+  }
+  .quest-zone .zone-title {
+    padding-bottom: 18px;
+  }
+  .quest-zone .zone-title h2,
+  .library-zone h2 {
+    font-size: clamp(34px, 10vw, 44px);
+  }
+  .quest-orbit {
+    margin-top: 18px;
+  }
+  .library-zone {
+    padding: clamp(52px, 7dvh, 68px) 22px clamp(68px, 9dvh, 88px);
+  }
+  .library-zone .rpg-kicker,
+  .library-zone h2,
+  .book-copy > p:last-of-type {
+    text-align: center;
+  }
+  .lore-list {
+    margin-top: clamp(34px, 5dvh, 48px);
+  }
+  .lore-list article {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 12px;
+    padding: 20px 18px;
+  }
+  .lore-list article > span {
+    grid-column: 2;
+    justify-self: start;
   }
 }

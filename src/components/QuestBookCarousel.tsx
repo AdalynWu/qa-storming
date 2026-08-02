@@ -54,74 +54,10 @@ function offsetClass(offset: number) {
   return offset < 0 ? `is-left-${Math.abs(offset)}` : `is-right-${offset}`;
 }
 
-function orbitSlotStyle(offset: number, revealOrder: number): CSSProperties {
-  const shared: CSSProperties = {
-    "--reveal-order": revealOrder,
-    position: "absolute",
-    left: "50%",
-    top: "49%",
-    width: 315,
-    transformOrigin: "50% 60%",
-    transformStyle: "preserve-3d",
-    transition:
-      "transform 720ms cubic-bezier(0.2, 0.76, 0.24, 1), opacity 420ms ease, filter 520ms ease",
-    willChange: "transform, opacity",
-    pointerEvents: "none",
-  } as CSSProperties;
-
-  const positions: Record<number, CSSProperties> = {
-    0: {
-      zIndex: 6,
-      opacity: 1,
-      visibility: "visible",
-      filter: "none",
-      transform:
-        "translate(-50%, -50%) translate3d(0, 0, 210px) rotateY(0deg) scale(1)",
-    },
-    [-1]: {
-      zIndex: 4,
-      opacity: 1,
-      visibility: "visible",
-      filter: "saturate(0.76) brightness(0.82)",
-      transform:
-        "translate(-50%, -50%) translate3d(-270px, 13px, 20px) rotateY(-50deg) scale(0.82)",
-    },
-    1: {
-      zIndex: 4,
-      opacity: 1,
-      visibility: "visible",
-      filter: "saturate(0.76) brightness(0.82)",
-      transform:
-        "translate(-50%, -50%) translate3d(270px, 13px, 20px) rotateY(50deg) scale(0.82)",
-    },
-    [-2]: {
-      zIndex: 2,
-      opacity: 1,
-      visibility: "visible",
-      filter: "saturate(0.55) brightness(0.68)",
-      transform:
-        "translate(-50%, -50%) translate3d(-438px, 32px, -170px) rotateY(-74deg) scale(0.64)",
-    },
-    2: {
-      zIndex: 2,
-      opacity: 1,
-      visibility: "visible",
-      filter: "saturate(0.55) brightness(0.68)",
-      transform:
-        "translate(-50%, -50%) translate3d(438px, 32px, -170px) rotateY(74deg) scale(0.64)",
-    },
-  };
-
+function orbitSlotStyle(revealOrder: number): CSSProperties {
   return {
-    ...shared,
-    ...(positions[offset] ?? {
-      zIndex: 0,
-      opacity: 0,
-      visibility: "hidden",
-      transform:
-        "translate(-50%, -50%) translate3d(0, 40px, -380px) scale(0.35)",
-    }),
-  };
+    "--reveal-order": revealOrder,
+  } as CSSProperties;
 }
 
 export function QuestBookCarousel({
@@ -230,7 +166,7 @@ export function QuestBookCarousel({
           return (
             <div
               className={`quest-orbit-slot ${offsetClass(offset)}`}
-              style={orbitSlotStyle(offset, index)}
+              style={orbitSlotStyle(index)}
               aria-hidden={!isVisible}
               key={quest.id}
             >

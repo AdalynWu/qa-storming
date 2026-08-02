@@ -84,13 +84,19 @@ function RegressionExplorer() {
           <div className="suite-grid">
             {regressionSuites.filter((suite) => suite.status === "active").map((suite, index) => {
               const cases = regressionCases.filter((item) => item.suiteId === suite.id && item.lifecycleStatus !== "archived");
-              return <button className={`suite-region region-${(index % 3) + 1}`} key={suite.id} onClick={() => chooseSuite(suite.id)}>
+              return <Link
+                className={`suite-region region-${(index % 3) + 1}`}
+                href={`/regression?suite=${encodeURIComponent(suite.id)}&view=reader#mobile-suite-${encodeURIComponent(suite.id)}`}
+                key={suite.id}
+                onClick={(event) => { event.preventDefault(); chooseSuite(suite.id); }}
+              >
                 <span className="region-emblem" aria-hidden="true">{["🛡️", "🌿", "⚔️"][index % 3]}</span>
                 <small>{suite.subtitle}</small><h3>{suite.title}</h3><p>{suite.description}</p>
                 <footer><span>{suite.platforms.join(" · ")}</span><b>{cases.length} CASES</b></footer>
-              </button>;
+              </Link>;
             })}
           </div>
+          <MobileCaseArchive />
         </section>
       ) : (
         <section className="trial-workspace">
@@ -126,13 +132,51 @@ function CaseListButton({ testCase, active, onClick }: { testCase: TestCase; act
 }
 
 function CaseDetail({ testCase, onBack }: { testCase: TestCase; onBack: () => void }) {
-  return <article className="case-detail"><button className="mobile-case-back" onClick={onBack}>← 返回案例清單</button><header><div><span className={`priority priority-${testCase.priority.toLowerCase()}`}>{testCase.priority}</span><small>{testCase.id} · {testCase.module}</small></div><h2>{testCase.title}</h2><p>{testCase.platforms.join(" / ")} · {statusLabel(testCase.lifecycleStatus)}</p></header><div className="case-facts"><section><h3>前置條件</h3>{testCase.preconditions.length ? <ul>{testCase.preconditions.map((item) => <li key={item}>{item}</li>)}</ul> : <p>無</p>}</section><section><h3>測試資料</h3>{testCase.testData.length ? <ul>{testCase.testData.map((item) => <li key={item}>{item}</li>)}</ul> : <p>無</p>}</section></div><div className="execution-sections"><section className="step-scroll"><h3>測試步驟</h3><ol>{testCase.steps.map((step, index) => <li key={`${index}-${step}`}><span>{index + 1}</span><div><p>{step}</p></div></li>)}</ol></section><section className="expected-scroll"><h3>預期結果</h3><ol>{testCase.expectedResults.map((result, index) => <li key={`${index}-${result}`}><span>✓</span><p>{result}</p></li>)}</ol></section></div><footer><div>{testCase.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><small>{testCase.owner && `Owner: ${testCase.owner}`}{testCase.updatedAt && ` · Updated: ${testCase.updatedAt}`}</small></footer></article>;
+  return <article className="case-detail"><button className="mobile-case-back" onClick={onBack}>← 返回案例清單</button><CaseDefinition testCase={testCase} /></article>;
+}
+
+function CaseDefinition({ testCase }: { testCase: TestCase }) {
+  return <><header><div><span className={`priority priority-${testCase.priority.toLowerCase()}`}>{testCase.priority}</span><small>{testCase.id} · {testCase.module}</small></div><h2>{testCase.title}</h2><p>{testCase.platforms.join(" / ")} · {statusLabel(testCase.lifecycleStatus)}</p></header><div className="case-facts"><section><h3>前置條件</h3>{testCase.preconditions.length ? <ul>{testCase.preconditions.map((item) => <li key={item}>{item}</li>)}</ul> : <p>無</p>}</section><section><h3>測試資料</h3>{testCase.testData.length ? <ul>{testCase.testData.map((item) => <li key={item}>{item}</li>)}</ul> : <p>無</p>}</section></div><div className="execution-sections"><section className="step-scroll"><h3>測試步驟</h3><ol>{testCase.steps.map((step, index) => <li key={`${index}-${step}`}><span>{index + 1}</span><div><p>{step}</p></div></li>)}</ol></section><section className="expected-scroll"><h3>預期結果</h3><ol>{testCase.expectedResults.map((result, index) => <li key={`${index}-${result}`}><span>✓</span><p>{result}</p></li>)}</ol></section></div><footer><div>{testCase.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><small>{testCase.owner && `Owner: ${testCase.owner}`}{testCase.updatedAt && ` · Updated: ${testCase.updatedAt}`}</small></footer></>;
+}
+
+function MobileCaseArchive() {
+  return <section className="mobile-case-archive" aria-labelledby="mobile-archive-title">
+    <p>NO-SCRIPT READY ARCHIVE</p>
+    <h2 id="mobile-archive-title">手機案例典藏</h2>
+    <span>點開任務卷軸即可閱讀完整案例；不依賴動畫或 JavaScript。</span>
+    {regressionSuites.filter((suite) => suite.status === "active").map((suite) => {
+      const cases = regressionCases.filter((testCase) => testCase.suiteId === suite.id && testCase.lifecycleStatus !== "archived");
+      return <details className="mobile-suite-archive" id={`mobile-suite-${suite.id}`} key={suite.id} open>
+        <summary><span>{suite.title}</span><b>{cases.length} CASES</b></summary>
+        <div className="mobile-suite-cases">
+          {cases.map((testCase) => <details className="mobile-native-case" key={testCase.id}>
+            <summary><span><b>{testCase.id}</b><small>{testCase.module}</small></span><strong>{testCase.title}</strong><em className={`priority priority-${testCase.priority.toLowerCase()}`}>{testCase.priority}</em></summary>
+            <article className="mobile-native-case-detail"><CaseDefinition testCase={testCase} /></article>
+          </details>)}
+        </div>
+      </details>;
+    })}
+  </section>;
 }
 
 function CaseTable({ cases, onChoose }: { cases: TestCase[]; onChoose: (id: string) => void }) {
   return <div className="case-table-wrap"><table className="case-table"><thead><tr><th>ID</th><th>Module</th><th>標題</th><th>Priority</th><th>Platform</th><th>Lifecycle</th><th>Tags</th></tr></thead><tbody>{cases.map((testCase) => <tr key={testCase.id} onClick={() => onChoose(testCase.id)} tabIndex={0} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onChoose(testCase.id); }}><td><b>{testCase.id}</b></td><td>{testCase.module}</td><td>{testCase.title}</td><td><span className={`priority priority-${testCase.priority.toLowerCase()}`}>{testCase.priority}</span></td><td>{testCase.platforms.join(" / ")}</td><td>{statusLabel(testCase.lifecycleStatus)}</td><td>{testCase.tags.join(", ")}</td></tr>)}</tbody></table></div>;
 }
 
+function RegressionStaticFallback() {
+  return <main className="regression-page regression-static-fallback">
+    <header className="regression-header">
+      <Link href="/#regression" className="regression-back">← 返回任務看板</Link>
+      <div><small>QA STORMING · TRIAL ARCHIVE</small><h1>Regression 試煉圖鑑</h1></div>
+      <span />
+    </header>
+    <section className="trial-atlas" aria-labelledby="fallback-atlas-title">
+      <div className="atlas-copy"><p>✦ REGRESSION TRIAL ATLAS ✦</p><h2 id="fallback-atlas-title">案例典藏載入中</h2><span>互動地圖準備完成前，仍可直接閱讀下方完整案例。</span></div>
+      <MobileCaseArchive />
+    </section>
+  </main>;
+}
+
 export default function RegressionPage() {
-  return <Suspense fallback={<main className="regression-page"><div className="regression-loading">正在展開試煉圖鑑…</div></main>}><RegressionExplorer /></Suspense>;
+  return <Suspense fallback={<RegressionStaticFallback />}><RegressionExplorer /></Suspense>;
 }

@@ -1,6 +1,8 @@
 .moor-page-shell,
 .moor-reader-shell {
   min-height: 100svh;
+  max-width: 100%;
+  overflow-x: clip;
   color: #f8f0cf;
   background: #102f2b;
   font-family: Georgia, "Times New Roman", serif;
@@ -281,31 +283,38 @@
 .moor-journey {
   position: relative;
   padding: 90px clamp(18px, 5vw, 82px) 110px;
-  color: #273f37;
+  color: #f7efd1;
   background:
-    radial-gradient(circle at 50% 15%, #dff3afad, transparent 40%),
-    linear-gradient(180deg, #aecb84, #d8e6a6 47%, #759c6d);
+    linear-gradient(180deg, #102f2be8 0%, #173f35a8 20%, #204e3da8 76%, #102f2bf2 100%),
+    url("/rpg-product-world-map.png") center 48% / cover no-repeat;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .moor-journey::before,
 .moor-journey::after {
   content: "";
   position: absolute;
-  left: -5%;
-  right: -5%;
-  height: 140px;
-  background: #102f2b;
-  clip-path: polygon(0 0, 12% 48%, 24% 10%, 39% 68%, 55% 16%, 72% 55%, 88% 8%, 100% 44%, 100% 0);
+  pointer-events: none;
 }
 
 .moor-journey::before {
-  top: -1px;
+  z-index: -1;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 48%, #e7f3b82b 0 20%, transparent 55%),
+    linear-gradient(90deg, #082822b8, transparent 18% 82%, #082822b8);
 }
 
 .moor-journey::after {
-  bottom: -1px;
-  transform: rotate(180deg);
+  z-index: 0;
+  left: -5%;
+  right: -5%;
+  bottom: -70px;
+  height: 190px;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 50% 0%, #89b47d73, #0d302a 70%);
+  filter: blur(12px);
 }
 
 .moor-section-heading {
@@ -316,18 +325,18 @@
 
 .moor-section-heading > p,
 .moor-route-heading p {
-  color: #8c602e;
+  color: #f0c968;
 }
 
 .moor-section-heading h2 {
   margin: 9px 0 12px;
-  color: #224c3d;
+  color: #fff7d7;
   font-size: clamp(36px, 5vw, 62px);
   font-weight: 500;
 }
 
 .moor-section-heading > span {
-  color: #526c59;
+  color: #dfe9cf;
   line-height: 1.7;
 }
 
@@ -337,8 +346,8 @@
   max-width: 1400px;
   margin: 0 auto 55px;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
-  gap: 26px;
+  grid-template-columns: minmax(0, 1.55fr) minmax(310px, .62fr);
+  gap: clamp(20px, 3vw, 42px);
   align-items: stretch;
 }
 
@@ -347,12 +356,12 @@
   position: relative;
   padding: 34px clamp(20px, 3vw, 42px);
   overflow: hidden;
-  border: 1px solid #a27d4373;
-  border-radius: 40px 12px 40px 12px;
+  border: 1px solid #ddb96791;
+  border-radius: 48px 12px 48px 12px;
   background:
-    radial-gradient(circle at 50% 50%, #f8f4cee6, #e7e6b8ef 70%),
-    #eff1c8;
-  box-shadow: 0 28px 64px #31583d47, inset 0 0 54px #6b8f5126;
+    linear-gradient(180deg, #0b2d29d9, #174638bd),
+    url("/rpg-product-world-map.png") center 58% / cover no-repeat;
+  box-shadow: 0 32px 72px #061d1b8c, inset 0 0 65px #061b186e;
 }
 
 .moor-route-card::after {
@@ -360,7 +369,7 @@
   position: absolute;
   inset: 12px;
   pointer-events: none;
-  border: 1px solid #ad895246;
+  border: 1px solid #e9cb7b42;
   border-radius: 30px 8px 30px 8px;
 }
 
@@ -377,10 +386,11 @@
   margin: 4px 0 0;
   font-size: clamp(27px, 3vw, 42px);
   font-weight: 500;
+  color: #fff5d1;
 }
 
 .moor-route-heading > span {
-  color: #6b765f;
+  color: #d7e4c4;
   font: 700 11px Arial, sans-serif;
   letter-spacing: .08em;
 }
@@ -391,19 +401,18 @@
   right: 9%;
   top: 52%;
   height: 180px;
-  border-top: 6px solid #718b55;
-  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(ellipse at 50% 100%, transparent 0 64%, #e5ce7aa8 65% 66%, transparent 67%);
   transform: rotate(-3deg);
-  opacity: .65;
+  opacity: .82;
+  filter: drop-shadow(0 0 7px #e9d273);
 }
 
 .moor-route-line::after {
   content: "";
   position: absolute;
-  inset: -11px 0 auto;
-  height: 16px;
-  border-top: 2px dotted #d9a64d;
-  border-radius: 50%;
+  inset: 5px 4% 0;
+  background: radial-gradient(ellipse at 50% 100%, transparent 0 63%, #fff1a84d 64% 64.5%, transparent 65.5%);
 }
 
 .moor-chapter-nodes {
@@ -420,7 +429,7 @@
   top: var(--node-y);
   width: 118px;
   transform: translate(-50%, -50%);
-  color: #28483d;
+  color: #fff6d5;
   border: 0;
   background: none;
   cursor: pointer;
@@ -445,11 +454,11 @@
   position: relative;
   color: #fff3be;
   border: 3px solid #d9ae59;
-  border-radius: 48% 48% 42% 42%;
+  border-radius: 48% 48% 38% 38%;
   background:
     linear-gradient(145deg, #2c6a55, #153e35),
     #19473b;
-  box-shadow: 0 8px 0 #745733, 0 15px 25px #24463242, inset 0 0 20px #8bc47a2e;
+  box-shadow: 0 8px 0 #57442d, 0 15px 28px #061a177a, inset 0 0 20px #8bc47a2e;
   transition: transform 240ms ease, filter 240ms ease, background 240ms ease;
 }
 
@@ -474,11 +483,12 @@
 
 .moor-chapter-node b {
   font-size: 14px;
+  text-shadow: 0 2px 7px #081e1b;
 }
 
 .moor-chapter-node small {
   margin-top: 3px;
-  color: #77806d;
+  color: #d7dfc5;
   font: 700 10px Arial, sans-serif;
 }
 
@@ -520,7 +530,7 @@
   padding: clamp(32px, 4vw, 54px);
   color: #35473d;
   border: 2px solid #d0a654;
-  border-radius: 16px 48px 16px 48px;
+  border-radius: 10px 46px 10px 46px;
   background:
     linear-gradient(90deg, #7b593426, transparent 12% 88%, #7b593426),
     #f5e7b8;
@@ -611,7 +621,7 @@
   padding: 12px 20px;
   color: #25483a;
   border: 1px solid #9a6e2c;
-  border-radius: 999px;
+  border-radius: 8px 18px 8px 18px;
   background: linear-gradient(#fff1b7, #ecc45f);
   box-shadow: 0 6px 0 #80602e;
   font-weight: 800;
@@ -743,8 +753,13 @@
   gap: 22px;
   padding: 54px clamp(18px, 4vw, 70px) 70px;
   background:
-    radial-gradient(circle at 50% 10%, #386d5299, transparent 42%),
-    #143b34;
+    linear-gradient(180deg, #102f2bd9, #0b2925f2),
+    url("/rpg-product-world-map.png") center 34% / cover fixed no-repeat;
+}
+
+.moor-reader-layout > *,
+.moor-reader-banner > * {
+  min-width: 0;
 }
 
 .moor-toc,
@@ -752,13 +767,16 @@
   position: sticky;
   top: 96px;
   padding: 24px 20px;
-  border: 1px solid #d9b45c52;
-  border-radius: 18px;
+  border: 1px solid #d9b45c66;
   box-shadow: 0 20px 45px #071b1959;
 }
 
 .moor-toc {
-  background: #0d302bea;
+  border-radius: 8px 24px 8px 24px;
+  background:
+    linear-gradient(90deg, #22170e33, transparent 18% 82%, #22170e33),
+    linear-gradient(145deg, #4d3927f2, #2a261cf2);
+  box-shadow: 0 18px 38px #071b196e, inset 0 0 28px #d6b46917;
 }
 
 .moor-toc h2,
@@ -773,13 +791,13 @@
   gap: 8px;
   padding: 11px 7px;
   color: #e8edd7;
-  border-left: 2px solid #d9b45c35;
+  border-bottom: 1px solid #d9b45c2e;
   text-decoration: none;
 }
 
 .moor-toc a:hover {
   color: #ffd97e;
-  border-left-color: #ffd97e;
+  border-bottom-color: #ffd97e;
   background: #f5d4760d;
 }
 
@@ -801,14 +819,29 @@
 }
 
 .moor-manuscript {
+  position: relative;
   padding: clamp(30px, 5vw, 70px);
   color: #33473f;
   border: 2px solid #cda24e;
-  border-radius: 16px 46px 16px 46px;
+  border-radius: 12px 38px 12px 38px;
   background:
-    linear-gradient(90deg, #80603924, transparent 8% 92%, #80603924),
+    linear-gradient(90deg, #8060392b, transparent 9% 91%, #8060392b),
     #fbefc8;
   box-shadow: 0 30px 70px #061b1866, inset 0 0 70px #9c733425;
+}
+.moor-manuscript::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 22px;
+  width: 2px;
+  pointer-events: none;
+  background: linear-gradient(transparent, #85623845 8% 92%, transparent);
+  box-shadow: 8px 0 18px #6b4d251f;
+}
+.moor-manuscript > * {
+  position: relative;
 }
 
 .moor-manuscript-intro {
@@ -954,14 +987,13 @@
   margin-top: 28px;
   padding: 19px 22px;
   border: 1px solid #6f9c705c;
-  border-left: 5px solid #62996b;
   border-radius: 10px;
-  background: #dce9c1;
+  background: linear-gradient(135deg, #dce9c1, #eef0c9);
+  box-shadow: inset 0 0 22px #5274521c;
 }
 
 .moor-callout.warning {
   border-color: #c27c635c;
-  border-left-color: #bd7259;
   background: #efd6b8;
 }
 
@@ -989,7 +1021,11 @@
 
 .moor-qa-notes {
   color: #344b42;
-  background: #eadbab;
+  border-radius: 26px 8px 26px 8px;
+  background:
+    linear-gradient(90deg, #8765391f, transparent 13% 87%, #8765391f),
+    #eadbab;
+  transform: rotate(.6deg);
 }
 
 .moor-qa-notes > p {
@@ -1031,11 +1067,11 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 8px 12px;
   color: #dfe8ce;
   border: 1px solid #d1b2624d;
-  border-radius: 999px;
+  border-radius: 7px 15px 7px 15px;
   text-decoration: none;
   font-size: 12px;
 }
@@ -1123,8 +1159,17 @@
   .moor-topbar,
   .moor-reader-topbar {
     min-height: 62px;
-    padding-inline: 15px;
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: max(15px, env(safe-area-inset-right));
     font-size: 12px;
+  }
+
+  .moor-topbar a,
+  .moor-reader-topbar a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    touch-action: manipulation;
   }
 
   .moor-reader-topbar > span {
@@ -1161,9 +1206,14 @@
     padding-inline: 12px;
   }
 
+  .moor-reader-layout {
+    background-attachment: scroll;
+    background-position: center top;
+  }
+
   .moor-route-card {
     min-height: auto;
-    padding: 28px 14px;
+    padding: 28px 24px 34px;
   }
 
   .moor-route-heading {
@@ -1191,6 +1241,7 @@
     transform: none;
     border-radius: 14px;
     background: #60865713;
+    touch-action: manipulation;
   }
 
   .moor-chapter-node:hover .moor-rune,
@@ -1225,15 +1276,22 @@
 
   .moor-reader-layout {
     grid-template-columns: 1fr;
-    padding: 22px 12px 50px;
+    width: 100%;
+    min-width: 0;
+    padding: 22px max(12px, env(safe-area-inset-right)) 50px max(12px, env(safe-area-inset-left));
   }
 
   .moor-toc {
     position: static;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     display: flex;
     align-items: center;
     gap: 5px;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
   }
 
   .moor-toc > p,
@@ -1243,17 +1301,30 @@
   }
 
   .moor-toc a {
+    min-height: 44px;
     min-width: max-content;
     border-left: 0;
     border-bottom: 2px solid #d9b45c35;
+    touch-action: manipulation;
   }
 
   .moor-manuscript {
+    width: 100%;
+    min-width: 0;
     padding: 32px 22px;
     border-radius: 10px 28px 10px 28px;
+    background:
+      linear-gradient(90deg, #8060392b, transparent 11% 89%, #8060392b),
+      #fbefc8;
+  }
+
+  .moor-manuscript::before {
+    display: none;
   }
 
   .moor-qa-notes {
+    width: 100%;
+    min-width: 0;
     display: block;
   }
 

@@ -22,7 +22,6 @@ const lore = [
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let frame = 0;
@@ -33,24 +32,26 @@ export default function Home() {
     return () => { window.removeEventListener("scroll", update); cancelAnimationFrame(frame); };
   }, []);
 
-  const jumpTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false);
-  };
-
   return (
-    <main className="rpg-world">
+    <main className="rpg-world" id="top">
       <header className="rpg-nav">
-        <button className="rpg-brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <a className="rpg-brand" href="#top" aria-label="返回頁首">
           <span className="crest">Q</span><span><b>QA STORMING</b><small>Guild Knowledge Archive</small></span>
-        </button>
-        <nav className={menuOpen ? "rpg-links open" : "rpg-links"}>
-          <button onClick={() => jumpTo("onboarding")}>新手村</button>
-          <button onClick={() => jumpTo("regression")}>試煉之森</button>
-          <button onClick={() => jumpTo("knowhow")}>賢者書庫</button>
+        </a>
+        <nav className="rpg-links" aria-label="主要導覽">
+          <a href="#onboarding">新手村</a>
+          <a href="#regression">試煉之森</a>
+          <a href="#knowhow">賢者書庫</a>
         </nav>
         <div className="guild-level"><span>GUILD LV.</span><b>25</b><i><em /></i></div>
-        <button className="rpg-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="切換選單">☰</button>
+        <details className="rpg-mobile-nav">
+          <summary className="rpg-menu" aria-label="切換選單">☰</summary>
+          <nav className="rpg-mobile-menu" aria-label="手機導覽">
+            <a href="#onboarding">新手村</a>
+            <a href="#regression">試煉之森</a>
+            <a href="#knowhow">賢者書庫</a>
+          </nav>
+        </details>
       </header>
 
       <section className="tree-hero">
@@ -65,20 +66,20 @@ export default function Home() {
           <p className="rpg-kicker"><span>✦</span> THE GREAT TREE OF QUALITY <span>✦</span></p>
           <h1>知識之樹，<br /><em>守護每次冒險。</em></h1>
           <p>在世界樹的枝葉之間，探索團隊累積的測試智慧。<br />採下果實，選擇你的任務旅程。</p>
-          <button className="rpg-primary" onClick={() => jumpTo("onboarding")}><span>開始冒險</span><i>➜</i></button>
+          <a className="rpg-primary" href="#onboarding"><span>開始冒險</span><i>➜</i></a>
         </div>
 
         <div className="fruit-nav" aria-label="知識區域導航">
           {fruits.map((fruit) => (
-            <button className={`magic-fruit ${fruit.className}`} key={fruit.id} onClick={() => jumpTo(fruit.id)}>
+            <a className={`magic-fruit ${fruit.className}`} key={fruit.id} href={`#${fruit.id}`}>
               <span className="fruit-orb"><i>{fruit.icon}</i></span>
               <span className="fruit-name"><small>{fruit.subtitle}</small><b>{fruit.title}</b></span>
-            </button>
+            </a>
           ))}
         </div>
 
-        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * -.28}px)` }}><span className="animal-sprite sprite-jelly" role="img" aria-label="史萊姆嚮導" /><i>任務準備好了嗎？</i></div>
-        <button className="rpg-scroll" onClick={() => jumpTo("onboarding")}><i>⌄</i><span>向下探索</span></button>
+        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * .28}px)` }}><span className="animal-sprite sprite-jelly" role="img" aria-label="史萊姆嚮導" /><i>任務準備好了嗎？</i></div>
+        <a className="rpg-scroll" href="#onboarding"><i>⌄</i><span>向下探索</span></a>
       </section>
 
       <section className="quest-zone" id="onboarding">
@@ -93,7 +94,6 @@ export default function Home() {
 
       <section className="trial-forest-zone" id="regression">
         <TrialForestPortal />
-        <div className="trial-dragon" style={{ transform: `translate(${(scrollY - 1100) * -.04}px, ${(scrollY - 1100) * -.05}px)` }}><span className="animal-sprite sprite-lol-dragon" role="img" aria-label="試煉守護巨龍" /></div>
       </section>
 
       <section className="library-zone" id="knowhow">
