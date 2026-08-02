@@ -4,6 +4,94 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-03 — 產品 Hub 全尺寸內容邊界強化
+
+- 新增共用 `product-hub.css`，在不混用產品 DOM namespace 的前提下，統一 Moor／Web 的首屏高度、卡片、徽章、統計與短視窗收斂規則。
+- Hero 卡片明確取消 `overflow:auto`，字級、行高、padding 與間距同時依 `vw`／`svh` 縮放；900px 以下改為堆疊構圖，620px 以下另有短橫式緊湊雙欄。
+- Moor／Web 徽章改由 Hero 可用高度、上下 padding 與保留空間共同限制，並在桌機上移、窄版置於卡片下方，不再被首屏 `overflow:hidden` 裁切。
+- 統計列改為 `repeat(3, minmax(0, 1fr))`，卡片設定可收縮 padding，主文字與說明可依尺寸縮放；`Mobile`、平台說明與最長標籤不再越界。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 通過。Moor／Web 逐一實測 `2048×1125`、`1261×827`、`789×851`、`690×1488`、`390×844`、`1024×600`；12 組皆為卡片與徽章落在 Hero padding box、卡片 `overflowY: visible` 且無 scroll overflow、統計無爆版、頁面無水平溢出。未執行 Git、部署或 Figma 寫入。
+
+## 2026-08-03 — Notion Catalog 產品階層 schema v2
+
+- `docs.ts` 與 `sync-notion.ts` 支援 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`，generated manifest 升為 schema v2。
+- 同步輸出新增 `Review Status=approved` 安全閘門，並驗證 standalone／hub／chapter 欄位組合、產品 hub 唯一與產品章節路由唯一；既有原子替換、圖片本地化與已發布文件移除保護維持不變。
+- fixtures 新增 Moor hub、approved chapter 與 in-review chapter，覆蓋 Select／Rich text Product Key、未審核排除及重複路由；Notion POC database 的五個實際欄位仍待有權限的人員建立。
+- 同步校正 `TASK.md` 中已存在的 `.env.example` 待辦，並更新 Notion 操作指南、架構、決策與 Changelog。未執行 Git、Notion 寫入或部署。
+- **驗證**：Notion fixture tests 10/10、Regression tests 14/14、ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 全數通過；14 個靜態頁面成功輸出。
+
+## 2026-08-03 — 任務書 CTA 響應式單行文字
+
+- `book-cta` 改為禁止換行，字級與箭頭間距會依實際任務書寬度流動縮放；手機另設 10–12px 可讀範圍，避免「開啟地圖」在窄書封上斷成兩行。
+- 箭頭改用相對字級並固定為不可收縮項目，維持文字與方向符號在同一行且比例一致。
+- **驗證**：ESLint、`tsc --noEmit`、圖片體積檢查與 `next build --webpack` 全數通過。未執行 Git 或部署。
+
+## 2026-08-03 — Moor／Web Hub 首屏與命名空間修正
+
+- Web Hub、章節地圖與閱讀器全面改用獨立 `web-*` class；移除 Web 對 `moor.css` 與 `moor-*` DOM 命名的借用。共用章節選擇器重構為 `ProductChapterMap`，由 `classPrefix` 分別輸出 Moor／Web namespace。
+- Moor 與 Web Hub 改為 Topbar＋Hero 合計精準 `100svh`：桌機 72px＋剩餘高度，手機 62px＋剩餘高度；主文案、統計、產品徽章與捲動提示皆限制在首屏內。
+- 手機重新壓縮卡片 padding、字級、統計列與徽章尺寸，保留完整內容且不產生卡片內捲動；Web 仍保有獨立 Browser Coast 色調。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 通過。1440×900 實測兩頁皆為 Topbar `72px`＋Hero `828px`，390×844 皆為 `62px`＋`782px`，下一區起點等於 viewport 高度；手機卡片無內層溢出、頁面無水平溢出。Web DOM 掃描 `moor-*` class 為 0。未執行 Git、部署或 Figma 寫入。
+
+## 2026-08-03 — Three.js 可見暖機閘門與深連結跳過
+
+- `DeferredImmersiveTreeHero` 改為同時觀察 Hero 可見性與 `prefers-reduced-motion`：Hero 持續可見 1.6 秒後才進入 browser idle dynamic import；暖機期間離開視口會取消排程，回到 Hero 才重新開始。
+- 靜態 AVIF、DOM 文案與操作維持立即可用；停留 Hero 時 1.2 秒仍無 canvas，暖機後正常建立。直接開 `#regression` 時 section 精準落在 82px navbar 下、2.6 秒後仍無 canvas，且 Three.js async chunks 未下載。
+- Three.js async chunks 目前合計 `541,323 bytes raw / 136,539 bytes gzip`，貼圖 `rpg-life-tree.webp` 為 `381.2 KB`；本次把增強資源移出初始靜態首屏競爭，並在使用者略過 Hero 時跳過 WebGL 程式碼。
+- 曾實驗以 `content-visibility: auto` 延後遠端場景；雖可少載入書庫 wolf sprite，但直接開 `#knowhow` 會失去正確錨點定位，已完整撤回，不以導覽可靠性換取約 104 KB。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算、Regression 14/14、Notion 8/8、Impeccable detector 0 findings、`next build --webpack` 通過；1280×720 live QA 無水平溢位或 console warning/error。瀏覽器 viewport override 本輪未生效，因此未宣稱新的手機實測；版面 CSS 未修改，暖機邏輯不依賴固定尺寸。未執行 Git 或部署。
+
+## 2026-08-03 — 產品地圖摘要化＋Web 多章 Know-how
+
+- 產品世界地圖收斂為產品摘要與入口：Moor／Web 的 2026 詳細流程不再塞入畫卷，分別由 `/products/moor` 與新建的 `/products/web` 承載。
+- 新增 Web「瀏覽者海岸」Hub、八章冒險路徑與五個已整理閱讀頁：帳號與訪客、直播體驗、商店與快速支付、導覽與探索、Landing 與 SEO；個人檔案與內容、影音與聊天、個人中心與設定維持待審核。
+- 產品畫卷改為固定外框＋內層 `.product-scroll-body` 捲動；`:before`／`:after` 不再進入內容捲動座標系，手機底部保留 50px 內容安全區與 18px 裝飾條。
+- 延續唯讀 Figma 邊界，內容採 2026 綠色 Mockup／Ready for dev 優先、Master 補範圍；未修改任何 Figma 檔案、節點、留言或權限。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 通過；靜態輸出新增 `/products/web` 與五個章節。1440×900／390×844 實看皆無水平溢出；手機 Moor 畫卷捲到底後 CTA 底緣 `793.9px`、底部裝飾條頂緣 `826px`，保留約 32px 間距。未執行 Git、部署或 Figma 寫入。
+
+## 2026-08-03 — 任務書進度／獎勵列移除
+
+- 從 `QuestBookCarousel` 移除 `.book-meta` 的進度與獎勵顯示，書封聚焦於分類、標題、說明與單一 CTA。
+- 清除 `globals.css` 內五組桌機、手機與舊版 `.book-meta` 樣式；`QuestBook` 內容欄位暫時保留，避免純 UI 調整擴大成資料介面遷移。
+- **驗證**：`rg` 確認 `src/` 無 `.book-meta` 殘留；ESLint、`tsc --noEmit`、圖片體積檢查與 `next build --webpack` 全數通過。未執行 Git 或部署。
+
+## 2026-08-03 — 任務書封文字安全區校正
+
+- 依 `rpg-quest-book.png` 原始插畫量測羊皮紙範圍，將桌機與手機 `.book-cover` 內容寬度由約 56–66% 收斂至 44%，並微調中心位置，避免分類、標題與說明壓到左右藤蔓及寶石。
+- `book-meta` 移除安全區內的二次水平縮排，保留進度／獎勵同列可讀；手機長標題降為 14px 並使用較緊行高，讓內容仍落在羊皮紙內。
+- **驗證**：ESLint、`tsc --noEmit`、圖片體積檢查與 `next build --webpack` 全數通過；所有靜態路由成功輸出。未執行 Git 或部署。
+
+## 2026-08-02 — Figma MOOR／Web 2026 產品情報整合
+
+- 以唯讀方式盤點 MOOR Master、SWAG Master 與 12 份 2026／近期專案設計；未修改 Figma 節點、留言、分享設定或檔案內容。
+- 建立來源優先序：綠色 Mockup／Ready for dev 高於 Master File；Master 只補功能範圍，舊版、Sandbox、遺棄版本與仍在討論的留言不視為已上線規格。
+- Moor 直播章新增 2026 首屏、簡化介面、募資互動、排行榜與跨裝置 QA 清單；其餘六章以 MOOR Master 功能樹補強安全摘要，但仍維持待審核封印狀態。
+- 產品世界地圖補強 Moor 與 Web Production 範圍、2026 主要變更、版本判讀及登入／訪客、快速支付、直播、搜尋、FAQ、客服 CTA、活動入口等 QA 注意事項。
+- 內容只保留適合公開知識站的功能範圍與測試觀察；未公開 Figma URL、ticket、人名、帳號、內部留言原文或敏感設定。
+- **驗證**：ESLint、`tsc --noEmit`、Regression 14/14、Notion 8/8、圖片預算與 `next build --webpack` 全數通過；1440×900／390×844 實看產品地圖與 Moor 直播章，body 無水平溢出，手機三欄表格保留在內層橫向捲動。未執行 Git、部署或 Figma 寫入。
+
+## 2026-08-02 — 首屏生命樹 LCP 資源提前發現
+
+- 在 root layout 使用 React 19 `preload()` 將 `rpg-life-tree.avif` 標記為唯一的高優先級首屏圖片；WebP／PNG fallback、Three.js idle 貼圖與所有下方場景維持原載入策略，避免非首屏圖片搶占頻寬。
+- 初版直接寫 `<head>` 會被 React／Next 資源提升機制輸出兩次，已改為 `react-dom` API；production `out/index.html` 最終只有一個 `as="image"`、`type="image/avif"`、`fetchPriority="high"` preload。
+- 冷啟動伺服器請求順序由「HTML → CSS → 多個首頁 JS chunks → 生命樹 AVIF」改善為「HTML → CSS → 生命樹 AVIF → 首頁 JS chunks」，且 AVIF 僅請求一次。瀏覽器控制層未提供可用的 Performance API，因此不宣稱 LCP 毫秒差值。
+- **驗證**：ESLint、`tsc --noEmit`、`check:images`、Regression 14/14、Notion 8/8、Impeccable detector 0 findings、`next build --webpack` 通過；1280×720 與 390×844 live browser QA 均正常顯示 AVIF／Three.js、無水平溢位或 console warning/error。reduced-motion 程式與 CSS 路徑未變。未執行 Git 或部署。
+
+## 2026-08-02 — 圖片資產現代格式管線與建置預算
+
+- 新增 `scripts/optimize-images.mjs` 與 `optimize:images`／`check:images`，以 PNG 母檔重現產生 AVIF、WebP；`prebuild` 會檢查衍生檔存在、均小於母檔，且瀏覽器首選資產總量不超過 PNG 來源的 35%。
+- 首頁、產品地圖、Moor、Regression 與 sprite 背景改用 CSS `image-set()` 的 AVIF／WebP／PNG fallback；Three.js 與試煉領域動態圖片使用 WebP，社群 metadata 仍保留 PNG 相容圖。
+- 7 組 RPG 場景與 4 張 sprite 的瀏覽器首選 payload 由 `22,623.9 KB` 降為 `2,201.5 KB`（`9.7%`）；PNG 母檔仍保留於 `public/`，未改動 Regression、Notion 同步、Firebase Hosting 或純靜態輸出。
+- **驗證**：`check:images`、ESLint、`tsc --noEmit`、Regression 14/14、Notion 8/8、`next build --webpack` 全數通過；1440×900 與 390×844 live browser QA 無水平溢位或 console 警告，手機 idle 後 Three.js canvas 正常建立，HTTP 紀錄確認場景實際請求 AVIF、sprite 請求 WebP。`npm run test:*` 在 sandbox 因 `tsx` IPC socket 權限失敗，改用等價的 `node --import tsx --test` 驗證。未執行 Git 或部署。
+
+## 2026-08-02 — Three.js 首頁效能基準與延後載入
+
+- 量測 production 靜態輸出：優化前首頁 HTML 直接引用含 Three.js 的 `562,776 bytes` chunk；改以 `DeferredImmersiveTreeHero` 在瀏覽器 idle 後動態載入，reduced-motion 使用者不再下載或初始化 WebGL。
+- 優化後 Three.js 相關程式碼留在 async chunks（共 `541,297 bytes raw / 135,955 bytes gzip`），不再出現在 `out/index.html` 初始 script 清單；webpack build 的首頁初始 scripts 為 `692,364 bytes raw / 209,561 bytes gzip`。
+- `ImmersiveTreeHero` 改用 `renderer.setAnimationLoop`，離開 viewport 或分頁隱藏時真正停止迴圈，回到畫面再恢復；補上動態貼圖在 unmount 後完成時的 dispose 保護。
+- `ui-ux-pro-max` Three.js／Next.js 檢索結果支持 DPR cap、hidden-tab pause、dispose 與 dynamic import；Impeccable optimize 以先量測再修正為準，detector 0 findings。
+- **驗證**：ESLint、`tsc --noEmit`、`next build --webpack` 通過；1440×900、390×844 live browser QA 均成功建立 canvas、無水平溢位、原生錨點完整且 console 0 warning/error。瀏覽器控制層未提供可靠 rAF probe，因此未宣稱實測 FPS。未執行 Git 或部署。
+
 ## 2026-08-02 — Three.js 生命樹 Hero 實作與跨尺寸驗收
 
 - 新增 `three`、`@types/three` 與 `ImmersiveTreeHero`：沿用 `rpg-life-tree.png` 建立 WebGL 全景 shader、樹心柔光、三層空間光塵及游標／捲動差速，語意化文案、導航與 CTA 仍維持 DOM。

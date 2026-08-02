@@ -67,7 +67,7 @@ JSX：狀態、資料、鍵盤、拖曳與可及性
   <img src="./public/rpg-quest-book.png" alt="魔法任務書" width="24%">
 </p>
 
-新增場景圖片時，桌機優先沿用 `1672 × 941`、約 `16:9` 的橫幅比例；若核心物件無法在手機裁切中完整保留，需另製直式 art-directed sibling asset，不得用過度放大或拉伸勉強共用。圖片需先壓縮，在不明顯破壞插畫筆觸的前提下降低檔案大小。
+新增場景圖片時，桌機優先沿用 `1672 × 941`、約 `16:9` 的橫幅比例；若核心物件無法在手機裁切中完整保留，需另製直式 art-directed sibling asset，不得用過度放大或拉伸勉強共用。PNG 保留為可編輯母檔，完成後執行 `npm run optimize:images` 產生 AVIF／WebP；CSS 場景以 `image-set()` 保留 PNG fallback。在不明顯破壞插畫筆觸、透明邊緣與 sprite 格線的前提下降低檔案大小，並通過 `npm run check:images` 的體積預算。只有首次視口的 LCP 圖片可設為高優先級 preload；首屏以下場景與裝飾角色維持一般或延後載入，避免爭搶關鍵頻寬。
 
 ## 4. 色彩系統
 
@@ -153,6 +153,9 @@ SEALED QUEST
 ### 新手村任務書
 
 - 書本風格沿用 `rpg-quest-book.png`，不重新設計封面語言。
+- 書封 HTML 文字安全區以原圖羊皮紙為準，約為封面水平 `29%–73%`；分類、標題與說明不可延伸到左右藤蔓，CTA 可獨立落在下方裝飾區。
+- 書封不顯示進度／獎勵列；資訊層級固定為分類、標題、簡短說明與單一 CTA，避免與主要入口競爭。
+- 書封 CTA 文案固定單行；字級與箭頭間距應隨書本寬度縮放，不得以換行容納窄尺寸。
 - 桌機區段以 `100dvh - navbar` 作為一個完整場景；標題、五本可見書位、方向控制與目前位置必須同時落在可視範圍內。應依 viewport 高度流動縮放書本與間距，不得用裁切隱藏溢出內容。
 - 任務書以偽 3D 圓形軌道呈現；一次只移動一格並可無限循環。
 - 中央書本最大、最亮且正面朝向使用者。
@@ -194,6 +197,11 @@ SEALED QUEST
 ### 產品 Know-how Hub 與閱讀器
 
 - `/products/<product>` 是從世界地圖深入產品的冒險 Hub；可使用場景圖、符文路徑、狀態光效與章節預覽，但不得把長篇正文塞進世界地圖卷軸。
+- 產品 Hub 的 Topbar 與 Hero 合計必須精準佔滿 `100svh`；下一段章節地圖從下一個 viewport 才開始。桌機與手機都要把主文案、統計、產品徽章與捲動提示約束在首屏內，不以固定內容高度把元素推到下一屏。
+- 每個產品擁有獨立 CSS namespace：Moor 使用 `moor-*`、Web 使用 `web-*`。共用 React 元件可接受產品前綴，但輸出的 class／id 不得混用另一產品名稱。
+- Hero 文案卡不可用內層 scrollbar 掩蓋高度問題；卡片與產品徽章的完整 bounding box 必須落在 Hero 的上下 padding box 內。徽章尺寸需同時受 viewport 高度與可用內容高度限制，不能只依 `vw` 放大後被 `overflow: hidden` 裁切。
+- Hero 統計固定使用可收縮的三欄格線（`minmax(0, 1fr)`）；卡片 padding、主數字與說明文字需依寬高縮放，`Mobile`／`Desktop` 等最長標籤不得越界。
+- 每次調整產品 Hub，至少驗證 `2048×1125`、`1261×827`、`789×851`、`690×1488`、`390×844` 與短橫式 `1024×600`。逐尺寸檢查：卡片／徽章在 padding 內、卡片無內層 overflow、統計無爆版、下一區從 100svh 後開始、頁面無水平溢出。
 - 已審核章節可進入閱讀；未完成章節必須標示「待審核／封印中」且不可假裝已有正文。
 - `/products/<product>/<chapter>` 閱讀頁使用羊皮紙高對比正文、sticky 章節路標與 QA 札記；動畫退居導覽與狀態層，不干擾搜尋、複製與連續閱讀。
 - 產品 Hub 桌機可使用彎曲路徑；手機改為清楚的雙欄或單欄章節格，不把桌機地圖等比例縮小。
@@ -213,7 +221,7 @@ SEALED QUEST
 - `ui-ux-pro-max`、Impeccable 等 skill 是開發與審核工具，不是前台視覺技術，也不得取代本檔的設計規範。
 - 預設以插畫圖片＋語意化 HTML／CSS 實作場景、文件、按鈕與導覽；重要文字和操作不得畫進 canvas。
 - Three.js 僅用於少數確實需要即時景深、粒子或鏡頭感的裝飾層，並沿用圖片作 fallback。WebGL 不可用時，網站仍須完整可讀、可操作。
-- 每個 WebGL 場景需限制 device pixel ratio、離開 viewport 時暫停、卸載時釋放 GPU 資源，並在 `prefers-reduced-motion` 下停用或直接降級。
+- 每個 WebGL 場景需限制 device pixel ratio、離開 viewport 時暫停、卸載時釋放 GPU 資源，並在 `prefers-reduced-motion` 下停用或直接降級。Hero 增強需先讓靜態場景穩定顯示，持續可見 1.6 秒後才進入 idle 載入；暖機前離開 Hero 或直接進入下方 hash 時不下載 WebGL 增強。
 - 不因單一特效新增 React Three Fiber、Drei、GSAP 等 runtime 套件；只有當現有原生 Three.js 的場景狀態與鏡頭編排已難以維護，且量測證明效益大於 bundle／維運成本時才另行評估。
 
 ### 動畫語言

@@ -17,17 +17,22 @@
 - **ui-ux-pro-max 安裝位置**:全域 skill 位於 `~/.agents/skills/ui-ux-pro-max`，Claude Code 經 `~/.claude/skills/ui-ux-pro-max` symlink 共用；新 UI 任務先依其 workflow 產生建議，再以 `DESIGN.md` 做衝突裁決。
 - **Impeccable 安裝位置**:project-scoped skill 位於 `.agents/skills/impeccable/`；`.codex/hooks.json` 會在 UI 編輯後執行檢查。這些是開發工具，不是 `package.json` runtime dependency，也不會傳給網站訪客。
 - **沉浸式技術邊界**:WebGL 是瀏覽器繪圖 API，Three.js 是目前採用的抽象層。場景插畫、文件、CTA 與導覽維持圖片＋語意化 DOM；Three.js 只作少數漸進式視覺增強，不用 raw WebGL 重寫，也不在沒有量測需求前加入 R3F／Drei／GSAP。
+- **Three.js 載入／迴圈**：用 `DeferredImmersiveTreeHero` 在 Hero 持續可見 1.6 秒後再進入 idle dynamic import；暖機前離屏或直接進入下方 hash 不下載，reduced-motion 也不下載場景。renderer 使用 `setAnimationLoop`，viewport 離屏或 `document.hidden` 時傳入 `null`，不可只在持續排程的 RAF 內 early return。
+- **圖片母檔與衍生檔**：`public/*.png` 是可編輯母檔；AVIF／WebP 由 `npm run optimize:images` 重現產生，不手改衍生檔。CSS 場景使用 `image-set()`，Three.js 等 JS 貼圖使用 WebP；`prebuild` 的 `check:images` 會檢查缺檔、是否確實縮小與 35% 首選 payload 預算。
+- **圖片 preload**：只 preload 首次視口真正的 LCP 候選，目前是 `rpg-life-tree.avif`。在 Next／React 19 使用 `react-dom` 的 `preload()`；直接在 root layout 手寫 `<head><link rel="preload">` 會因資源提升產生重複提示。每次 build 後確認 `out/index.html` 僅一筆且實際請求不重複。
 - **響應式場景資產**:核心場景若包含必須完整保留的門框、平台或角色舞台，手機版應使用獨立直式 art direction 圖，不以桌機 16:9 圖過度放大裁切；desktop／mobile 門洞或熱點座標需分開校準。
 - **固定導覽錨點**:首頁區段跳轉需依 `.rpg-nav` 實際高度扣除，並以 `scroll-margin-top` 作直接 hash navigation fallback。
 - **一屏場景尺寸**:`quest-zone`、`trial-forest-zone` 等沉浸式主要場景以 `100dvh - navbar` 計算可視高度；內容必須依高度流動縮放，禁止只靠 `overflow: hidden` 裁掉標題、控制器或資訊面板。手機重要 HUD 留在場景內時，優先精簡次要提示並保留 44px 操作區。
 - **核心操作 fallback**：固定導覽、手機選單、區段入口與文件詳細內容必須有原生 anchor／`details` 路徑；不要只提供 React `onClick`。進場動畫的 CSS 初始狀態預設可見，僅在增強狀態 class 出現後播放隱藏→顯示過場。
 - **行動版 grid 溢出**：`grid-template-columns: 1fr` 不代表子項一定能縮小；文件閱讀器、橫向目錄與長文容器需在 grid item 設 `min-width: 0`，橫向捲動只留在明確的內層 scroll container。
+- **`content-visibility` 與 hash**：不要直接套在首頁 `#onboarding`／`#regression`／`#knowhow` section。2026-08-03 實測 `content-visibility: auto` 會讓冷啟動 `#knowhow` 錨點落錯位置；若要延後場景，優先延後純裝飾資源或 client 增強，不改變 hash target 的 layout relevance。
 
 ## 地雷
 
 - **純靜態**:`output: "export"`——無 server / API route / DB。加後端要先改部署模型。
 - **`public/` 必須在 repo root**(Next 要求),不可移進 `src/`。
 - **Sprite sheet 必須等距格**:原始素材各格常非等距且內容溢出格線,直接用固定 stride 的 CSS `steps()` 會裁切到鄰格。**使用前先用 PIL 重排**:抓每格內容 bbox → 置中進等距方格(留白 ≥ 數十 px)→ 驗證接縫無內容。橫向片 用 `background-size: auto var(--sprite-size)` + `*Cycle` 走 X;直向片(如 jelly/dragon)用共享 `animalCycle` 走 Y。
+- **圖片更新順序**：先完成場景／sprite PNG 母檔與等距格檢查，再執行 `npm run optimize:images`。不可只替換 PNG 而留下舊 AVIF／WebP，否則瀏覽器仍會顯示舊衍生檔，且 build 只會驗體積、無法判斷畫面內容是否同步。
 - **部署一步到位**:`npm run deploy` 已含 `next build`,別再手動 `build && deploy`(會 build 兩次)。首次需 `firebase login` 且有 `qa-storming` 專案權限。
 - **靜態輸出預覽**:`next start` 不適用 `output: "export"`;build 後用 Firebase Hosting Emulator 或一般靜態伺服器開 `out/`。
 - **Secrets**:放 gitignored `.env.local`,由 `process.loadEnvFile` 載入;Google 用唯讀 service-account JSON(`GOOGLE_APPLICATION_CREDENTIALS` 指向路徑),不用 inline key。私有 Sheet 需分享給 service account 的 `client_email`。

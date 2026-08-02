@@ -4,6 +4,36 @@
 
 ---
 
+## D18 — Notion 產品文件使用 manifest v2 與獨立審核閘門 · 2026-08-03
+- **決策**：Website Docs Catalog 增加 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`；manifest 升為 schema v2。同步輸出除了 `Status=published`、Publish Mode 非 hidden，還必須是 `Review Status=approved`。同步器驗證 standalone／hub／chapter 欄位組合與產品路由唯一性。
+- **原因**：一般文件 slug 無法可靠表達 `/products/<product>/<chapter>` 階層，而 `Status=published` 也不能取代內容是否適合放進公開靜態站的安全審核。若兩者混用，仍在產品流程審核中的文件可能意外進入 Firebase 靜態產物。
+- **取捨**：Notion Catalog 需新增五個欄位並為既有資料補預設值，舊 manifest 也需升版；換取清楚的產品路由映射、可測試的發布條件與未核准內容不輸出的硬性保護。正式 Notion database 修改仍由有權限的人員完成，不改變本機手動同步與純靜態架構。
+
+## D17 — Three.js 增強需先通過 Hero 可見暖機，不只依賴 browser idle · 2026-08-03
+- **決策**：`DeferredImmersiveTreeHero` 只有在 Hero 持續可見 1.6 秒且使用者未啟用 reduced-motion 時，才排入 idle dynamic import；暖機完成前離開 Hero 會取消，直接進入下方 hash 不下載 Three.js。啟用後仍由場景本身負責離屏／分頁隱藏的 render-loop pause。
+- **原因**：`requestIdleCallback` 在快速裝置可能於 hydration 後立即執行，仍會讓約 136.5 KB gzip 的 async chunks 與 381.2 KB 貼圖加入首屏網路競爭。靜態 AVIF 已完整承擔首屏內容，WebGL 是可稍後出現的視覺增強。
+- **取捨**：Three.js 淡入會比原先晚約 1.6 秒，但首屏不會空白或失去操作；快速略過 Hero 的使用者不支付 WebGL 程式碼成本。若未來要調整暖機時間，需同時量測首屏網路、canvas 出現節奏、深連結與 reduced-motion。
+
+## D16 — 產品地圖只承載摘要，長篇 Know-how 進產品 Hub · 2026-08-03
+- **決策**：`/product-map` 只呈現技術類型、環境、核心說明、短 QA 提示與產品頁入口；Moor／Web 的完整 2026 流程與 QA 章節分別放在 `/products/moor`、`/products/web` 及其靜態子頁。畫卷外框固定，只有內層內容區可捲動。
+- **原因**：世界地圖的工作是快速建立產品全貌與導覽，不適合承載長篇規格。詳細內容塞入畫卷會讓 CTA 與底部裝飾條交疊，也讓 Web 無法像 Moor 一樣形成可查找、可分享的章節路徑。
+- **取捨**：增加 Web Hub 與章節路由、需要維護產品摘要及章節內容兩層資料；換取地圖閱讀負擔降低、固定安全邊界、獨立 URL 與更清楚的產品知識架構。仍維持純靜態輸出，未新增 runtime 服務。
+
+## D15 — Figma 只作唯讀人工策展來源，2026 正式 Mockup 優先 · 2026-08-02
+- **決策**：MOOR／SWAG Master Design File 用來確認產品功能範圍；同功能若有 2026 專案檔，採綠色 Mockup 或 Ready for dev 頁作目前規格。較舊 Mockup、Wireframe、Sandbox、遺棄版本、未決留言與 Enhancement 不直接發布。Figma 內容只經人工安全整理後寫入本機型別資料，不建立 runtime 連線，也不回寫 Figma。
+- **原因**：Master File 適合建立全貌，但專案檔包含較新的登入、訪客、支付、直播與導覽決策。網站是無權限控管的公開靜態站，不能把內部 URL、ticket、人名、討論、帳號或敏感設定原樣輸出。
+- **取捨**：可把最新設計意圖轉成可讀的產品範圍與 QA 重點，同時維持純靜態與唯讀安全邊界；代價是內容更新需重新人工盤點與審核，且不能把討論中項目宣稱為已上線功能。
+
+## D14 — 只提前載入首屏生命樹 AVIF，不提升其他場景優先級 · 2026-08-02
+- **決策**：root layout 以 React 19 `preload()` 對 `/rpg-life-tree.avif` 發出單一 `as=image`、高優先級提示；不 preload WebP fallback、Three.js 貼圖、sprite 或首屏以下場景。
+- **原因**：生命樹是 CSS `image-set()` 背景，原本須等 CSS 解析後才會被發現，且佔據完整首屏，是明確 LCP 圖片候選。其他資產不是首次視口的主要內容，提前載入反而會與關鍵 CSS、圖片及 JavaScript 競爭頻寬。
+- **取捨**：不支援 AVIF 的瀏覽器仍要在 CSS 解析後才發現 WebP／PNG，但主流支援瀏覽器可更早取得最小的 AVIF。React API 比手寫 `<head>` 更能避免 Next／React 資源提升造成重複 preload；實際 LCP 數值仍應在可用 Lighthouse／RUM 的環境持續量測。
+
+## D13 — 場景圖片採 PNG 母檔＋可重現 AVIF／WebP 衍生檔 · 2026-08-02
+- **決策**：保留 `public/` 的 PNG 作可編輯母檔，以 `scripts/optimize-images.mjs` 固定參數產生 AVIF／WebP。CSS 背景透過 `image-set()` 依 AVIF、WebP、PNG 順序 fallback，Three.js 與動態 `<img>` 使用 WebP；`prebuild` 僅驗證衍生檔與 35% 體積預算，不在每次建置重新編碼。
+- **原因**：核心場景與 sprite 原始 PNG 合計超過 22 MB，直接下載會顯著拖慢首次進場；同時仍需保留高相容母檔、透明通道與可重現的資產流程。把轉檔與 build 分離，可避免每次部署耗時編碼，也能讓產物變更明確可檢查。
+- **取捨**：Firebase 靜態輸出會同時包含母檔與衍生檔，儲存體積增加，但支援瀏覽器的實際網路 payload 降至原 PNG 的 9.7%。修改母檔後必須主動執行 `npm run optimize:images`；build guard 能抓缺檔與體積退化，但視覺內容同步仍需人工 QA。
+
 ## D12 — 核心導覽與文件閱讀採 progressive enhancement · 2026-08-02
 - **決策**：首頁區段導覽、手機選單、試煉入口與 Regression 案例閱讀必須先有可用的原生 HTML link／`details`；React state、拖曳、篩選與場景轉場只作增強。CSS 動畫的初始狀態不得在 JavaScript 未啟動時隱藏主要內容。
 - **原因**：手機透過區網預覽開發站時，script 載入、hydration 或 WebGL 初始化可能較桌機慢或失敗。若所有控制都只存在 `onClick`，會同時造成選單、錨點、Carousel、試煉方向與案例詳細內容失效。

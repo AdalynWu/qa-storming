@@ -6,6 +6,8 @@
 ## [Unreleased]
 
 ### Added
+- Web 2026 Know-how：`/products/web` 瀏覽者海岸 Hub、八章狀態導覽，以及帳號、直播、支付、探索、Landing／SEO 五個靜態閱讀頁。(2026-08-03)
+- 圖片資產管線：`optimize:images` 由 PNG 母檔產生 AVIF／WebP，`check:images` 與 `prebuild` 驗證缺檔、壓縮成效及 35% 首選 payload 預算。(2026-08-02)
 - Three.js 生命樹 Hero：全景 shader、樹心柔光、三層空間光塵、游標／捲動差速，以及 WebGL／reduced-motion 漸進式 fallback。(2026-08-02)
 - 試煉之森新增桌機／手機透明門洞前景資產 `rpg-trial-portal-alpha.png` 與 `rpg-trial-portal-mobile-alpha.png`，讓領域景色自然位於石門後方。(2026-08-02)
 - 試煉之森新增 941×1672 手機直式場景 `rpg-trial-portal-mobile.png`，提供獨立的傳送門與石台 art direction。(2026-08-02)
@@ -19,6 +21,18 @@
 - 產品世界地圖 `/product-map`、quest book 輪播、`sprite-jelly` 史萊姆嚮導。
 
 ### Changed
+- Moor／Web 產品 Hub 新增共用 viewport 邊界契約：Hero 卡片取消內層 scrollbar，徽章受 padding 可用高度限制，統計改為可收縮三欄並針對短橫式、平板及手機縮放。(2026-08-03)
+- Notion 文件 manifest 升為 schema v2，支援產品 hub／chapter 階層欄位；同步器新增 `approved` 發布閘門、欄位組合與產品路由唯一驗證，未審核文件不會進入靜態輸出。(2026-08-03)
+- 任務書 CTA 改為依書本寬度縮放字級與箭頭間距，並強制文案維持單行，避免窄尺寸下斷行。(2026-08-03)
+- Web Hub／閱讀器改用獨立 `web-*` CSS namespace；Moor 與 Web Hub 的 Topbar＋Hero 合計固定為 `100svh`，桌機及手機的文案、統計、徽章與提示完整收在首屏內。(2026-08-03)
+- Three.js Hero 加入 1.6 秒持續可見暖機閘門；暖機前離屏或直接進入下方 hash 會取消 async import，靜態 AVIF／DOM 首屏維持立即可用。(2026-08-03)
+- 產品世界地圖的 Moor／Web 畫卷收斂為摘要與產品 Hub 入口；畫卷改為固定裝飾外框＋內層內容捲動，避免 CTA 穿越 `.product-scroll:after`。(2026-08-03)
+- 任務書移除進度／獎勵 `book-meta` 列，讓書封只保留任務說明與主要 CTA，並清除所有失效樣式。(2026-08-03)
+- 任務書封面的分類、標題、說明、進度與獎勵改依插畫羊皮紙的實際 44% 安全寬度排列；手機長標題同步縮排與調整行高。(2026-08-03)
+- Moor 直播章與產品世界地圖整合 MOOR／SWAG Master 及 2026 正式 Figma Mockup：補齊產品範圍、來源優先序與登入／訪客、快速支付、直播、搜尋、FAQ、客服 CTA、活動入口等 QA 重點；不公開內部連結、ticket、留言或敏感設定。(2026-08-02)
+- 首屏生命樹 AVIF 改由 React 19 資源提示提前載入；production HTML 僅輸出一筆高優先級 preload，冷啟動請求移到首頁 JavaScript 前。(2026-08-02)
+- RPG 場景背景與 sprite 改用 AVIF／WebP／PNG fallback，Three.js／動態領域圖使用 WebP；首選圖片 payload 由 22,623.9 KB 降至 2,201.5 KB。(2026-08-02)
+- Three.js Hero 改為 idle dynamic import，從首頁初始 scripts 移除 WebGL runtime；離屏／隱藏分頁會停止 animation loop，並補強非同步貼圖卸載清理。(2026-08-02)
 - 手機產品地圖將返回／全圖操作移入獨立 header 操作列；新手村縮短上緣、縮小偽 3D 任務書並增加箭頭間距，手機漢堡點選區段後自動收合。(2026-08-02)
 - 首頁與 Regression 文件介面加入 progressive enhancement：手機導覽／果實／CTA 使用原生 link，案例具無 hydration 也能展開的原生典藏；任務書預設可見並縮小桌機尺寸，試煉方向鍵提供 URL fallback，Moor live 修正手機橫向溢出與標題內距。(2026-08-02)
 - 首頁主要場景完成 viewport composition：桌機新手村任務書與試煉之森皆在扣除 navbar 後的一屏內完整呈現；手機試煉改為場景內緊湊 HUD、巨龍回到石台，賢者書庫統一標題與垂直間距。(2026-08-02)

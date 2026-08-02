@@ -11,8 +11,10 @@
 - ✅ **Critter 動畫** — jelly / wolf / bat / lol-dragon 雪碧圖(皆重排成等距格避免裁切)。
 - ✅ **目錄重構 + 文件治理系統** — 原始碼進 `src/`;新增 AGENTS/CHANGELOG/PLAN/PROGRESS/DECISION/TASK/MEMORY/ARCHITECTURE/DESIGN。(2026-07-19)
 - ✅ **Moor Know-how POC** — `/products/moor` 產品 Hub＋「快速入門／直播功能」章節閱讀器，產品地圖與賢者書庫雙入口。(2026-08-01)
+- ✅ **Web 2026 Know-how** — `/products/web` 產品 Hub＋五個已整理章節、三個待審核節點；產品地圖收斂為摘要入口。(2026-08-03)
 - ✅ **次要場景視覺升級** — `quest-zone` 林間任務舞台、`moor-journey` 世界地圖路徑與 `moor-reader-layout` 實體典籍材質；完成 375px／768px／1440px live visual QA 與觸控收尾。(2026-08-02)
 - ✅ **Three.js 生命樹 Hero** — 以原生 Three.js 建立全景 shader、空間光塵與鏡頭差速，保留圖片／DOM fallback、reduced-motion 與純靜態輸出。(2026-08-02)
+- ✅ **圖片效能管線** — PNG 母檔可重現產生 AVIF／WebP，場景與 sprite 使用現代格式 fallback，prebuild 以體積預算防止回退。(2026-08-02)
 
 ## 進行中 / 待決(見 `docs/TASK.md` 優先級)
 

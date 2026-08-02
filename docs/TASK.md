@@ -4,13 +4,11 @@
 
 ## 待辦
 
-- 🟡 **建立 UI 效能基準** — 視覺升級前後比較 production bundle、桌機／手機流暢度與 reduced-motion fallback；若現有原生 Three.js 足夠，不新增 React Three Fiber、Drei 或 GSAP。
 - 🔴 **完成 Notion Internal Connection 實機驗證** — 程式與私人 POC 已完成;待 Workspace Owner 建立/確認唯讀 `QA Storming Docs Reader`、將 Sync Lab 分享給它、填入 `NOTION_TOKEN`,再跑 preview 並手動加入一張安全測試圖片。
-- 🟡 **擴充 Website Docs Catalog 產品階層欄位** — 在 `QA Storming Sync Lab` 內的 Catalog 新增 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`，並同步更新 schema、同步器與 fixtures。
-- 🟡 **完成 Moor 剩餘六章與 Catalog 映射** — Creator Hub、貼文、聊天、我的頁面、數據分析、其他功能目前只顯示待審核；需補產品 key／章節 slug 映射並逐章安全整理。
+- 🟡 **在 Website Docs Catalog 實際新增產品階層欄位** — 程式端 schema v2、同步器與 fixtures 已完成；待有 Notion 編輯權限的人員在 `QA Storming Sync Lab` Catalog 新增 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`，並為既有項目補預設值。
+- 🟡 **完成 Moor 剩餘六章全文與 Catalog 映射** — 已用 MOOR Master 補齊 Creator Hub、貼文、聊天、我的頁面、數據分析、其他功能的安全摘要；仍需補產品 key／章節 slug 映射並逐章完成可公開全文審核。
 - 🔴 **接上正式 Regression Google Sheet** — 目前為內建 sample baseline;需設定 `.env.local`(`REGRESSION_SHEET_ID`、`GOOGLE_APPLICATION_CREDENTIALS`)並以 `--replace-sample-baseline` 首次替換。
 - 🟡 **自動部署(CI)** — 評估 GitHub Actions(排程 cron + 手動觸發),讓內容/Sheet 更新自動 build+deploy。牽涉導入 Firebase 部署憑證。
-- 🟡 **`.env.example` 範本** — 目前只有 gitignored 的 `.env.local`;補一份範本說明必要環境變數。
 - 🟢 **robots noindex** — `layout.tsx` 目前 `noindex`;正式對外收錄前記得改。
 - 🟢 **清理未使用便利 helper** — `getCasesForSuite`(`regression.ts`)目前無人使用;確定不需要再移除(非必要)。
 
@@ -20,6 +18,19 @@
 
 ## 已完成
 
+- ✅ Moor／Web Hero 卡片、徽章與統計的六尺寸 padding／overflow 邊界驗證(2026-08-03)
+- ✅ Notion Catalog 產品階層程式支援：manifest schema v2、approved 發布閘門、欄位組合／路由唯一驗證與 fixtures（2026-08-03）
+- ✅ `.env.example` 已提供 Regression 與唯讀 Notion 所需環境變數範本（確認於 2026-08-03）
+- ✅ 任務書 CTA 單行 RWD 字級與箭頭間距修正(2026-08-03)
+- ✅ Web 獨立 `web-*` namespace、Moor／Web Hub 首屏精準 100svh 與手機內容收口(2026-08-03)
+- ✅ Three.js 可見暖機：Hero 持續可見後才 idle 載入、離開／深連結時跳過 WebGL async chunks(2026-08-03)
+- ✅ 產品地圖摘要化、Moor 詳細內容歸位、Web Hub＋五個 2026 子頁與畫卷底框安全區修正(2026-08-03)
+- ✅ 任務書移除進度／獎勵列與失效 CSS(2026-08-03)
+- ✅ 任務書桌機／手機文字安全區與進度列對齊修正(2026-08-03)
+- ✅ 唯讀盤點 MOOR／SWAG Master 與 Web 2026 專案，依綠色 Mockup／Ready for dev 優先規則整合產品範圍與 QA 重點(2026-08-02)
+- ✅ 首屏 LCP 資源優先級：生命樹 AVIF 單一 preload、冷啟動請求提前與重複下載驗證(2026-08-02)
+- ✅ 圖片效能管線：PNG 母檔產生 AVIF／WebP、CSS fallback、prebuild 體積預算與跨尺寸實機驗證(2026-08-02)
+- ✅ UI 效能基準：Three.js idle dynamic import、離屏／隱藏分頁停止 render loop、bundle 與 fallback 驗證(2026-08-02)
 - ✅ Three.js 生命樹 Hero：全景 shader、空間光塵、游標／捲動差速與漸進式 fallback(2026-08-02)
 - ✅ 手機地圖 header／任務書間距、漢堡自動收合與透明門洞傳送門資產(2026-08-02)
 - ✅ 手機核心操作漸進式增強、任務書 fallback／尺寸、Regression 原生案例典藏與 Moor live 橫向溢出修正(2026-08-02)

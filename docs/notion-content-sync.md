@@ -110,7 +110,7 @@ Catalog 只管理網站同步設定，不取代或搬動原始文件。
 | `Owner` | Person | 否 | 文件負責人 |
 | `Last edited time` | Last edited time | 自動 | Catalog 項目的最後修改時間 |
 
-### 產品 Know-how 階層擴充（待實作）
+### 產品 Know-how 階層擴充
 
 為支援 `/products/moor/<chapter>` 與未來其他產品文件，預計在同一個 `Website Docs Catalog` database 增加：
 
@@ -122,7 +122,14 @@ Catalog 只管理網站同步設定，不取代或搬動原始文件。
 | `Review Status` | Select | 是 | `draft`、`in-review`、`approved` |
 | `Parent Slug` | Rich text | 否 | 未來子章節或群組的父層識別 |
 
-新增欄位後必須同步更新 `src/content/docs.ts`、`scripts/sync-notion.ts` 與 fixtures；在程式支援完成前，不應先把正式 Moor 項目標記成可發布。
+程式端已由 manifest schema v2、同步器與 fixtures 支援這些欄位；Notion POC database 仍須由有權限的人員實際新增欄位後才能進行 preview。
+
+欄位組合規則：
+
+- `standalone`：不設定 `Product Key`、`Chapter Slug`、`Parent Slug`。
+- `hub`：必須設定 `Product Key`，不設定章節階層欄位；同一產品只能有一個 hub。
+- `chapter`：必須設定 `Product Key` 與 `Chapter Slug`；同一產品內章節 slug 必須唯一，`Parent Slug` 不可等於自身章節 slug。
+- `Product Key`、`Chapter Slug`、`Parent Slug` 與一般 `Slug` 都使用小寫 kebab-case。
 
 ### Category 初始選項
 
@@ -143,18 +150,21 @@ process
 ```text
 Status = draft
 Publish Mode = hidden
+Document Type = standalone
+Review Status = draft
 ```
 
 這能避免新項目在尚未審核時被同步到網站。
 
 ### 同步判斷
 
-| Status | Publish Mode | 結果 |
-| --- | --- | --- |
-| 非 `published` | 任意 | 不輸出 |
-| `published` | `hidden` | 不輸出 |
-| `published` | `link-only` | 輸出標題、摘要、分類、排序與 Notion 連結 |
-| `published` | `full` | 下載來源頁全文、圖片並生成 Markdown |
+| Status | Publish Mode | Review Status | 結果 |
+| --- | --- | --- | --- |
+| 非 `published` | 任意 | 任意 | 不輸出 |
+| `published` | `hidden` | 任意 | 不輸出 |
+| `published` | `link-only`／`full` | 非 `approved` | 不輸出 |
+| `published` | `link-only` | `approved` | 輸出核准 metadata 與 Notion 連結 |
+| `published` | `full` | `approved` | 下載來源頁全文、圖片並生成 Markdown |
 
 沒有加入 Catalog 的 Notion 文件一律不會被同步。
 
@@ -183,6 +193,9 @@ src/content/generated/docs/
 - order
 - summary
 - publish mode
+- document type
+- review status（輸出時固定為 `approved`）
+- product key／chapter slug／parent slug（依文件類型）
 - source URL
 - owner（若有）
 - Notion last edited time
@@ -258,8 +271,8 @@ scripts/sync-notion.ts
 1. 載入 `.env.local`。
 2. 使用官方 `@notionhq/client` 查詢 Catalog。
 3. 驗證 Catalog schema 與每筆欄位。
-4. 過濾非 `published` 或 `hidden` 項目。
-5. 驗證 slug 唯一、分類合法且來源 URL 有效。
+4. 過濾非 `published`、`hidden` 或未 `approved` 項目。
+5. 驗證文件 slug、產品 hub 與產品章節路由唯一，並檢查階層欄位組合、分類及來源 URL。
 6. `link-only` 只生成 metadata。
 7. `full` 使用 Notion Markdown API 取得全文。
 8. 下載圖片並重寫 Markdown 連結。
@@ -275,7 +288,8 @@ scripts/sync-notion.ts
 - Notion API 或網路失敗
 - Catalog 欄位缺失
 - slug 重複或格式錯誤
-- Category、Status 或 Publish Mode 不在允許值
+- Category、Status、Publish Mode、Document Type 或 Review Status 不在允許值
+- 產品階層欄位組合錯誤，或 hub／章節路由重複
 - `full` 文件未分享給 integration
 - Notion 回傳截斷或無法存取的區塊
 - 圖片下載失敗
@@ -356,13 +370,15 @@ scripts/sync-notion.ts
 
 1. ✅ 在 Private 區域建立 `QA Storming Sync Lab`、Catalog 與四種 POC。
 2. ✅ 實作型別、schema、preview、同步器、圖片本地化與 fixture tests。
-3. 建立唯讀 `QA Storming Docs Reader`,將 Sync Lab 分享給它。
-4. 將 token 寫入 `.env.local` 後執行 `npm run sync:notion -- --preview`。
-5. 在「API 測試魔法書」手動加入一張安全圖片,重跑 preview 驗證本地化。
-6. 人工檢查兩篇 full、link-only 無正文、hidden 不輸出。
-7. 核准後執行 `npm run sync:notion`,檢查 generated files。
-8. 另行設計 library-zone 與文件閱讀介面。
-9. 累積數次穩定手動同步後,再決定 GitHub Actions。
+3. ✅ 程式端支援 Product Key／Chapter Slug／Document Type／Review Status／Parent Slug 與 manifest schema v2。
+4. 在 POC Catalog 實際新增五個階層欄位，並為既有項目補 `Document Type`／`Review Status`。
+5. 建立唯讀 `QA Storming Docs Reader`,將 Sync Lab 分享給它。
+6. 將 token 寫入 `.env.local` 後執行 `npm run sync:notion -- --preview`。
+7. 在「API 測試魔法書」手動加入一張安全圖片,重跑 preview 驗證本地化。
+8. 人工檢查兩篇 full、link-only 無正文、hidden／未 approved 不輸出。
+9. 核准後執行 `npm run sync:notion`,檢查 generated files。
+10. 另行設計 library-zone 與文件閱讀介面。
+11. 累積數次穩定手動同步後,再決定 GitHub Actions。
 
 ## 參考資料
 
