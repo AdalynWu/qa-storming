@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ImmersiveTreeHero } from "@/components/ImmersiveTreeHero";
 import { QuestBookCarousel } from "@/components/QuestBookCarousel";
 import { TrialForestPortal } from "@/components/TrialForestPortal";
 import { onboardingQuestBooks } from "@/content/quests";
@@ -13,7 +14,7 @@ const fruits = [
 ];
 
 const lore = [
-  { number: "I", title: "API 測試魔法書", text: "Contract testing、測試資料與常見除錯咒語。", badge: "8 MIN" },
+  { number: "I", title: "Moor App 創作者手冊", text: "快速入門、直播流程與創作者端 QA Know-how。", badge: "OPEN", href: "/products/moor" },
   { number: "II", title: "缺陷鑑定圖鑑", text: "Severity、priority 與可靠證據的判定方式。", badge: "V3.2" },
   { number: "III", title: "測試環境世界地圖", text: "Dev、Staging、UAT 的入口與守門人。", badge: "9 MAPS" },
   { number: "IV", title: "回歸測試典藏室", text: "依產品、模組與風險查閱 Regression Test Cases。", badge: "OPEN", href: "/regression" },
@@ -55,6 +56,7 @@ export default function Home() {
       <section className="tree-hero">
         <div className="sky-layer" style={{ transform: `translateY(${scrollY * .08}px)` }} />
         <div className="tree-art" style={{ transform: `translateY(${scrollY * .15}px) scale(${1 + Math.min(scrollY, 500) * .00008})` }} />
+        <ImmersiveTreeHero />
         <div className="mist mist-one" style={{ transform: `translate3d(${-scrollY * .04}px, ${scrollY * .22}px, 0)` }} />
         <div className="mist mist-two" style={{ transform: `translate3d(${scrollY * .05}px, ${scrollY * .3}px, 0)` }} />
         <div className="hero-leaves" style={{ transform: `translateY(${scrollY * .45}px)` }} aria-hidden="true">❧　•　❧　　•　❧</div>
