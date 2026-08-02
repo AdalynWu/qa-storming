@@ -17,6 +17,11 @@
 - **ui-ux-pro-max 安裝位置**:全域 skill 位於 `~/.agents/skills/ui-ux-pro-max`，Claude Code 經 `~/.claude/skills/ui-ux-pro-max` symlink 共用；新 UI 任務先依其 workflow 產生建議，再以 `DESIGN.md` 做衝突裁決。
 - **Impeccable 安裝位置**:project-scoped skill 位於 `.agents/skills/impeccable/`；`.codex/hooks.json` 會在 UI 編輯後執行檢查。這些是開發工具，不是 `package.json` runtime dependency，也不會傳給網站訪客。
 - **沉浸式技術邊界**:WebGL 是瀏覽器繪圖 API，Three.js 是目前採用的抽象層。場景插畫、文件、CTA 與導覽維持圖片＋語意化 DOM；Three.js 只作少數漸進式視覺增強，不用 raw WebGL 重寫，也不在沒有量測需求前加入 R3F／Drei／GSAP。
+- **響應式場景資產**:核心場景若包含必須完整保留的門框、平台或角色舞台，手機版應使用獨立直式 art direction 圖，不以桌機 16:9 圖過度放大裁切；desktop／mobile 門洞或熱點座標需分開校準。
+- **固定導覽錨點**:首頁區段跳轉需依 `.rpg-nav` 實際高度扣除，並以 `scroll-margin-top` 作直接 hash navigation fallback。
+- **一屏場景尺寸**:`quest-zone`、`trial-forest-zone` 等沉浸式主要場景以 `100dvh - navbar` 計算可視高度；內容必須依高度流動縮放，禁止只靠 `overflow: hidden` 裁掉標題、控制器或資訊面板。手機重要 HUD 留在場景內時，優先精簡次要提示並保留 44px 操作區。
+- **核心操作 fallback**：固定導覽、手機選單、區段入口與文件詳細內容必須有原生 anchor／`details` 路徑；不要只提供 React `onClick`。進場動畫的 CSS 初始狀態預設可見，僅在增強狀態 class 出現後播放隱藏→顯示過場。
+- **行動版 grid 溢出**：`grid-template-columns: 1fr` 不代表子項一定能縮小；文件閱讀器、橫向目錄與長文容器需在 grid item 設 `min-width: 0`，橫向捲動只留在明確的內層 scroll container。
 
 ## 地雷
 

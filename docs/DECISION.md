@@ -4,6 +4,11 @@
 
 ---
 
+## D12 — 核心導覽與文件閱讀採 progressive enhancement · 2026-08-02
+- **決策**：首頁區段導覽、手機選單、試煉入口與 Regression 案例閱讀必須先有可用的原生 HTML link／`details`；React state、拖曳、篩選與場景轉場只作增強。CSS 動畫的初始狀態不得在 JavaScript 未啟動時隱藏主要內容。
+- **原因**：手機透過區網預覽開發站時，script 載入、hydration 或 WebGL 初始化可能較桌機慢或失敗。若所有控制都只存在 `onClick`，會同時造成選單、錨點、Carousel、試煉方向與案例詳細內容失效。
+- **取捨**：靜態 HTML 會多一份精簡案例典藏，輸出體積略增；換取純靜態站在 JavaScript／動畫層異常時仍可導覽與閱讀，並符合 D11 的 DOM 主體原則。
+
 ## D11 — 沉浸式介面採圖片／DOM 主體＋選擇性 Three.js 增強 · 2026-08-02
 - **決策**：延續圖片主導的場景與語意化 HTML／CSS 文件介面；Three.js 只用於 Hero 等少數需要即時粒子、景深或鏡頭感的裝飾層。WebGL 視為 Three.js 的底層繪圖能力，不另寫 raw WebGL。現階段不加入 React Three Fiber、Drei、GSAP 等 runtime 依賴。
 - **原因**：QA Storming 的主要價值仍是可搜尋、可複製、可維護的知識文件。全站 canvas 會增加 bundle、GPU／電池負擔、手機相容性、無障礙與內容維護成本；完全不用 3D 又會削弱首頁探索感。漸進式增強能保留奇幻世界的沉浸感，同時讓文件和互動在 WebGL 不可用時仍完整可用。

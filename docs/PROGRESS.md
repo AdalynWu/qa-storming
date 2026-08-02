@@ -4,6 +4,50 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-02 — 手機核心操作漸進式增強與文件版面修復
+
+- 首頁品牌、桌機導覽、手機漢堡、三顆魔法果實、「開始冒險」與向下提示改用原生 anchor／`details`，即使 React 尚未 hydration 仍能完成區段導覽；固定 navbar 由既有 `scroll-margin-top` 對齊。
+- 任務書取消「JavaScript 啟動前預設透明」狀態，手機可直接看見中央書；桌機書寬、3D 前推量與文字安全區縮小，避免底部裁切及文案碰到封面裝飾。
+- 試煉之森方向控制改為具目標 URL 的 Link：JavaScript 正常時保留逐格旋轉，未啟動時仍可直接進入上一／下一 Regression module。
+- `/regression` 新增伺服器輸出的原生手機案例典藏，以巢狀 `details` 展開完整前置條件、測試資料、步驟與預期結果；不再把案例閱讀完全綁在 client state。
+- Moor 章節閱讀器補上 grid/flex 子元素 `min-width: 0`、shell 橫向邊界與手機內容寬度；章節地圖標題增加內距，修正 `/products/moor/live` 橫向目錄撐破 viewport 與文字貼邊。
+- **驗證**：ESLint、`tsc --noEmit`、Regression tests 14/14、`next build --webpack` 皆通過；靜態輸出包含首頁原生導覽、Regression fallback 與 Moor live 路由。Impeccable 本次變更檔掃描僅回報 `regression.css` 兩項既有粗邊框規則，與本次新增區塊無關。未執行 Git、部署或新增依賴。
+
+## 2026-08-02 — 首頁場景一屏化與手機垂直節奏修正
+
+- 新手村任務書移除元件內寫死的 315px／3D 位移 inline style，改由 CSS class 與 viewport 高度完整接管；桌機使用 `100dvh - 82px navbar`，書本尺寸、標題與軌道間距會隨可用高度縮放，主要元素不再落到首屏之外。
+- 試煉之森在桌機、平板與手機皆改為 `100dvh - navbar` 的完整場景；`realm-info-panel` 維持場景內 HUD，手機縮減次要提示但保留 44px 方向鍵與 CTA，巨龍上移至石台位置。
+- 手機新手村與賢者書庫統一標題置中與 section 上緣節奏；書庫移除過大的桌機式頂部留白，典藏條目改為穩定的兩欄內容結構。
+- 同步更新 `DESIGN.md` 的一屏場景、手機 HUD 與標題對齊規範；未新增前台套件。
+- **驗證**：ESLint、`tsc --noEmit` 與 `next build --webpack` 通過，所有靜態路由成功輸出。預設 `npm run build` 的 Turbopack 因 Codex sandbox 禁止綁定內部 port 失敗，屬既有環境限制而非程式錯誤。未執行 Git 或部署。
+
+## 2026-08-02 — 手機首屏與試煉之森互動修正
+
+- 首屏三顆魔法果實在手機版恢復 `ONBOARDING／REGRESSION／KNOW-HOW` 與中文名稱，改採果實下方的小型實體標籤，保留 3 個清楚可辨識的導航入口。
+- 史萊姆的 scroll parallax 改為隨向下捲動由左往右移動；實測 bounding box X 座標由 `37.5` 增至 `87.06`。
+- 以現有桌機插畫為參考新增 `public/rpg-trial-portal-mobile.png`（941×1672）直式場景；手機門洞重新校準為獨立座標，動態 `realm-landscape-image` 完整填滿開口。
+- 移除試煉石台符文盤、拖曳與相關 state／CSS；守護巨龍移至場景元件內並固定站在石台中央。領域改由左右方向按鈕循環切換，加入按壓、確認閃光、切換鎖定與 CTA 暫時停用回饋。
+- 首頁區段跳轉改為依 `.rpg-nav` 實際高度計算 scroll top，同時保留 `scroll-margin-top` fallback；實測手機目標距頂 `68.19px`／navbar `68px`，桌機目標距頂 `81.9px`／navbar `82px`。
+- 601–900px 改採「完整橫幅場景＋下方資訊組」，並縮放巨龍避免平板場景裁切；手機維持「直式場景＋下方資訊組」，桌機維持右下疊層。
+- **驗證**：375px 與 1440px live visual QA 無水平溢出；魔法果實文字、手機直式傳送門、門洞景色、巨龍平台與資訊面板均正常。ESLint、`tsc --noEmit`、Impeccable detector 0 findings、Regression tests 14/14、`next build --webpack` 全數通過。未執行 Git 或部署。
+
+## 2026-08-02 — 次要場景視覺升級第二輪驗收
+
+- 依 `ui-ux-pro-max` 的 mobile-first／touch target 建議與 Impeccable 的適配、craft floor 規範，實看驗證 375px 手機、768px 平板與 1440px 桌機的 `quest-zone`、`moor-journey`、`moor-reader-layout`。
+- Moor 手機閱讀器改為真正的單頁羊皮紙：移除穿越正文的中央頁縫、保留頁邊裝訂痕跡，加入 safe-area padding、44px 點擊高度、觸控最佳化及橫向目錄的 overscroll 控制。
+- 新手村輪播手機箭頭由 39px 提升至 44px，維持偽 3D 書環、拖曳與左右切換；375px 實看確認書本仍是主要焦點，頁面無水平溢出。
+- 保留試煉石台刻意的卡榫回彈曲線，並以單行 Impeccable 例外註解記錄其物理感設計原因，未停用其他設計檢查。
+- **驗證**：ESLint、`tsc --noEmit`、Impeccable detector 0 findings、Regression tests 14/14、`next build --webpack` 靜態輸出成功；375px／768px 均無 body 水平溢出。`npm run test:regression` 在 Codex sandbox 因 `tsx` IPC socket 權限失敗，改用等價的 `node --import tsx --test` 通過。未執行 Git、部署或新增 runtime 依賴。
+
+## 2026-08-02 — 次要場景視覺升級第一輪
+
+- 使用 `ui-ux-pro-max` 的本地設計資料庫與 Impeccable 對 `quest-zone`、`moor-journey`、`moor-reader-layout` 進行分析；保留專案既有森林綠、羊皮紙、古金、插畫與語意化 DOM，捨棄工具產出的通用 Bento／藍色 SaaS 建議。
+- `quest-zone` 從抽象單色山形改為生命樹林間空地：以現有插畫作場景、加入中央聚光、地面景深、邊緣暗角與標題光紋；書環仍是唯一主要焦點，未增加 runtime 套件。
+- `moor-journey` 改為產品世界地圖上的探索路徑：地圖承擔地貌，符文節點與光路為互動層，右側保留高對比羊皮紙章節詳情；CTA 從通用 pill 改為書扣式輪廓。
+- `moor-reader-layout` 改為木製章節路標＋展開典籍＋冒險札記的實體材質組合；新增書頁中縫與背景世界地圖，移除 callout 粗側邊色條及 detector 判定的粗弧線 border。
+- Impeccable 安裝目錄造成 ESLint 掃入第三方工具碼，已在 `eslint.config.mjs` 排除 `.agents/`、`.claude/`、`.codex/`，維持應用程式 lint 訊號乾淨。
+- **驗證**：ESLint 零警告、`tsc --noEmit`、Impeccable detector 0 findings、`next build --webpack` 成功；桌機實看已驗證新手村與 Moor 探索地圖。Moor 閱讀器與手機視覺第二輪因本機預覽服務中途停止而待補，功能與靜態輸出已通過。未執行 Git 或部署。
+
 ## 2026-08-02 — UI 工具鏈確認＋沉浸式技術邊界定案
 
 - 確認 project-scoped Impeccable 已安裝於 `.agents/skills/impeccable/`，並新增 `.codex/hooks.json` 於 UI 編輯後執行設計檢查；它與全域 `ui-ux-pro-max` 都是 agent 開發工具，不會進入網站 runtime bundle。

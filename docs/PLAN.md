@@ -11,10 +11,10 @@
 - ✅ **Critter 動畫** — jelly / wolf / bat / lol-dragon 雪碧圖(皆重排成等距格避免裁切)。
 - ✅ **目錄重構 + 文件治理系統** — 原始碼進 `src/`;新增 AGENTS/CHANGELOG/PLAN/PROGRESS/DECISION/TASK/MEMORY/ARCHITECTURE/DESIGN。(2026-07-19)
 - ✅ **Moor Know-how POC** — `/products/moor` 產品 Hub＋「快速入門／直播功能」章節閱讀器，產品地圖與賢者書庫雙入口。(2026-08-01)
+- ✅ **次要場景視覺升級** — `quest-zone` 林間任務舞台、`moor-journey` 世界地圖路徑與 `moor-reader-layout` 實體典籍材質；完成 375px／768px／1440px live visual QA 與觸控收尾。(2026-08-02)
 
 ## 進行中 / 待決(見 `docs/TASK.md` 優先級)
 
-- 🔲 **次要場景視覺升級** — 導入外部 UI audit 輔助後，優先提升 `quest-zone`、`moor-journey`、`moor-reader-layout` 的敘事場景、實體材質介面與空間深度。
 - 🔲 **Moor Notion 正式同步** — POC 已建立；待完成 Internal Connection 實機驗證、為 Catalog 補產品／章節映射，並逐章完成安全審核後取代暫時的 curated TypeScript 內容。
 - 🔲 **自動部署(CI)** — 目前 deploy 全手動;是否導入 GitHub Actions(排程/手動觸發)使內容更新自動上線。
 - 🔲 **填入正式 Regression Sheet** — 目前為 sample baseline,待接上團隊實際 Google Sheet。

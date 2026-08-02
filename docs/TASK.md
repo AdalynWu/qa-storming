@@ -4,7 +4,6 @@
 
 ## 待辦
 
-- 🔴 **提升次要場景視覺完成度** — 重新設計 `quest-zone`、`moor-journey`、`moor-reader-layout` 的場景背景、材質層、按鈕與深度關係；保留既有功能、RWD、鍵盤與 reduced-motion。
 - 🟡 **建立 UI 效能基準** — 視覺升級前後比較 production bundle、桌機／手機流暢度與 reduced-motion fallback；若現有原生 Three.js 足夠，不新增 React Three Fiber、Drei 或 GSAP。
 - 🔴 **完成 Notion Internal Connection 實機驗證** — 程式與私人 POC 已完成;待 Workspace Owner 建立/確認唯讀 `QA Storming Docs Reader`、將 Sync Lab 分享給它、填入 `NOTION_TOKEN`,再跑 preview 並手動加入一張安全測試圖片。
 - 🟡 **擴充 Website Docs Catalog 產品階層欄位** — 在 `QA Storming Sync Lab` 內的 Catalog 新增 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`，並同步更新 schema、同步器與 fixtures。
@@ -21,6 +20,11 @@
 
 ## 已完成
 
+- ✅ 手機核心操作漸進式增強、任務書 fallback／尺寸、Regression 原生案例典藏與 Moor live 橫向溢出修正(2026-08-02)
+- ✅ 首頁場景一屏化：桌機新手村／試煉之森 viewport composition、手機巨龍與底部 HUD、書庫垂直節奏與標題對齊(2026-08-02)
+- ✅ 手機首屏果實標籤、史萊姆方向、試煉之森直式資產／門洞／巨龍平台、方向按鈕回饋與 navbar 錨點修正(2026-08-02)
+- ✅ 次要場景第二輪視覺驗收：375px／768px／1440px live visual QA、閱讀器單頁化與觸控尺寸收尾(2026-08-02)
+- ✅ 次要場景視覺升級第一輪：新手村林間舞台、Moor 世界地圖路徑、實體典籍閱讀器(2026-08-02)
 - ✅ Impeccable project-scoped 安裝完成，`.codex/hooks.json` 設計檢查 hook 已建立(2026-08-02)
 - ✅ `ui-ux-pro-max` 全域安裝完成，Codex 可讀且 Claude Code symlink 正常(2026-08-02)
 - ✅ Moor 產品 Hub＋快速入門／直播功能閱讀 POC，產品地圖與賢者書庫雙入口(2026-08-01)
