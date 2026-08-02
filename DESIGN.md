@@ -53,6 +53,8 @@ JSX：狀態、資料、鍵盤、拖曳與可及性
 | `public/rpg-life-tree.png` | 首屏生命樹 | 溫暖晨光、青綠森林、清楚主樹輪廓 |
 | `public/rpg-trial-portal.png` | 試煉之森背景 | 深色遺跡森林、中央傳送門、既有石台留作巨龍舞台 |
 | `public/rpg-trial-portal-mobile.png` | 試煉之森手機背景 | 與桌機版同場景的直式 art direction，完整保留門洞與石台 |
+| `public/rpg-trial-portal-alpha.png` | 試煉之森桌機前景 | 保留森林、石門與平台，中央門洞透明，領域景色置於其下 |
+| `public/rpg-trial-portal-mobile-alpha.png` | 試煉之森手機前景 | 直式透明門洞版本，門框與 HUD 仍按手機構圖校準 |
 | `public/rpg-product-world-map.png` | 產品世界地圖 | 與生命樹一致的繪本筆觸、自然地貌與金色日光 |
 | `public/rpg-quest-book.png` | 任務書封面 | 苔蘚、藤蔓、寶石、舊書材質，中央留可讀文字區 |
 
@@ -163,8 +165,9 @@ SEALED QUEST
 
 ### 試煉之森
 
-- `rpg-trial-portal.png` 是整個 `trial-forest-zone` 的背景，不再疊放生命樹背景。
-- 手機使用 `rpg-trial-portal-mobile.png` 的直式構圖；傳送門門洞與背景圖座標必須以各自資產獨立校準，不共用桌機百分比。
+- 試煉場景以 `rpg-trial-portal.png`／手機版作為原始構圖，不再疊放生命樹背景；網站呈現使用其透明門洞衍生資產。
+- 手機使用獨立的直式 art direction；傳送門門洞與背景圖座標必須以各自資產獨立校準，不共用桌機百分比。
+- 實際前景使用對應的 `*-alpha.png`：透明門洞讓 `.realm-landscape-image` 鋪在整個場景底層，再由不透明的森林／石門前景自然遮罩；不可回到在門框上方疊圓形圖片的作法。
 - 桌機與手機皆以 `100dvh - navbar` 構成完整試煉場景；傳送門、巨龍、領域資訊與操作需在同一屏內完成，不把主要 HUD 推到下一個捲動區。
 - 傳送門內只顯示目前 Regression 領域景色、霧氣與切換過場。
 - 背景插畫既有石台改為守護巨龍的舞台，不再疊加符文輪盤；領域切換集中於資訊組的上一個／下一個按鈕。

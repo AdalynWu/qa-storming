@@ -4,6 +4,14 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-02 — 手機導覽、任務書與透明傳送門收尾
+
+- 產品世界地圖手機 header 改為兩列結構，標題與 44px 高的返回／全圖操作分列，避免控制項貼住地圖邊界；地圖可用高度同步扣除新版 header。
+- 新手村手機上緣改為 24–36px 的場景節奏，偽 3D 任務書縮至最多 232px 寬並降低前推深度，左右箭頭各保留獨立觸控空間。
+- 手機漢堡選單點擊任一區段連結後會立即收合，保留原生 `details` 的無 JavaScript 導覽能力。
+- 使用 ImageGen 依原始構圖產生桌機／手機傳送門版本，再以色鍵遮罩建立 `rpg-trial-portal-alpha.png` 與 `rpg-trial-portal-mobile-alpha.png`；門洞透明、外圍場景保留，Regression 領域景色改為鋪在前景石門下方。
+- **驗證**：ESLint、`tsc --noEmit` 與 `next build --webpack` 通過，靜態輸出路由完整。Codex sandbox 禁止綁定本機 port，無法在本次工作內啟動 live preview；已完成透明度、尺寸與靜態建置檢查。未執行 Git 或部署。
+
 ## 2026-08-02 — 手機核心操作漸進式增強與文件版面修復
 
 - 首頁品牌、桌機導覽、手機漢堡、三顆魔法果實、「開始冒險」與向下提示改用原生 anchor／`details`，即使 React 尚未 hydration 仍能完成區段導覽；固定 navbar 由既有 `scroll-margin-top` 對齊。

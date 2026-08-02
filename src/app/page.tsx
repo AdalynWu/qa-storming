@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImmersiveTreeHero } from "@/components/ImmersiveTreeHero";
 import { QuestBookCarousel } from "@/components/QuestBookCarousel";
 import { TrialForestPortal } from "@/components/TrialForestPortal";
@@ -22,6 +22,11 @@ const lore = [
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const mobileNavRef = useRef<HTMLDetailsElement | null>(null);
+
+  const closeMobileNav = () => {
+    if (mobileNavRef.current) mobileNavRef.current.open = false;
+  };
 
   useEffect(() => {
     let frame = 0;
@@ -44,12 +49,12 @@ export default function Home() {
           <a href="#knowhow">賢者書庫</a>
         </nav>
         <div className="guild-level"><span>GUILD LV.</span><b>25</b><i><em /></i></div>
-        <details className="rpg-mobile-nav">
+        <details className="rpg-mobile-nav" ref={mobileNavRef}>
           <summary className="rpg-menu" aria-label="切換選單">☰</summary>
           <nav className="rpg-mobile-menu" aria-label="手機導覽">
-            <a href="#onboarding">新手村</a>
-            <a href="#regression">試煉之森</a>
-            <a href="#knowhow">賢者書庫</a>
+            <a href="#onboarding" onClick={closeMobileNav}>新手村</a>
+            <a href="#regression" onClick={closeMobileNav}>試煉之森</a>
+            <a href="#knowhow" onClick={closeMobileNav}>賢者書庫</a>
           </nav>
         </details>
       </header>

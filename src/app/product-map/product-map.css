@@ -396,8 +396,11 @@
 }
 @media (max-width: 850px) {
   .map-header {
-    height: 78px;
-    grid-template-columns: 1fr auto;
+    height: 112px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 64px 48px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
   }
   .map-header > div {
     grid-column: 1/-1;
@@ -411,10 +414,21 @@
   .reset-map {
     position: relative;
     z-index: 2;
+    min-height: 44px;
     font-size: 11px;
   }
+  .map-back {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+  }
+  .reset-map {
+    grid-column: 2;
+    grid-row: 2;
+  }
   .map-explorer {
-    height: calc(100svh - 78px);
+    height: calc(100svh - 112px);
   }
   .continent {
     scale: 0.72;
