@@ -7,6 +7,8 @@ import { Client } from "@notionhq/client";
 import { z } from "zod";
 import {
   docCategorySchema,
+  docDocumentTypeSchema,
+  docReviewStatusSchema,
   docsManifestSchema,
   type DocsManifest,
   type GeneratedDoc,
@@ -27,9 +29,16 @@ const REQUIRED_PROPERTIES = {
   Summary: "rich_text",
   "Publish Mode": "select",
   Status: "select",
+  "Product Key": ["select", "rich_text"],
+  "Chapter Slug": "rich_text",
+  "Document Type": "select",
+  "Review Status": "select",
+  "Parent Slug": "rich_text",
   Owner: "people",
   "Last edited time": "last_edited_time",
-} as const;
+} satisfies Record<string, string | readonly string[]>;
+
+const routeSegmentSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
 const rawCatalogItemSchema = z.object({
   notionPageId: z.string().min(1),
@@ -41,9 +50,39 @@ const rawCatalogItemSchema = z.object({
   summary: z.string(),
   publishMode: z.enum(["full", "link-only", "hidden"]),
   status: z.enum(["draft", "published", "archived"]),
+  productKey: routeSegmentSchema.optional(),
+  chapterSlug: routeSegmentSchema.optional(),
+  documentType: docDocumentTypeSchema,
+  reviewStatus: docReviewStatusSchema,
+  parentSlug: routeSegmentSchema.optional(),
   owner: z.string().min(1).optional(),
   lastEditedTime: z.string().min(1),
-}).strict();
+}).strict().superRefine((item, context) => {
+  if (item.documentType === "standalone") {
+    for (const field of ["productKey", "chapterSlug", "parentSlug"] as const) {
+      if (item[field] !== undefined) {
+        context.addIssue({ code: "custom", path: [field], message: "standalone 文件不可設定產品階層欄位" });
+      }
+    }
+    return;
+  }
+
+  if (!item.productKey) {
+    context.addIssue({ code: "custom", path: ["productKey"], message: "產品文件必須設定 Product Key" });
+  }
+  if (item.documentType === "hub") {
+    if (item.chapterSlug !== undefined || item.parentSlug !== undefined) {
+      context.addIssue({ code: "custom", path: ["chapterSlug"], message: "hub 不可設定章節階層欄位" });
+    }
+    return;
+  }
+  if (!item.chapterSlug) {
+    context.addIssue({ code: "custom", path: ["chapterSlug"], message: "chapter 必須設定 Chapter Slug" });
+  }
+  if (item.parentSlug && item.parentSlug === item.chapterSlug) {
+    context.addIssue({ code: "custom", path: ["parentSlug"], message: "Parent Slug 不可與 Chapter Slug 相同" });
+  }
+});
 
 type RawCatalogItem = z.infer<typeof rawCatalogItemSchema>;
 
@@ -91,6 +130,14 @@ function selectValue(value: Record<string, unknown>) {
   return isRecord(value.select) && typeof value.select.name === "string" ? value.select.name : "";
 }
 
+function optionalText(value: string) {
+  return value || undefined;
+}
+
+function selectOrRichTextValue(value: Record<string, unknown>) {
+  return optionalText(selectValue(value) || richTextValue(value, "rich_text"));
+}
+
 function peopleValue(value: Record<string, unknown>) {
   if (!Array.isArray(value.people)) return undefined;
   const names = value.people.flatMap((person) => {
@@ -133,6 +180,11 @@ export function parseCatalogPage(value: unknown): RawCatalogItem {
     summary: richTextValue(property(value, "Summary"), "rich_text"),
     publishMode: selectValue(property(value, "Publish Mode")),
     status: selectValue(property(value, "Status")),
+    productKey: selectOrRichTextValue(property(value, "Product Key")),
+    chapterSlug: optionalText(richTextValue(property(value, "Chapter Slug"), "rich_text")),
+    documentType: selectValue(property(value, "Document Type")),
+    reviewStatus: selectValue(property(value, "Review Status")),
+    parentSlug: optionalText(richTextValue(property(value, "Parent Slug"), "rich_text")),
     owner: peopleValue(property(value, "Owner")),
     lastEditedTime: typeof lastEditedProperty.last_edited_time === "string"
       ? lastEditedProperty.last_edited_time
@@ -143,7 +195,8 @@ export function parseCatalogPage(value: unknown): RawCatalogItem {
 export function validateCatalogPropertyTypes(propertyTypes: Record<string, string>) {
   const problems = Object.entries(REQUIRED_PROPERTIES).flatMap(([name, expected]) => {
     const actual = propertyTypes[name];
-    return actual === expected ? [] : [`${name} 應為 ${expected}，目前為 ${actual ?? "不存在"}`];
+    const accepted = Array.isArray(expected) ? expected : [expected];
+    return accepted.includes(actual) ? [] : [`${name} 應為 ${accepted.join(" 或 ")}，目前為 ${actual ?? "不存在"}`];
   });
   if (problems.length) throw new Error(`Website Docs Catalog schema 不正確：${problems.join("；")}`);
 }
@@ -153,6 +206,22 @@ function assertUniqueSlugs(items: RawCatalogItem[]) {
   for (const item of items) {
     if (seen.has(item.slug)) throw new Error(`重複的文件 slug：${item.slug}`);
     seen.add(item.slug);
+  }
+}
+
+function assertUniqueProductRoutes(items: RawCatalogItem[]) {
+  const hubs = new Set<string>();
+  const chapters = new Set<string>();
+  for (const item of items) {
+    if (item.documentType === "hub" && item.productKey) {
+      if (hubs.has(item.productKey)) throw new Error(`重複的產品 hub：${item.productKey}`);
+      hubs.add(item.productKey);
+    }
+    if (item.documentType === "chapter" && item.productKey && item.chapterSlug) {
+      const route = `${item.productKey}/${item.chapterSlug}`;
+      if (chapters.has(route)) throw new Error(`重複的產品章節路由：${route}`);
+      chapters.add(route);
+    }
   }
 }
 
@@ -261,7 +330,7 @@ function assertNoUnexpectedRemovals(previous: DocsManifest | undefined, items: R
     const current = currentBySlug.get(document.slug);
     if (!current) return true;
     if (current.status === "archived" || current.publishMode === "hidden") return false;
-    return current.status !== "published";
+    return current.status !== "published" || current.reviewStatus !== "approved";
   });
   if (unexpected.length) {
     throw new Error(`下列已發布文件無預警消失，請先設為 archived 或 hidden：${unexpected.map((item) => item.slug).join(", ")}`);
@@ -276,10 +345,11 @@ export async function synchronizeNotionDocuments({
   validateCatalogPropertyTypes(await gateway.getCatalogPropertyTypes());
   const items = (await gateway.queryCatalog()).map(parseCatalogPage);
   assertUniqueSlugs(items);
+  assertUniqueProductRoutes(items);
   const previousManifest = await loadPreviousManifest(outputPath);
   assertNoUnexpectedRemovals(previousManifest, items);
   const publishedItems = items
-    .filter((item) => item.status === "published" && item.publishMode !== "hidden")
+    .filter((item) => item.status === "published" && item.publishMode !== "hidden" && item.reviewStatus === "approved")
     .sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug));
 
   const parentDirectory = path.dirname(outputPath);
@@ -315,6 +385,11 @@ export async function synchronizeNotionDocuments({
         order: item.order,
         summary: item.summary,
         publishMode: item.publishMode === "full" ? "full" : "link-only",
+        documentType: item.documentType,
+        reviewStatus: item.reviewStatus,
+        productKey: item.productKey,
+        chapterSlug: item.chapterSlug,
+        parentSlug: item.parentSlug,
         sourceUrl: item.sourceUrl,
         owner: item.owner,
         lastEditedTime: item.lastEditedTime,
@@ -325,7 +400,7 @@ export async function synchronizeNotionDocuments({
 
     const manifest = docsManifestSchema.parse({
       _meta: {
-        schemaVersion: 1,
+        schemaVersion: 2,
         contentHash: hash(JSON.stringify(documents)),
       },
       documents,

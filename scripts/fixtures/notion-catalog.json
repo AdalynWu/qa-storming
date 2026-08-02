@@ -8,6 +8,11 @@
     "Summary": "rich_text",
     "Publish Mode": "select",
     "Status": "select",
+    "Product Key": "select",
+    "Chapter Slug": "rich_text",
+    "Document Type": "select",
+    "Review Status": "select",
+    "Parent Slug": "rich_text",
     "Owner": "people",
     "Last edited time": "last_edited_time"
   },
@@ -24,6 +29,11 @@
         "Summary": { "rich_text": [{ "plain_text": "安全的 onboarding 範例" }] },
         "Publish Mode": { "select": { "name": "full" } },
         "Status": { "select": { "name": "published" } },
+        "Product Key": { "select": null },
+        "Chapter Slug": { "rich_text": [] },
+        "Document Type": { "select": { "name": "standalone" } },
+        "Review Status": { "select": { "name": "approved" } },
+        "Parent Slug": { "rich_text": [] },
         "Owner": { "people": [{ "id": "owner-1", "name": "QA Owner" }] },
         "Last edited time": { "last_edited_time": "2026-07-25T10:00:00.000Z" }
       }
@@ -40,6 +50,11 @@
         "Summary": { "rich_text": [{ "plain_text": "只輸出核准摘要" }] },
         "Publish Mode": { "select": { "name": "link-only" } },
         "Status": { "select": { "name": "published" } },
+        "Product Key": { "select": null },
+        "Chapter Slug": { "rich_text": [] },
+        "Document Type": { "select": { "name": "standalone" } },
+        "Review Status": { "select": { "name": "approved" } },
+        "Parent Slug": { "rich_text": [] },
         "Owner": { "people": [] },
         "Last edited time": { "last_edited_time": "2026-07-25T10:01:00.000Z" }
       }
@@ -56,8 +71,76 @@
         "Summary": { "rich_text": [] },
         "Publish Mode": { "select": { "name": "hidden" } },
         "Status": { "select": { "name": "draft" } },
+        "Product Key": { "select": null },
+        "Chapter Slug": { "rich_text": [] },
+        "Document Type": { "select": { "name": "standalone" } },
+        "Review Status": { "select": { "name": "draft" } },
+        "Parent Slug": { "rich_text": [] },
         "Owner": { "people": [] },
         "Last edited time": { "last_edited_time": "2026-07-25T10:02:00.000Z" }
+      }
+    },
+    {
+      "id": "catalog-row-4",
+      "last_edited_time": "2026-07-25T10:03:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "Moor 創作者聖域" }] },
+        "Source Page URL": { "url": "https://app.notion.com/p/3a8926e209a381e1a4396c32d3eb9ae4" },
+        "Slug": { "rich_text": [{ "plain_text": "moor" }] },
+        "Category": { "select": { "name": "product" } },
+        "Order": { "number": 12 },
+        "Summary": { "rich_text": [{ "plain_text": "Moor 產品文件入口" }] },
+        "Publish Mode": { "select": { "name": "link-only" } },
+        "Status": { "select": { "name": "published" } },
+        "Product Key": { "select": { "name": "moor" } },
+        "Chapter Slug": { "rich_text": [] },
+        "Document Type": { "select": { "name": "hub" } },
+        "Review Status": { "select": { "name": "approved" } },
+        "Parent Slug": { "rich_text": [] },
+        "Owner": { "people": [] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:03:00.000Z" }
+      }
+    },
+    {
+      "id": "catalog-row-5",
+      "last_edited_time": "2026-07-25T10:04:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "Moor 直播功能" }] },
+        "Source Page URL": { "url": "https://app.notion.com/p/3a8926e209a38176bdcd9cf71d5956f4" },
+        "Slug": { "rich_text": [{ "plain_text": "moor-live" }] },
+        "Category": { "select": { "name": "product" } },
+        "Order": { "number": 14 },
+        "Summary": { "rich_text": [{ "plain_text": "核准公開的直播功能章節" }] },
+        "Publish Mode": { "select": { "name": "full" } },
+        "Status": { "select": { "name": "published" } },
+        "Product Key": { "select": { "name": "moor" } },
+        "Chapter Slug": { "rich_text": [{ "plain_text": "live" }] },
+        "Document Type": { "select": { "name": "chapter" } },
+        "Review Status": { "select": { "name": "approved" } },
+        "Parent Slug": { "rich_text": [] },
+        "Owner": { "people": [{ "id": "owner-2", "name": "Moor QA" }] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:04:00.000Z" }
+      }
+    },
+    {
+      "id": "catalog-row-6",
+      "last_edited_time": "2026-07-25T10:05:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "Moor 貼文" }] },
+        "Source Page URL": { "url": "https://app.notion.com/p/3a8926e209a3811eafba1ee10580944d" },
+        "Slug": { "rich_text": [{ "plain_text": "moor-posts" }] },
+        "Category": { "select": { "name": "product" } },
+        "Order": { "number": 16 },
+        "Summary": { "rich_text": [{ "plain_text": "仍在審核的產品章節" }] },
+        "Publish Mode": { "select": { "name": "full" } },
+        "Status": { "select": { "name": "published" } },
+        "Product Key": { "select": { "name": "moor" } },
+        "Chapter Slug": { "rich_text": [{ "plain_text": "posts" }] },
+        "Document Type": { "select": { "name": "chapter" } },
+        "Review Status": { "select": { "name": "in-review" } },
+        "Parent Slug": { "rich_text": [] },
+        "Owner": { "people": [] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:05:00.000Z" }
       }
     }
   ]

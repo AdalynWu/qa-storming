@@ -24,6 +24,8 @@ test("parses Catalog properties and Notion page URLs", () => {
   const item = parseCatalogPage(fixture.pages[0]);
   assert.equal(item.slug, "qa-onboarding-guide");
   assert.equal(item.owner, "QA Owner");
+  assert.equal(item.documentType, "standalone");
+  assert.equal(item.reviewStatus, "approved");
 });
 
 test("detects Markdown and enhanced Markdown image URLs", () => {
@@ -40,10 +42,17 @@ test("outputs full and link-only documents but excludes hidden drafts", async ()
     const manifest = await synchronizeNotionDocuments({ gateway: gateway(), outputPath });
     assert.deepEqual(manifest.documents.map((document) => document.slug), [
       "qa-onboarding-guide",
+      "moor",
+      "moor-live",
       "internal-tool-entry",
     ]);
     assert.equal(manifest.documents[0].markdownPath, "onboarding/qa-onboarding-guide.md");
-    assert.equal(manifest.documents[1].markdownPath, undefined);
+    assert.equal(manifest.documents[1].documentType, "hub");
+    assert.equal(manifest.documents[1].productKey, "moor");
+    assert.equal(manifest.documents[2].chapterSlug, "live");
+    assert.equal(manifest.documents[2].markdownPath, "product/moor-live.md");
+    assert.equal(manifest.documents[3].markdownPath, undefined);
+    assert.equal(manifest._meta.schemaVersion, 2);
     assert.match(await readFile(path.join(outputPath, "onboarding/qa-onboarding-guide.md"), "utf8"), /Welcome/);
   } finally {
     await rm(directory, { recursive: true, force: true });
@@ -94,6 +103,46 @@ test("rejects duplicate slugs and invalid enum values", async () => {
         outputPath: path.join(directory, "invalid"),
       }),
     );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("rejects invalid product hierarchy and duplicate product routes", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "notion-sync-hierarchy-"));
+  try {
+    const missingProductKey = structuredClone(fixture.pages);
+    missingProductKey[4].properties["Product Key"].select = null;
+    assert.throws(() => parseCatalogPage(missingProductKey[4]), /Product Key/);
+
+    const duplicateRoute = structuredClone(fixture.pages);
+    duplicateRoute[5].properties["Chapter Slug"].rich_text[0].plain_text = "live";
+    await assert.rejects(
+      synchronizeNotionDocuments({
+        gateway: gateway({ queryCatalog: async () => duplicateRoute }),
+        outputPath: path.join(directory, "duplicate-route"),
+      }),
+      /重複的產品章節路由：moor\/live/,
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("accepts Product Key as rich text and excludes unapproved documents", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "notion-sync-review-"));
+  const pages = structuredClone(fixture.pages);
+  pages[4].properties["Product Key"] = { rich_text: [{ plain_text: "moor" }] };
+  try {
+    const manifest = await synchronizeNotionDocuments({
+      gateway: gateway({
+        getCatalogPropertyTypes: async () => ({ ...fixture.propertyTypes, "Product Key": "rich_text" }),
+        queryCatalog: async () => pages,
+      }),
+      outputPath: path.join(directory, "docs"),
+    });
+    assert.equal(manifest.documents.some((document) => document.slug === "moor-posts"), false);
+    assert.equal(manifest.documents.find((document) => document.slug === "moor-live")?.productKey, "moor");
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
