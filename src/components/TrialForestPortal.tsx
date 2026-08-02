@@ -6,10 +6,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { regressionCases, regressionSuites } from "@/content/regression";
 
 const realms = [
-  { id: "explore", module: "Home", title: "探索之森", subtitle: "首頁與旅程入口", image: "/rpg-life-tree.png", imagePosition: "24% 72%" },
-  { id: "identity", module: "Authentication", title: "守門者峽谷", subtitle: "登入與身份驗證", image: "/rpg-product-world-map.png", imagePosition: "14% 43%" },
-  { id: "live", module: "Live Streaming", title: "直播星火原", subtitle: "開播與觀看核心流程", image: "/rpg-product-world-map.png", imagePosition: "84% 52%" },
-  { id: "library", module: "Content Library", title: "內容秘藏地", subtitle: "影片與內容探索", image: "/rpg-quest-book.png", imagePosition: "50% 45%" },
+  { id: "explore", module: "Home", title: "探索之森", subtitle: "首頁與旅程入口", image: "/rpg-life-tree.webp", imagePosition: "24% 72%" },
+  { id: "identity", module: "Authentication", title: "守門者峽谷", subtitle: "登入與身份驗證", image: "/rpg-product-world-map.webp", imagePosition: "14% 43%" },
+  { id: "live", module: "Live Streaming", title: "直播星火原", subtitle: "開播與觀看核心流程", image: "/rpg-product-world-map.webp", imagePosition: "84% 52%" },
+  { id: "library", module: "Content Library", title: "內容秘藏地", subtitle: "影片與內容探索", image: "/rpg-quest-book.webp", imagePosition: "50% 45%" },
 ] as const;
 
 export function TrialForestPortal() {

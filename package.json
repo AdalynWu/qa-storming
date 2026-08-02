@@ -7,11 +7,14 @@
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run check:images",
     "build": "next build",
     "start": "next start",
     "deploy": "npm run build && firebase deploy --only hosting",
     "test": "npm run build",
     "lint": "eslint . --ignore-pattern out --ignore-pattern .next --ignore-pattern dist --ignore-pattern .vinext --ignore-pattern .wrangler",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "check:images": "node scripts/optimize-images.mjs --check",
     "sync:regression": "tsx scripts/sync-regression.ts",
     "test:regression": "tsx --test scripts/sync-regression.test.ts",
     "sync:notion": "tsx scripts/sync-notion.ts",
@@ -35,6 +38,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
     "googleapis": "^173.0.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "4.2.1",
     "tsx": "^4.23.0",
     "typescript": "5.9.3"

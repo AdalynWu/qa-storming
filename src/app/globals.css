@@ -9,6 +9,47 @@
   --sky: #bce8dc;
   --font-geist-sans: Arial, Helvetica, sans-serif;
   --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --image-life-tree: image-set(
+    url("/rpg-life-tree.avif") type("image/avif"),
+    url("/rpg-life-tree.webp") type("image/webp"),
+    url("/rpg-life-tree.png") type("image/png")
+  );
+  --image-product-world-map: image-set(
+    url("/rpg-product-world-map.avif") type("image/avif"),
+    url("/rpg-product-world-map.webp") type("image/webp"),
+    url("/rpg-product-world-map.png") type("image/png")
+  );
+  --image-quest-book: image-set(
+    url("/rpg-quest-book.avif") type("image/avif"),
+    url("/rpg-quest-book.webp") type("image/webp"),
+    url("/rpg-quest-book.png") type("image/png")
+  );
+  --image-trial-portal-alpha: image-set(
+    url("/rpg-trial-portal-alpha.avif") type("image/avif"),
+    url("/rpg-trial-portal-alpha.webp") type("image/webp"),
+    url("/rpg-trial-portal-alpha.png") type("image/png")
+  );
+  --image-trial-portal-mobile-alpha: image-set(
+    url("/rpg-trial-portal-mobile-alpha.avif") type("image/avif"),
+    url("/rpg-trial-portal-mobile-alpha.webp") type("image/webp"),
+    url("/rpg-trial-portal-mobile-alpha.png") type("image/png")
+  );
+  --image-sprite-jelly: image-set(
+    url("/sprite-jelly.webp") type("image/webp"),
+    url("/sprite-jelly.png") type("image/png")
+  );
+  --image-sprite-dragon: image-set(
+    url("/sprite-lol-dragon.webp") type("image/webp"),
+    url("/sprite-lol-dragon.png") type("image/png")
+  );
+  --image-sprite-bat: image-set(
+    url("/sprite-bat.webp") type("image/webp"),
+    url("/sprite-bat.png") type("image/png")
+  );
+  --image-sprite-wolf: image-set(
+    url("/sprite-wolf.webp") type("image/webp"),
+    url("/sprite-wolf.png") type("image/png")
+  );
 }
 * {
   box-sizing: border-box;
@@ -150,7 +191,7 @@ button {
 .tree-art {
   position: absolute;
   inset: 0;
-  background: url("/rpg-life-tree.png") center top/cover no-repeat;
+  background: var(--image-life-tree) center top/cover no-repeat;
   z-index: -2;
   will-change: transform;
   transform-origin: 50% 40%;
@@ -452,8 +493,14 @@ button {
   min-height: 940px;
   position: relative;
   background:
-    linear-gradient(180deg, #0b332ccd 0%, #2456418f 28%, #8db27670 68%, #173f32e8 100%),
-    url("/rpg-life-tree.png") center 72% / cover no-repeat;
+    linear-gradient(
+      180deg,
+      #0b332ccd 0%,
+      #2456418f 28%,
+      #8db27670 68%,
+      #173f32e8 100%
+    ),
+    var(--image-life-tree) center 72% / cover no-repeat;
   padding: 118px 6vw 150px;
   isolation: isolate;
   overflow: hidden;
@@ -479,7 +526,12 @@ button {
   height: 35%;
   pointer-events: none;
   border-radius: 50% 50% 0 0;
-  background: radial-gradient(ellipse at 50% 0%, #dcefae73, #274c36db 62%, #0a2925 100%);
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    #dcefae73,
+    #274c36db 62%,
+    #0a2925 100%
+  );
   filter: blur(1px);
 }
 .parallax-hills {
@@ -503,7 +555,12 @@ button {
   bottom: -11%;
   height: 38%;
   background:
-    radial-gradient(ellipse at 50% 5%, transparent 0 23%, #173b2f99 52%, #09251f 76%),
+    radial-gradient(
+      ellipse at 50% 5%,
+      transparent 0 23%,
+      #173b2f99 52%,
+      #09251f 76%
+    ),
     linear-gradient(180deg, transparent, #09251f 74%);
 }
 .zone-content {
@@ -667,7 +724,7 @@ button {
   background:
     radial-gradient(circle at 50% 20%, #b9d98340, transparent 30%),
     linear-gradient(#173c31cc, #092721f2),
-    url("/rpg-life-tree.png") center 56% / cover;
+    var(--image-life-tree) center 56% / cover;
 }
 .trial-forest-zone:before {
   content: "";
@@ -713,7 +770,11 @@ button {
   line-height: 1;
   cursor: pointer;
   box-shadow: 0 4px 0 #18251f;
-  transition: transform 160ms ease-out, box-shadow 160ms ease-out, color 160ms ease-out, background 160ms ease-out;
+  transition:
+    transform 160ms ease-out,
+    box-shadow 160ms ease-out,
+    color 160ms ease-out,
+    background 160ms ease-out;
   touch-action: manipulation;
   display: grid;
   place-items: center;
@@ -724,12 +785,14 @@ button {
   background: #36594a;
 }
 .dial-step:active:not([aria-disabled="true"]) {
-  transform: translateY(3px) scale(.96);
-  box-shadow: 0 1px 0 #18251f, 0 0 18px #ffe99a66;
+  transform: translateY(3px) scale(0.96);
+  box-shadow:
+    0 1px 0 #18251f,
+    0 0 18px #ffe99a66;
 }
 .dial-step[aria-disabled="true"] {
   cursor: wait;
-  opacity: .72;
+  opacity: 0.72;
 }
 .dial-step.is-confirmed {
   animation: dial-step-confirm 280ms ease-out;
@@ -738,7 +801,9 @@ button {
   45% {
     color: #254238;
     background: #ffe49a;
-    box-shadow: 0 2px 0 #715331, 0 0 22px #fff0a6;
+    box-shadow:
+      0 2px 0 #715331,
+      0 0 22px #fff0a6;
   }
 }
 .dial-step:focus-visible,
@@ -768,7 +833,7 @@ button {
 }
 .portal-enter[aria-disabled="true"] {
   pointer-events: none;
-  opacity: .68;
+  opacity: 0.68;
 }
 .dial-hint {
   margin: 16px 0 0;
@@ -904,6 +969,7 @@ button {
   background: linear-gradient(#102f2b, #091f1e);
   color: #fff7d5;
 }
+
 .camp-zone > div:first-child p {
   font: 10px Arial;
   letter-spacing: 0.24em;
@@ -1161,7 +1227,7 @@ button {
   z-index: 3;
   inset: 0;
   pointer-events: none;
-  background: url("/rpg-trial-portal-alpha.png") center / cover no-repeat;
+  background: var(--image-trial-portal-alpha) center / cover no-repeat;
 }
 .portal-scene .realm-window {
   position: absolute;
@@ -1323,7 +1389,7 @@ button {
     background-position: center top;
   }
   .portal-scene::after {
-    background-image: url("/rpg-trial-portal-mobile-alpha.png");
+    background-image: var(--image-trial-portal-mobile-alpha);
     background-position: center top;
   }
   .portal-scene .realm-window {
@@ -1406,23 +1472,23 @@ button {
 }
 .sprite-jelly {
   --sprite-size: 160px;
-  background-image: url("/sprite-jelly.png");
+  background-image: var(--image-sprite-jelly);
 }
 .sprite-lol-dragon {
   --sprite-size: 260px;
-  background-image: url("/sprite-lol-dragon.png");
+  background-image: var(--image-sprite-dragon);
   animation-duration: 1.15s;
 }
 .sprite-bat {
   --sprite-size: 150px;
-  background-image: url("/sprite-bat.png");
+  background-image: var(--image-sprite-bat);
   background-size: auto var(--sprite-size);
   animation-name: batCycle;
   animation-duration: 0.82s;
 }
 .sprite-wolf {
   --sprite-size: 200px;
-  background-image: url("/sprite-wolf.png");
+  background-image: var(--image-sprite-wolf);
   background-size: auto var(--sprite-size);
   animation-name: wolfCycle;
   animation-duration: 1.05s;
@@ -1585,23 +1651,13 @@ button {
   font-size: 12px;
   line-height: 1.65;
 }
-.book-meta {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-top: 1px solid #f2d68c88;
-  font: 9px Arial;
-}
-.book-meta b {
-  color: #ffdb79;
-}
 .book-cta {
   width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 17px;
+  gap: clamp(6px, 1vw, 17px);
   margin-top: auto;
   padding: 10px;
   border: 1px solid #e3c979;
@@ -1610,11 +1666,14 @@ button {
   color: #395443;
   text-decoration: none;
   font-weight: bold;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
   box-shadow: 0 4px 0 #533d2b;
 }
 .book-cta span {
-  font-size: 13px;
+  flex: 0 0 auto;
+  font-size: 0.9em;
 }
 .book-corner {
   position: absolute;
@@ -1776,7 +1835,7 @@ button {
   border-radius: 22px;
   background-image:
     linear-gradient(var(--book-wash, #2d6b5950), var(--book-wash, #2d6b5950)),
-    url("/rpg-quest-book.png");
+    var(--image-quest-book);
   background-size: 100% 100%;
   background-position: center;
   background-blend-mode: color, normal;
@@ -1818,14 +1877,6 @@ button {
   margin: 7px 0 9px;
   color: #68715c;
   line-height: 1.55;
-}
-.book-meta {
-  padding: 8px 50px;
-  border-color: #9c774d66;
-  color: #6f7259;
-}
-.book-meta b {
-  color: #a06c2f;
 }
 .book-cta {
   width: 92%;
@@ -1888,7 +1939,12 @@ button {
   bottom: 66px;
   height: 118px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, #f5df8252, #78b47724 42%, transparent 72%);
+  background: radial-gradient(
+    ellipse,
+    #f5df8252,
+    #78b47724 42%,
+    transparent 72%
+  );
   filter: blur(18px);
   transform: rotateX(68deg);
   pointer-events: none;
@@ -1922,7 +1978,11 @@ button {
 .quest-orbit .swiper-slide-shadow-left,
 .quest-orbit .swiper-slide-shadow-right {
   border-radius: 22px;
-  background-image: linear-gradient(to var(--swiper-slide-shadow-direction), #10291fc4, transparent 62%);
+  background-image: linear-gradient(
+    to var(--swiper-slide-shadow-direction),
+    #10291fc4,
+    transparent 62%
+  );
 }
 .quest-book-reveal {
   width: 100%;
@@ -1950,8 +2010,7 @@ button {
 }
 .quest-orbit .quest-book.is-sealed .book-cover {
   background-image:
-    linear-gradient(#173b35a8, #294f4396),
-    url("/rpg-quest-book.png");
+    linear-gradient(#173b35a8, #294f4396), var(--image-quest-book);
   filter: saturate(0.5) brightness(0.73);
 }
 .quest-orbit .swiper-slide-active .quest-book.is-sealed .book-cover {
@@ -1970,7 +2029,13 @@ button {
   border: 1px solid #d8c17d99;
   border-radius: 50%;
   color: #f5db8c;
-  background: radial-gradient(circle, #6f8d6d 0 24%, #244d43 25% 64%, #d3bd7566 66% 69%, transparent 71%);
+  background: radial-gradient(
+    circle,
+    #6f8d6d 0 24%,
+    #244d43 25% 64%,
+    #d3bd7566 66% 69%,
+    transparent 71%
+  );
   box-shadow: 0 0 24px #e4d0844d;
   text-shadow: 0 0 9px #fff4a8;
   transform: translateX(-50%);
@@ -1990,7 +2055,12 @@ button {
   inset: 6% 4% 9%;
   overflow: hidden;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 12%,
+    #000 82%,
+    transparent
+  );
   mask-image: linear-gradient(transparent, #000 12%, #000 82%, transparent);
 }
 .quest-particles i {
@@ -2007,7 +2077,8 @@ button {
   opacity: 0;
 }
 .quest-orbit.is-entered .quest-particles i {
-  animation: questParticleRise var(--particle-duration) linear var(--particle-delay) infinite;
+  animation: questParticleRise var(--particle-duration) linear
+    var(--particle-delay) infinite;
 }
 .quest-orbit .quest-arrow {
   top: 48%;
@@ -2058,7 +2129,7 @@ button {
     height: 418px;
   }
   .quest-orbit .book-cover {
-    padding: 142px 50px 24px;
+    padding: 142px 77px 24px;
   }
 }
 @media (max-width: 680px) {
@@ -2079,7 +2150,7 @@ button {
     height: 402px;
   }
   .quest-orbit .book-cover {
-    padding: 130px 42px 23px 48px;
+    padding: 48% 27% 6% 29%;
   }
   .quest-orbit .book-cover h3 {
     font-size: 18px;
@@ -2087,10 +2158,6 @@ button {
   .quest-orbit .book-cover p {
     min-height: 56px;
     line-height: 1.45;
-  }
-  .quest-orbit .book-meta {
-    padding-left: 22px;
-    padding-right: 22px;
   }
   .quest-orbit .quest-prev {
     left: -2px;
@@ -2164,27 +2231,32 @@ button {
 .quest-orbit-slot.is-front {
   z-index: 6;
   filter: none;
-  transform: translate(-50%, -50%) translate3d(0, 0, 210px) rotateY(0deg) scale(1);
+  transform: translate(-50%, -50%) translate3d(0, 0, 210px) rotateY(0deg)
+    scale(1);
 }
 .quest-orbit-slot.is-left-1 {
   z-index: 4;
   filter: saturate(0.76) brightness(0.82);
-  transform: translate(-50%, -50%) translate3d(-270px, 13px, 20px) rotateY(-50deg) scale(0.82);
+  transform: translate(-50%, -50%) translate3d(-270px, 13px, 20px)
+    rotateY(-50deg) scale(0.82);
 }
 .quest-orbit-slot.is-right-1 {
   z-index: 4;
   filter: saturate(0.76) brightness(0.82);
-  transform: translate(-50%, -50%) translate3d(270px, 13px, 20px) rotateY(50deg) scale(0.82);
+  transform: translate(-50%, -50%) translate3d(270px, 13px, 20px) rotateY(50deg)
+    scale(0.82);
 }
 .quest-orbit-slot.is-left-2 {
   z-index: 2;
   filter: saturate(0.55) brightness(0.68);
-  transform: translate(-50%, -50%) translate3d(-438px, 32px, -170px) rotateY(-74deg) scale(0.64);
+  transform: translate(-50%, -50%) translate3d(-438px, 32px, -170px)
+    rotateY(-74deg) scale(0.64);
 }
 .quest-orbit-slot.is-right-2 {
   z-index: 2;
   filter: saturate(0.55) brightness(0.68);
-  transform: translate(-50%, -50%) translate3d(438px, 32px, -170px) rotateY(74deg) scale(0.64);
+  transform: translate(-50%, -50%) translate3d(438px, 32px, -170px)
+    rotateY(74deg) scale(0.64);
 }
 .quest-orbit-slot.is-behind {
   z-index: 0;
@@ -2218,16 +2290,20 @@ button {
     transform: translate(-50%, -50%) translate3d(0, 0, 180px) scale(1) !important;
   }
   .quest-orbit-slot.is-left-1 {
-    transform: translate(-50%, -50%) translate3d(-215px, 15px, 0) rotateY(-54deg) scale(0.74) !important;
+    transform: translate(-50%, -50%) translate3d(-215px, 15px, 0)
+      rotateY(-54deg) scale(0.74) !important;
   }
   .quest-orbit-slot.is-right-1 {
-    transform: translate(-50%, -50%) translate3d(215px, 15px, 0) rotateY(54deg) scale(0.74) !important;
+    transform: translate(-50%, -50%) translate3d(215px, 15px, 0) rotateY(54deg)
+      scale(0.74) !important;
   }
   .quest-orbit-slot.is-left-2 {
-    transform: translate(-50%, -50%) translate3d(-330px, 30px, -180px) rotateY(-76deg) scale(0.53) !important;
+    transform: translate(-50%, -50%) translate3d(-330px, 30px, -180px)
+      rotateY(-76deg) scale(0.53) !important;
   }
   .quest-orbit-slot.is-right-2 {
-    transform: translate(-50%, -50%) translate3d(330px, 30px, -180px) rotateY(76deg) scale(0.53) !important;
+    transform: translate(-50%, -50%) translate3d(330px, 30px, -180px)
+      rotateY(76deg) scale(0.53) !important;
   }
 }
 @media (max-width: 680px) {
@@ -2242,16 +2318,20 @@ button {
     transform: translate(-50%, -50%) translate3d(0, 0, 150px) scale(0.94) !important;
   }
   .quest-orbit-slot.is-left-1 {
-    transform: translate(-50%, -50%) translate3d(-142px, 18px, -25px) rotateY(-58deg) scale(0.62) !important;
+    transform: translate(-50%, -50%) translate3d(-142px, 18px, -25px)
+      rotateY(-58deg) scale(0.62) !important;
   }
   .quest-orbit-slot.is-right-1 {
-    transform: translate(-50%, -50%) translate3d(142px, 18px, -25px) rotateY(58deg) scale(0.62) !important;
+    transform: translate(-50%, -50%) translate3d(142px, 18px, -25px)
+      rotateY(58deg) scale(0.62) !important;
   }
   .quest-orbit-slot.is-left-2 {
-    transform: translate(-50%, -50%) translate3d(-220px, 31px, -210px) rotateY(-78deg) scale(0.42) !important;
+    transform: translate(-50%, -50%) translate3d(-220px, 31px, -210px)
+      rotateY(-78deg) scale(0.42) !important;
   }
   .quest-orbit-slot.is-right-2 {
-    transform: translate(-50%, -50%) translate3d(220px, 31px, -210px) rotateY(78deg) scale(0.42) !important;
+    transform: translate(-50%, -50%) translate3d(220px, 31px, -210px)
+      rotateY(78deg) scale(0.42) !important;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2338,7 +2418,8 @@ button {
     height: calc(var(--quest-book-width) * 1.46);
   }
   .quest-orbit-slot .book-cover {
-    padding: 48.5% 22% 8%;
+    /* The painted parchment occupies roughly x=27–74% of the source art. */
+    padding: 49.5% 28% 8%;
   }
   .quest-orbit-slot .book-cover h3 {
     min-height: calc(var(--quest-book-width) * 0.14);
@@ -2353,14 +2434,14 @@ button {
     line-height: 1.45;
     overflow-wrap: anywhere;
   }
-  .quest-orbit-slot .book-meta {
-    padding: clamp(5px, 1dvh, 8px) 16%;
-  }
   .quest-orbit-slot .book-cta {
+    gap: clamp(5px, calc(var(--quest-book-width) * 0.03), 10px);
     padding: clamp(7px, 1.1dvh, 9px);
+    font-size: clamp(10px, calc(var(--quest-book-width) * 0.05), 14px);
   }
   .quest-orbit-slot.is-front {
-    transform: translate(-50%, -50%) translate3d(0, 0, 115px) rotateY(0deg) scale(1);
+    transform: translate(-50%, -50%) translate3d(0, 0, 115px) rotateY(0deg)
+      scale(1);
   }
   .quest-orbit-slot .book-seal {
     top: 18%;
@@ -2368,16 +2449,24 @@ button {
     height: clamp(40px, calc(var(--quest-book-width) * 0.165), 52px);
   }
   .quest-orbit-slot.is-left-1 {
-    transform: translate(-50%, -50%) translate3d(clamp(-270px, -23vw, -205px), 13px, 20px) rotateY(-50deg) scale(0.82);
+    transform: translate(-50%, -50%)
+      translate3d(clamp(-270px, -23vw, -205px), 13px, 20px) rotateY(-50deg)
+      scale(0.82);
   }
   .quest-orbit-slot.is-right-1 {
-    transform: translate(-50%, -50%) translate3d(clamp(205px, 23vw, 270px), 13px, 20px) rotateY(50deg) scale(0.82);
+    transform: translate(-50%, -50%)
+      translate3d(clamp(205px, 23vw, 270px), 13px, 20px) rotateY(50deg)
+      scale(0.82);
   }
   .quest-orbit-slot.is-left-2 {
-    transform: translate(-50%, -50%) translate3d(clamp(-438px, -38vw, -320px), 32px, -170px) rotateY(-74deg) scale(0.64);
+    transform: translate(-50%, -50%)
+      translate3d(clamp(-438px, -38vw, -320px), 32px, -170px) rotateY(-74deg)
+      scale(0.64);
   }
   .quest-orbit-slot.is-right-2 {
-    transform: translate(-50%, -50%) translate3d(clamp(320px, 38vw, 438px), 32px, -170px) rotateY(74deg) scale(0.64);
+    transform: translate(-50%, -50%)
+      translate3d(clamp(320px, 38vw, 438px), 32px, -170px) rotateY(74deg)
+      scale(0.64);
   }
 }
 
@@ -2527,29 +2616,39 @@ button {
     height: min(92.4vw, 346px);
   }
   .quest-orbit-slot .book-cover {
-    padding: 48% 16% 6% 18%;
+    padding: 48% 27% 6% 29%;
   }
   .quest-orbit-slot .book-cover h3 {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.18;
   }
   .quest-orbit-slot .book-cover p {
     min-height: 46px;
     font-size: 9px;
   }
+  .quest-orbit-slot .book-cta {
+    gap: clamp(5px, 1.8vw, 7px);
+    font-size: clamp(10px, 3.1vw, 12px);
+    letter-spacing: -0.02em;
+  }
   .quest-orbit-slot.is-front {
     transform: translate(-50%, -50%) translate3d(0, 0, 72px) scale(0.94) !important;
   }
   .quest-orbit-slot.is-left-1 {
-    transform: translate(-50%, -50%) translate3d(-124px, 18px, -25px) rotateY(-58deg) scale(0.6) !important;
+    transform: translate(-50%, -50%) translate3d(-124px, 18px, -25px)
+      rotateY(-58deg) scale(0.6) !important;
   }
   .quest-orbit-slot.is-right-1 {
-    transform: translate(-50%, -50%) translate3d(124px, 18px, -25px) rotateY(58deg) scale(0.6) !important;
+    transform: translate(-50%, -50%) translate3d(124px, 18px, -25px)
+      rotateY(58deg) scale(0.6) !important;
   }
   .quest-orbit-slot.is-left-2 {
-    transform: translate(-50%, -50%) translate3d(-190px, 31px, -210px) rotateY(-78deg) scale(0.4) !important;
+    transform: translate(-50%, -50%) translate3d(-190px, 31px, -210px)
+      rotateY(-78deg) scale(0.4) !important;
   }
   .quest-orbit-slot.is-right-2 {
-    transform: translate(-50%, -50%) translate3d(190px, 31px, -210px) rotateY(78deg) scale(0.4) !important;
+    transform: translate(-50%, -50%) translate3d(190px, 31px, -210px)
+      rotateY(78deg) scale(0.4) !important;
   }
   .quest-orbit .quest-prev {
     left: 4px;

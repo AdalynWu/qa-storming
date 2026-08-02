@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preload } from "react-dom";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,6 +33,12 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  preload("/rpg-life-tree.avif", {
+    as: "image",
+    type: "image/avif",
+    fetchPriority: "high",
+  });
+
   return (
     <html lang="zh-Hant">
       <body>{children}</body>
