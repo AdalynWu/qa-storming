@@ -4,6 +4,13 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-02 — Three.js 生命樹 Hero 實作與跨尺寸驗收
+
+- 新增 `three`、`@types/three` 與 `ImmersiveTreeHero`：沿用 `rpg-life-tree.png` 建立 WebGL 全景 shader、樹心柔光、三層空間光塵及游標／捲動差速，語意化文案、導航與 CTA 仍維持 DOM。
+- WebGL 貼圖成功後才淡入，建立失敗或 `prefers-reduced-motion` 時保留原 CSS 場景；限制 DPR、離開 viewport／頁面隱藏時暫停繪製，卸載時釋放 texture、geometry、material 與 renderer。
+- 未改動 Regression、Notion 同步、Firebase Hosting 或純靜態輸出架構。
+- **驗證**：ESLint、`tsc --noEmit`、`next build --webpack` 通過；本地靜態輸出以 1440×900、390×844 實機瀏覽器驗證 canvas 正常、主文案與三個入口無遮擋、無水平溢位，並清除 Three.js runtime warning。預設 Turbopack build 在 sandbox 長時間無輸出後中止，改用專案既有的 webpack 驗證路徑。未執行 Git 或部署。
+
 ## 2026-08-02 — 手機導覽、任務書與透明傳送門收尾
 
 - 產品世界地圖手機 header 改為兩列結構，標題與 44px 高的返回／全圖操作分列，避免控制項貼住地圖邊界；地圖可用高度同步扣除新版 header。

@@ -184,12 +184,12 @@ export function ImmersiveTreeHero() {
     intersectionObserver.observe(host);
 
     let animationFrame = 0;
-    const clock = new THREE.Clock();
+    const startedAt = performance.now();
     const render = () => {
       animationFrame = window.requestAnimationFrame(render);
       if (!visible || document.hidden) return;
 
-      const elapsed = clock.getElapsedTime();
+      const elapsed = (performance.now() - startedAt) / 1000;
       const scrollProgress = Math.min(window.scrollY / Math.max(height, 1), 1.2);
       pointer.lerp(pointerTarget, 0.035);
       backgroundMaterial.uniforms.uPointer.value.copy(pointer);

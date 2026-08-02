@@ -12,6 +12,7 @@
 - ✅ **目錄重構 + 文件治理系統** — 原始碼進 `src/`;新增 AGENTS/CHANGELOG/PLAN/PROGRESS/DECISION/TASK/MEMORY/ARCHITECTURE/DESIGN。(2026-07-19)
 - ✅ **Moor Know-how POC** — `/products/moor` 產品 Hub＋「快速入門／直播功能」章節閱讀器，產品地圖與賢者書庫雙入口。(2026-08-01)
 - ✅ **次要場景視覺升級** — `quest-zone` 林間任務舞台、`moor-journey` 世界地圖路徑與 `moor-reader-layout` 實體典籍材質；完成 375px／768px／1440px live visual QA 與觸控收尾。(2026-08-02)
+- ✅ **Three.js 生命樹 Hero** — 以原生 Three.js 建立全景 shader、空間光塵與鏡頭差速，保留圖片／DOM fallback、reduced-motion 與純靜態輸出。(2026-08-02)
 
 ## 進行中 / 待決(見 `docs/TASK.md` 優先級)
 

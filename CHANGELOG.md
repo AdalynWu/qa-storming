@@ -6,6 +6,7 @@
 ## [Unreleased]
 
 ### Added
+- Three.js 生命樹 Hero：全景 shader、樹心柔光、三層空間光塵、游標／捲動差速，以及 WebGL／reduced-motion 漸進式 fallback。(2026-08-02)
 - 試煉之森新增桌機／手機透明門洞前景資產 `rpg-trial-portal-alpha.png` 與 `rpg-trial-portal-mobile-alpha.png`，讓領域景色自然位於石門後方。(2026-08-02)
 - 試煉之森新增 941×1672 手機直式場景 `rpg-trial-portal-mobile.png`，提供獨立的傳送門與石台 art direction。(2026-08-02)
 - Moor Know-how POC：`/products/moor` 創作者聖域 Hub、`quick-start`／`live` 章節閱讀器、八章狀態導覽，以及產品地圖／賢者書庫雙入口。(2026-08-01)
