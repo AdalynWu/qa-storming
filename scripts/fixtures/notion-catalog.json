@@ -1,0 +1,64 @@
+{
+  "propertyTypes": {
+    "Title": "title",
+    "Source Page URL": "url",
+    "Slug": "rich_text",
+    "Category": "select",
+    "Order": "number",
+    "Summary": "rich_text",
+    "Publish Mode": "select",
+    "Status": "select",
+    "Owner": "people",
+    "Last edited time": "last_edited_time"
+  },
+  "pages": [
+    {
+      "id": "catalog-row-1",
+      "last_edited_time": "2026-07-25T10:00:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "QA 冒險者啟程指南" }] },
+        "Source Page URL": { "url": "https://www.notion.so/3a8926e209a38133b840d5f8b69b4c48" },
+        "Slug": { "rich_text": [{ "plain_text": "qa-onboarding-guide" }] },
+        "Category": { "select": { "name": "onboarding" } },
+        "Order": { "number": 10 },
+        "Summary": { "rich_text": [{ "plain_text": "安全的 onboarding 範例" }] },
+        "Publish Mode": { "select": { "name": "full" } },
+        "Status": { "select": { "name": "published" } },
+        "Owner": { "people": [{ "id": "owner-1", "name": "QA Owner" }] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:00:00.000Z" }
+      }
+    },
+    {
+      "id": "catalog-row-2",
+      "last_edited_time": "2026-07-25T10:01:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "內部工具入口" }] },
+        "Source Page URL": { "url": "https://app.notion.com/p/3a8926e209a38131861adaa4fcd5afc2" },
+        "Slug": { "rich_text": [{ "plain_text": "internal-tool-entry" }] },
+        "Category": { "select": { "name": "tool" } },
+        "Order": { "number": 20 },
+        "Summary": { "rich_text": [{ "plain_text": "只輸出核准摘要" }] },
+        "Publish Mode": { "select": { "name": "link-only" } },
+        "Status": { "select": { "name": "published" } },
+        "Owner": { "people": [] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:01:00.000Z" }
+      }
+    },
+    {
+      "id": "catalog-row-3",
+      "last_edited_time": "2026-07-25T10:02:00.000Z",
+      "properties": {
+        "Title": { "title": [{ "plain_text": "隱藏草稿" }] },
+        "Source Page URL": { "url": "https://app.notion.com/p/3a8926e209a381b1afb8d2f642fb0ffd" },
+        "Slug": { "rich_text": [{ "plain_text": "hidden-draft" }] },
+        "Category": { "select": { "name": "process" } },
+        "Order": { "number": 30 },
+        "Summary": { "rich_text": [] },
+        "Publish Mode": { "select": { "name": "hidden" } },
+        "Status": { "select": { "name": "draft" } },
+        "Owner": { "people": [] },
+        "Last edited time": { "last_edited_time": "2026-07-25T10:02:00.000Z" }
+      }
+    }
+  ]
+}
