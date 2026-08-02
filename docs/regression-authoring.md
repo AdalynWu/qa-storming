@@ -2,7 +2,7 @@
 
 ## 資料來源
 
-Google Sheet 是唯一正式編輯來源。網站使用的 `content/generated/regression.json` 由同步程式產生，請勿手動修改。
+Google Sheet 是唯一正式編輯來源。網站使用的 `src/content/generated/regression.json` 由同步程式產生，請勿手動修改。
 
 工作簿需要兩個分頁：
 

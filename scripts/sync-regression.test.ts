@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { regressionDataSchema, testCaseSchema } from "../content/regression";
+import { regressionDataSchema, testCaseSchema } from "../src/content/regression";
 import { assertNoActiveCasesRemoved, buildRegressionData, parseNumberedLines } from "./sync-regression";
 
 const fixture = JSON.parse(await readFile(new URL("./fixtures/regression-sheets.json", import.meta.url), "utf8"));

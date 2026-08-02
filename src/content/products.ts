@@ -8,6 +8,7 @@ export type Product = {
   name: string;
   technology: string;
   summary: string;
+  href?: string;
   environment?: string;
   sections?: ProductSection[];
   notes: string[];
@@ -40,6 +41,7 @@ export const continents: Continent[] = [
         name: "Moor",
         technology: "Mobile App",
         summary: "主播專用 App，涵蓋直播、上傳影片、貼文、限時動態等主播功能。",
+        href: "/products/moor",
         environment: "Mobile／主播端",
         sections: [{ label: "版本", value: "可申請 Beta 版本（Jay）" }],
         notes: ["Moor 後續版本通常會比 Flutter Web 新。"],

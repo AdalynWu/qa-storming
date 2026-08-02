@@ -7,6 +7,8 @@
   --gold: #d9a64d;
   --mint: #7fd3a7;
   --sky: #bce8dc;
+  --font-geist-sans: Arial, Helvetica, sans-serif;
+  --font-geist-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 * {
   box-sizing: border-box;
@@ -143,6 +145,22 @@ button {
   z-index: -2;
   will-change: transform;
   transform-origin: 50% 40%;
+}
+.immersive-tree-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 700ms ease;
+}
+.immersive-tree-canvas.is-ready {
+  opacity: 1;
+}
+.immersive-tree-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .tree-hero:after {
   content: "";
@@ -2258,6 +2276,9 @@ button {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .immersive-tree-canvas {
+    display: none;
+  }
   .quest-orbit-slot {
     transition: none !important;
   }

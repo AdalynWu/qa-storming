@@ -82,6 +82,11 @@ export default function ProductMapPage() {
               <section><h4>核心說明</h4><p>{activeProduct.summary}</p></section>
               {activeProduct.sections?.map((section) => <section key={section.label}><h4>{section.label}</h4><p>{section.value}</p></section>)}
               <section className="qa-notes"><h4>QA 注意事項</h4><ul>{activeProduct.notes.map((note) => <li key={note}>{note}</li>)}</ul></section>
+              {activeProduct.href && (
+                <Link className="product-enter" href={activeProduct.href}>
+                  進入 {activeProduct.name} 創作者聖域 <span aria-hidden="true">→</span>
+                </Link>
+              )}
             </>
           )}
         </aside>

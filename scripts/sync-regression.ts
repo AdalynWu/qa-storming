@@ -12,12 +12,12 @@ import {
   type RegressionData,
   type RegressionSuite,
   type TestCase,
-} from "../content/regression";
+} from "../src/content/regression";
 
 type SheetRow = Record<string, string>;
 type SheetValues = Array<Array<string | number | boolean | null>>;
 
-const OUTPUT_PATH = path.resolve("content/generated/regression.json");
+const OUTPUT_PATH = path.resolve("src/content/generated/regression.json");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 const REPLACE_SAMPLE_BASELINE_FLAG = "--replace-sample-baseline";
 
