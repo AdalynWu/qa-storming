@@ -44,3 +44,8 @@ next-env.d.ts
 /outputs/
 /work/
 /.openai/
+
+# local agent tooling
+.agents/
+.claude/
+.codex/
