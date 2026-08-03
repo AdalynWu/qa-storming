@@ -57,10 +57,10 @@ export const webChapters: WebChapter[] = [
     rune: "II",
     title: "直播體驗",
     subtitle: "LIVE HARBOR",
-    summary: "直播首屏、簡化 UI、聊天室、排行榜與募資互動。",
-    duration: "14 分鐘",
+    summary: "直播首屏、語音直播、簡化 UI、聊天室、排行榜與募資互動。",
+    duration: "17 分鐘",
     status: "published",
-    sourceUpdatedAt: "2026-08-02",
+    sourceUpdatedAt: "2026-08-03",
     sections: [
       {
         id: "first-screen",
@@ -71,6 +71,19 @@ export const webChapters: WebChapter[] = [
             "聊天室、公告、置頂內容與工具列不遮住關鍵直播資訊。",
             "排行榜前三名有足夠辨識度；載入、空資料與延遲更新不會被誤認為名次。",
             "新開直播沒有歷史資料時，首屏仍呈現完整且可操作的初始狀態。",
+          ] },
+        ],
+      },
+      {
+        id: "audio-live",
+        title: "語音直播模式",
+        blocks: [
+          { type: "paragraph", text: "語音直播有 SWAG 觀看端與 Moor 主播端兩套現行 Mockup。入口、直播卡、房間狀態與聲音波形要能讓使用者明確分辨語音與視訊直播，兩端也必須指向同一場直播。" },
+          { type: "list", title: "跨端檢查", items: [
+            "直播列表與直播間入口能辨識語音模式，圖示、標籤與實際房型一致。",
+            "加入、離開、重新連線與切到背景後，主播、聽眾、在線人數及房間狀態正確更新。",
+            "麥克風權限拒絕、靜音、無聲音與網路不穩時提供可理解的狀態與恢復方式。",
+            "聲音波形是輔助回饋；即使降低動態或無法播放動畫，仍要以文字或控制狀態表達結果。",
           ] },
         ],
       },
@@ -90,10 +103,10 @@ export const webChapters: WebChapter[] = [
     rune: "III",
     title: "商店與快速支付",
     subtitle: "MERCHANT DOCK",
-    summary: "新用戶與訪客的首次禮包導購、Email 條件與訂單狀態。",
-    duration: "10 分鐘",
+    summary: "Shop Detail、First Pay、新手禮包、信用卡結帳與快速支付。",
+    duration: "14 分鐘",
     status: "published",
-    sourceUpdatedAt: "2026-08-02",
+    sourceUpdatedAt: "2026-08-03",
     sections: [
       {
         id: "first-purchase",
@@ -106,6 +119,29 @@ export const webChapters: WebChapter[] = [
             "返回原場景並確認商品、權益與活動任務正確更新。",
           ] },
           { type: "list", title: "狀態覆蓋", items: ["禮包載入中與無可購買商品", "Email 必填、格式錯誤與既有資料帶入", "重複點擊付款與長時間處理中", "付款失敗、取消、逾時與恢復", "成功後重整、返回與重複導購"] },
+        ],
+      },
+      {
+        id: "shop-entry",
+        title: "Shop Detail 與 First Pay",
+        blocks: [
+          { type: "paragraph", text: "2026 上半年 Shop 現行檔案將一般商店頁與新手首次導購拆成兩條路徑。測試時需保留入口身分、導購資格與返回來源，避免一般使用者誤進 First Pay，或符合資格的新手遺失優惠。" },
+          { type: "table", title: "入口差異", columns: ["路徑", "主要目的", "QA 觀察"], rows: [
+            ["Shop Detail", "瀏覽商品並進入一般購買", "商品狀態、價格、幣別、返回位置與重整"],
+            ["First Pay", "引導符合條件的新手完成首次購買", "資格、零次購買判定、優惠承接與完成後去向"],
+          ] },
+        ],
+      },
+      {
+        id: "card-checkout",
+        title: "信用卡結帳流程",
+        blocks: [
+          { type: "list", title: "結帳摩擦點", items: [
+            "快速支付與一般支付入口、欄位及下一步結果一致，不會因切換方式產生重複訂單。",
+            "卡片資訊、Email、帳單資料的必填、格式錯誤與既有資料帶入都有明確提示。",
+            "送出後的處理中、驗證、成功、失敗、取消與逾時狀態可以辨識並安全恢復。",
+            "返回、重整或重複點擊不會誤扣款；成功後商品、權益與訂單紀錄只更新一次。",
+          ] },
         ],
       },
       {
@@ -178,11 +214,75 @@ export const webChapters: WebChapter[] = [
           { type: "paragraph", text: "FAQ 與 Landing 的核心資訊應存在於可讀的 HTML 結構中。驗證標題層級、連結文字、頁面 metadata、canonical 與結構化資料是否符合本次需求，不以純視覺呈現代替語意。" },
         ],
       },
+      {
+        id: "error-pages",
+        title: "404 與相關錯誤頁",
+        blocks: [
+          { type: "paragraph", text: "現行錯誤頁涵蓋 Mobile、Tablet 與 Desktop。不同錯誤可以共用視覺語言，但訊息要說明發生什麼事，並提供回首頁、返回上一頁或重新嘗試等真正可用的恢復路徑。" },
+          { type: "list", title: "必要驗證", items: [
+            "404、系統錯誤與地區限制等狀態不共用模糊文案，主要動作符合各自可恢復方式。",
+            "重新整理、直接開深連結、返回及登入狀態切換後，錯誤頁不會形成循環。",
+            "錯誤標題、說明、插圖替代文字與 CTA 在三種裝置尺寸都完整可讀。",
+            "內部錯誤碼可以輔助回報，但不可取代面向使用者的問題與下一步說明。",
+          ] },
+        ],
+      },
     ],
   },
   { slug: "profile-content", order: 6, rune: "VI", title: "個人檔案與內容", subtitle: "PROFILE QUARTER", summary: "個人檔案、貼文、媒體與內容管理。", duration: "待安全整理", status: "review" },
   { slug: "media-chat", order: 7, rune: "VII", title: "影音與聊天", subtitle: "MEDIA CHANNEL", summary: "影音瀏覽、訊息與聊天室互動。", duration: "待安全整理", status: "review" },
-  { slug: "settings", order: 8, rune: "VIII", title: "個人中心與設定", subtitle: "ACCOUNT CABIN", summary: "個人中心、通知、偏好與帳號設定。", duration: "待安全整理", status: "review" },
+  {
+    slug: "settings",
+    order: 8,
+    rune: "VIII",
+    title: "個人中心與設定",
+    subtitle: "ACCOUNT CABIN",
+    summary: "設定入口、聯盟夥伴、密碼安全、VIP 等級與 Lv.0 徽章。",
+    duration: "12 分鐘",
+    status: "published",
+    sourceUpdatedAt: "2026-08-03",
+    sections: [
+      {
+        id: "settings-navigation",
+        title: "設定與聯盟夥伴入口",
+        blocks: [
+          { type: "paragraph", text: "聯盟夥伴入口在現行 Mockup 中重新安排版位，並同時提供 Mobile、Tablet 與 Desktop 對照。驗證時以新版區塊為準，舊版只用來確認遷移後沒有遺失入口或權限判斷。" },
+          { type: "list", title: "導覽檢查", items: [
+            "三種裝置尺寸都能從預期的個人選單或設定區找到入口，排序與分組一致。",
+            "只有符合資格的帳號看見可用入口；不可用、未登入與地區限制都有明確處理。",
+            "入口 badge、未讀狀態與目的頁一致，返回後仍回到正確的設定位置。",
+            "鍵盤、觸控及長翻譯不會讓入口被裁切、遮擋或誤點相鄰項目。",
+          ] },
+        ],
+      },
+      {
+        id: "password-security",
+        title: "設定密碼流程",
+        blocks: [
+          { type: "steps", title: "安全路徑", items: [
+            "由正確的帳號或安全入口開始，確認目前身分與可設定資格。",
+            "輸入符合規則的新密碼，並完成必要的再次確認或驗證。",
+            "送出後確認成功狀態、登入狀態與返回目的地。",
+            "以新密碼重新驗證，並確認舊密碼或未完成流程不會被誤套用。",
+          ] },
+          { type: "callout", tone: "warning", title: "錯誤與證據", text: "規則不符、兩次輸入不同、驗證逾時與網路失敗要說明可恢復方式；截圖與 issue 不得包含密碼、驗證碼或可識別的帳號資料。" },
+        ],
+      },
+      {
+        id: "vip-levels",
+        title: "VIP 1–100 與 Lv.0 顯示",
+        blocks: [
+          { type: "paragraph", text: "2026 VIP 新制由原本 1–8 級調整為 1–100 級；另一份 Moor／SWAG 共用設計規定 Lv.0 不顯示等級徽章資訊。兩項規則必須一起驗證，避免只更新數值範圍而留下舊徽章或舊排序。" },
+          { type: "table", title: "邊界案例", columns: ["狀態", "預期呈現", "QA 觀察"], rows: [
+            ["Lv.0", "不顯示等級徽章資訊", "個人頁、直播間、列表、Hover／Tooltip 與無障礙名稱一致"],
+            ["Lv.1", "顯示新制最低有效等級", "由 Lv.0 升級後即時更新，不殘留空白占位"],
+            ["Lv.100", "顯示新制最高等級", "三位數不爆版，排序、篩選與資料格式正確"],
+            ["舊資料／延遲", "使用可辨識的載入或降級狀態", "不可回退成 1–8 級或把未知值當 Lv.0"],
+          ] },
+        ],
+      },
+    ],
+  },
 ];
 
 export const publishedWebChapters = webChapters.filter(

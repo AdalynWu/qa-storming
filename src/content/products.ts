@@ -97,7 +97,7 @@ export const continents: Continent[] = [
         technology: "Native App + WebView（類 H5）",
         summary: "純網頁包在 App 殼內，目前是主要用戶端產品。",
         environment: "Android",
-        notes: ["收到的回傳資料有加密。", "主要面向中國使用者，也有國際版本。"],
+        notes: ["收到的回傳資料有加密。", "主要面向中國使用者，也有國際版本。", "「下載 App」需依 Ramen MDM 判定走已安裝路徑或下載／落地頁 fallback，並驗證返回來源。"],
         status: "active",
       },
       {
@@ -106,7 +106,7 @@ export const continents: Continent[] = [
         technology: "Native App + WebView（類 H5）",
         summary: "Ramen 的 iOS 版本，純網頁包在 App 殼內。",
         environment: "iOS／MDM",
-        notes: ["目前是主要用戶端產品。", "回傳資料有加密；主要面向中國使用者，也有國際版本。"],
+        notes: ["目前是主要用戶端產品。", "回傳資料有加密；主要面向中國使用者，也有國際版本。", "「下載 App」行為需涵蓋 MDM 判定、已安裝開啟、未安裝 fallback 與取消／失敗恢復。"],
         status: "active",
       },
     ],

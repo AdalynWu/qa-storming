@@ -46,7 +46,7 @@ export const moorChapters: MoorChapter[] = [
     summary: "取得測試版本、確認環境並完成主播帳號登入。",
     duration: "6 分鐘",
     status: "published",
-    sourceUpdatedAt: "2026-07-02",
+    sourceUpdatedAt: "2026-08-03",
     sections: [
       {
         id: "prepare",
@@ -100,6 +100,32 @@ export const moorChapters: MoorChapter[] = [
           },
         ],
       },
+      {
+        id: "creator-registration-consent",
+        title: "創作者註冊與本人同意",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "現行 Moor 金流合規 Mockup 在創作者註冊的媒體上傳流程加入本人同意勾選，並提供 Mobile 空白／已填寫狀態與 Desktop Registration 對照。",
+          },
+          {
+            type: "list",
+            title: "合規欄位檢查",
+            items: [
+              "未勾選本人同意時不可略過必要確認，錯誤訊息要靠近欄位且說明下一步。",
+              "上傳、替換或移除媒體後，同意狀態與送出資格依規格正確保留或重設。",
+              "Mobile 與 Desktop 的欄位順序、必填狀態、說明文案與送出結果一致。",
+              "返回、重整、網路失敗與重複送出不會建立重複申請或留下不完整資料。",
+            ],
+          },
+          {
+            type: "callout",
+            tone: "warning",
+            title: "敏感資料",
+            text: "媒體、身分與申請資料只使用核准測試素材；公開 issue 應遮蔽個資、檔案內容與任何可追溯申請人的資訊。",
+          },
+        ],
+      },
     ],
   },
   {
@@ -111,7 +137,7 @@ export const moorChapters: MoorChapter[] = [
     summary: "從開播設定、直播工具與互動，到下播後的完整旅程。",
     duration: "18 分鐘",
     status: "published",
-    sourceUpdatedAt: "2026-08-02",
+    sourceUpdatedAt: "2026-08-03",
     sections: [
       {
         id: "start-live",
@@ -157,6 +183,46 @@ export const moorChapters: MoorChapter[] = [
             tone: "tip",
             title: "AI 輔助功能",
             text: "部分版本可能提供直播助理與直播精華。測試時需特別確認開關預設、額度或可用狀態、通知與下播後的內容去向。",
+          },
+        ],
+      },
+      {
+        id: "audio-live",
+        title: "語音直播",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "語音直播的現行設計分別整理 Moor 主播端與 SWAG 觀看端。Moor 端需涵蓋建立語音房、麥克風與直播狀態；兩端的直播卡、房型與參與者狀態必須一致。",
+          },
+          {
+            type: "list",
+            title: "主播端檢查",
+            items: [
+              "建立與開啟語音直播時，房型、標題、封面及必要設定正確帶入。",
+              "麥克風權限、靜音、切到背景、來電或音訊裝置切換後有明確狀態。",
+              "聽眾加入、離開、斷線與重新連線後，參與者及在線資訊合理同步。",
+              "結束直播後停止傳送聲音，並回到正確的結果或管理頁。",
+            ],
+          },
+        ],
+      },
+      {
+        id: "ai-assistant",
+        title: "直播 AI 助理",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "直播 AI 助理目前以 Moor 的 Merged Mockup 為來源，重點包含開播前設定與真實使用者隔離。若測試版本未開放，不應把設計稿視為所有帳號都已可用。",
+          },
+          {
+            type: "list",
+            title: "功能與隔離",
+            items: [
+              "符合條件的測試帳號看見正確入口；一般使用者不會誤觸或收到相關通知。",
+              "開關預設、設定保存、開播中狀態及下播後結果符合本次版本規格。",
+              "功能不可用、額度不足、生成失敗或網路中斷時有明確替代路徑。",
+              "AI 產出需能辨識來源與狀態，不把處理中或失敗內容誤當已完成結果。",
+            ],
           },
         ],
       },
@@ -284,7 +350,7 @@ export const moorChapters: MoorChapter[] = [
     rune: "VI",
     title: "我的頁面",
     subtitle: "PROFILE LODGE",
-    summary: "創作者檔案、直播時段、內容管理、自動回覆、推薦、通知與設定。",
+    summary: "創作者檔案、VIP 等級與 Lv.0 徽章、直播時段、內容管理、推薦、通知與設定。",
     duration: "待安全整理",
     status: "review",
   },
