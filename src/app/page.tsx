@@ -90,8 +90,8 @@ export default function Home() {
       <section className="quest-zone" id="onboarding">
         <div className="parallax-hills hills-back" style={{ transform: `translateY(${(scrollY - 650) * .06}px)` }} />
         <div className="parallax-hills hills-front" style={{ transform: `translateY(${(scrollY - 650) * .12}px)` }} />
+        <header className="zone-title"><p>✦ ADVENTURER&apos;S BEGINNING ✦</p><h2>新手村任務書</h2><span>從團隊指南與產品世界地圖開始，準備你的第一場 QA 冒險。</span></header>
         <div className="zone-content">
-          <div className="zone-title"><p>✦ ADVENTURER&apos;S BEGINNING ✦</p><h2>新手村任務書</h2><span>從團隊指南與產品世界地圖開始，準備你的第一場 QA 冒險。</span></div>
           <QuestBookCarousel quests={onboardingQuestBooks} />
         </div>
         <div className="critter bat" style={{ transform: `translate(${(scrollY - 650) * .5}px, ${(scrollY - 650) * -.34}px)` }}><span className="animal-sprite sprite-bat" role="img" aria-label="飛行的蝙蝠" /></div>

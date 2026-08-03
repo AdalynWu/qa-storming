@@ -63,10 +63,10 @@ export function TrialForestPortal() {
           <div className="portal-mist" aria-hidden="true" />
         </div>
         <div className="trial-dragon"><span className="animal-sprite sprite-lol-dragon" role="img" aria-label="守護石台的試煉巨龍" /></div>
-        <div className="portal-copy">
+        <header className="portal-title">
           <p>✦ REGRESSION TRIAL GATE ✦</p><h2>試煉之森</h2>
           <span>選擇方向，讓傳送門顯現下一座試煉領域。</span>
-        </div>
+        </header>
       </div>
       <div className="realm-info-panel" aria-live="polite">
           <small>目前試煉領域</small>
