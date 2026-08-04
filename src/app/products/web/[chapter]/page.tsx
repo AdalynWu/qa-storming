@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { NotionMarkdown } from "@/components/NotionMarkdown";
+import { getGeneratedProductChapter } from "@/content/generated-docs";
 import type { MoorContentBlock } from "@/content/moor";
+import { parseNotionMarkdown } from "@/content/notion-markdown";
 import { getWebChapter, publishedWebChapters, webChapters } from "@/content/web";
 import "../web.css";
 
@@ -14,8 +17,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { chapter: slug } = await params;
   const chapter = getWebChapter(slug);
+  const generatedDocument = chapter ? await getGeneratedProductChapter("web", slug) : undefined;
   return chapter
-    ? { title: `${chapter.title} · Web | QA Storming`, description: chapter.summary }
+    ? {
+        title: `${generatedDocument?.title ?? chapter.title} · Web | QA Storming`,
+        description: generatedDocument?.summary ?? chapter.summary,
+      }
     : { title: "Web 文件 | QA Storming" };
 }
 
@@ -24,13 +31,23 @@ function ContentBlock({ block }: { block: MoorContentBlock }) {
   if (block.type === "steps") return <div className="web-doc-block"><h3>{block.title}</h3><ol className="web-steps">{block.items.map((item) => <li key={item}><span>{item}</span></li>)}</ol></div>;
   if (block.type === "list") return <div className="web-doc-block"><h3>{block.title}</h3><ul className="web-check-list">{block.items.map((item) => <li key={item}>{item}</li>)}</ul></div>;
   if (block.type === "table") return <div className="web-doc-block"><h3>{block.title}</h3><div className="web-table-wrap"><table><thead><tr>{block.columns.map((column) => <th key={column}>{column}</th>)}</tr></thead><tbody>{block.rows.map((row) => <tr key={row.join("-")}>{row.map((cell, index) => <td key={`${cell}-${index}`}>{cell}</td>)}</tr>)}</tbody></table></div></div>;
-  return <aside className={`web-callout ${block.tone}`}><strong>{block.title}</strong><p>{block.text}</p></aside>;
+  return null;
 }
 
 export default async function WebChapterPage({ params }: PageProps) {
   const { chapter: slug } = await params;
   const chapter = getWebChapter(slug);
-  if (!chapter?.sections) notFound();
+  if (!chapter) notFound();
+  const generatedDocument = await getGeneratedProductChapter("web", slug);
+  const notionDocument = generatedDocument ? parseNotionMarkdown(generatedDocument.markdown) : undefined;
+  if (!notionDocument && !chapter.sections) notFound();
+
+  const title = generatedDocument?.title ?? chapter.title;
+  const summary = generatedDocument?.summary ?? chapter.summary;
+  const breadcrumbTitle = title.replace(/^Web\s+/i, "");
+  const tocItems = notionDocument?.tableOfContents.length
+    ? notionDocument.tableOfContents
+    : chapter.sections?.map((section) => ({ id: section.id, title: section.title, level: 1 as const })) ?? [];
 
   const currentIndex = publishedWebChapters.findIndex((item) => item.slug === chapter.slug);
   const previous = publishedWebChapters[currentIndex - 1];
@@ -39,26 +56,29 @@ export default async function WebChapterPage({ params }: PageProps) {
   return (
     <main className="web-reader-shell">
       <header className="web-reader-topbar">
-        <Link href="/products/web">← 返回瀏覽者海岸</Link>
-        <span>WEB KNOW-HOW · CHAPTER {String(chapter.order).padStart(2, "0")}</span>
-        <Link href="/">QA STORMING</Link>
+        <nav className="web-reader-breadcrumb" aria-label="麵包屑導覽">
+          <Link href="/">首頁</Link><span aria-hidden="true">›</span>
+          <Link href="/product-map">產品地圖</Link><span aria-hidden="true">›</span>
+          <Link href="/products/web">Web</Link><span aria-hidden="true">›</span>
+          <span aria-current="page">{breadcrumbTitle}</span>
+        </nav>
+        <span className="web-reader-chapter-label">WEB · 第 {String(chapter.order).padStart(2, "0")} 章</span>
       </header>
 
       <section className="web-reader-banner">
-        <div><p>{chapter.subtitle}</p><h1>{chapter.title}</h1><span>{chapter.summary}</span></div>
+        <div><p>{chapter.subtitle}</p><h1>{title}</h1><span>{summary}</span></div>
         <div className="web-reader-emblem" aria-hidden="true"><span>{chapter.rune}</span></div>
       </section>
 
       <div className="web-reader-layout">
         <nav className="web-toc" aria-label="本章目錄">
           <p>ADVENTURE GUIDE</p><h2>本章路標</h2>
-          {chapter.sections.map((section, index) => <a href={`#${section.id}`} key={section.id}><i>{String(index + 1).padStart(2, "0")}</i><span>{section.title}</span></a>)}
-          <small>來源更新：{chapter.sourceUpdatedAt}</small>
+          {tocItems.map((section, index) => <a className={section.level === 2 ? "is-nested" : undefined} href={`#${section.id}`} key={section.id}><i>{String(index + 1).padStart(2, "0")}</i><span>{section.title}</span></a>)}
+          <small>{generatedDocument ? "內容來源：Notion 同步版本" : `來源更新：${chapter.sourceUpdatedAt}`}</small>
         </nav>
 
         <article className="web-manuscript">
-          <div className="web-manuscript-intro"><span>QA CURATED EDITION</span><p>這是由核准設計稿整理出的網站閱讀版本；實際規格與最新操作仍以團隊核准文件及本次測試版本為準。</p></div>
-          {chapter.sections.map((section, index) => (
+          {notionDocument ? <NotionMarkdown document={notionDocument} classPrefix="web" showCallouts={false} /> : chapter.sections?.map((section, index) => (
             <section id={section.id} className="web-doc-section" key={section.id}>
               <div className="web-section-number">{String(index + 1).padStart(2, "0")}</div>
               <h2>{section.title}</h2>

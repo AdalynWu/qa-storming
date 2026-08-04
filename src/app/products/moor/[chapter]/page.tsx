@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { NotionMarkdown } from "@/components/NotionMarkdown";
+import { getGeneratedProductChapter } from "@/content/generated-docs";
 import {
   getMoorChapter,
   moorChapters,
   publishedMoorChapters,
   type MoorContentBlock,
 } from "@/content/moor";
+import { parseNotionMarkdown } from "@/content/notion-markdown";
 import "../moor.css";
 
 type PageProps = {
@@ -20,8 +23,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { chapter: slug } = await params;
   const chapter = getMoorChapter(slug);
+  const generatedDocument = chapter ? await getGeneratedProductChapter("moor", slug) : undefined;
   return chapter
-    ? { title: `${chapter.title} · Moor | QA Storming`, description: chapter.summary }
+    ? {
+        title: `${generatedDocument?.title ?? chapter.title} · Moor | QA Storming`,
+        description: generatedDocument?.summary ?? chapter.summary,
+      }
     : { title: "Moor 文件 | QA Storming" };
 }
 
@@ -57,18 +64,23 @@ function ContentBlock({ block }: { block: MoorContentBlock }) {
     );
   }
 
-  return (
-    <aside className={`moor-callout ${block.tone}`}>
-      <strong>{block.title}</strong>
-      <p>{block.text}</p>
-    </aside>
-  );
+  return null;
 }
 
 export default async function MoorChapterPage({ params }: PageProps) {
   const { chapter: slug } = await params;
   const chapter = getMoorChapter(slug);
-  if (!chapter?.sections) notFound();
+  if (!chapter) notFound();
+  const generatedDocument = await getGeneratedProductChapter("moor", slug);
+  const notionDocument = generatedDocument ? parseNotionMarkdown(generatedDocument.markdown) : undefined;
+  if (!notionDocument && !chapter.sections) notFound();
+
+  const title = generatedDocument?.title ?? chapter.title;
+  const summary = generatedDocument?.summary ?? chapter.summary;
+  const breadcrumbTitle = title.replace(/^Moor\s+/i, "");
+  const tocItems = notionDocument?.tableOfContents.length
+    ? notionDocument.tableOfContents
+    : chapter.sections?.map((section) => ({ id: section.id, title: section.title, level: 1 as const })) ?? [];
 
   const currentIndex = publishedMoorChapters.findIndex((item) => item.slug === chapter.slug);
   const previous = publishedMoorChapters[currentIndex - 1];
@@ -77,16 +89,20 @@ export default async function MoorChapterPage({ params }: PageProps) {
   return (
     <main className="moor-reader-shell">
       <header className="moor-reader-topbar">
-        <Link href="/products/moor">← 返回創作者聖域</Link>
-        <span>MOOR KNOW-HOW · CHAPTER {String(chapter.order).padStart(2, "0")}</span>
-        <Link href="/">QA STORMING</Link>
+        <nav className="moor-reader-breadcrumb" aria-label="麵包屑導覽">
+          <Link href="/">首頁</Link><span aria-hidden="true">›</span>
+          <Link href="/product-map">產品地圖</Link><span aria-hidden="true">›</span>
+          <Link href="/products/moor">Moor</Link><span aria-hidden="true">›</span>
+          <span aria-current="page">{breadcrumbTitle}</span>
+        </nav>
+        <span className="moor-reader-chapter-label">MOOR · 第 {String(chapter.order).padStart(2, "0")} 章</span>
       </header>
 
       <section className="moor-reader-banner">
         <div>
           <p>{chapter.subtitle}</p>
-          <h1>{chapter.title}</h1>
-          <span>{chapter.summary}</span>
+          <h1>{title}</h1>
+          <span>{summary}</span>
         </div>
         <div className="moor-reader-emblem" aria-hidden="true"><span>{chapter.rune}</span></div>
       </section>
@@ -95,18 +111,14 @@ export default async function MoorChapterPage({ params }: PageProps) {
         <nav className="moor-toc" aria-label="本章目錄">
           <p>ADVENTURE GUIDE</p>
           <h2>本章路標</h2>
-          {chapter.sections.map((section, index) => (
-            <a href={`#${section.id}`} key={section.id}><i>{String(index + 1).padStart(2, "0")}</i><span>{section.title}</span></a>
+          {tocItems.map((section, index) => (
+            <a className={section.level === 2 ? "is-nested" : undefined} href={`#${section.id}`} key={section.id}><i>{String(index + 1).padStart(2, "0")}</i><span>{section.title}</span></a>
           ))}
-          <small>來源更新：{chapter.sourceUpdatedAt}</small>
+          <small>{generatedDocument ? "內容來源：Notion 同步版本" : `來源更新：${chapter.sourceUpdatedAt}`}</small>
         </nav>
 
         <article className="moor-manuscript">
-          <div className="moor-manuscript-intro">
-            <span>QA CURATED EDITION</span>
-            <p>這是由原始 Know-how 整理出的網站閱讀版本；實際規格與最新操作仍以團隊核准文件及本次測試版本為準。</p>
-          </div>
-          {chapter.sections.map((section, index) => (
+          {notionDocument ? <NotionMarkdown document={notionDocument} showCallouts={false} /> : chapter.sections?.map((section, index) => (
             <section id={section.id} className="moor-doc-section" key={section.id}>
               <div className="moor-section-number">{String(index + 1).padStart(2, "0")}</div>
               <h2>{section.title}</h2>
