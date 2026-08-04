@@ -321,8 +321,8 @@ export const moorChapters: MoorChapter[] = [
     title: "Creator Hub",
     subtitle: "CREATOR HALL",
     summary: "創作者首頁、主播任務、收益資訊、直播引導與建立內容入口。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "10 分鐘",
+    status: "published",
   },
   {
     slug: "posts",
@@ -331,8 +331,8 @@ export const moorChapters: MoorChapter[] = [
     title: "貼文功能",
     subtitle: "CONTENT GARDEN",
     summary: "建立限時動態或貼文，並管理、更新與刪除已發布內容。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "12 分鐘",
+    status: "published",
   },
   {
     slug: "chat",
@@ -341,8 +341,8 @@ export const moorChapters: MoorChapter[] = [
     title: "聊天功能",
     subtitle: "MESSAGE GROVE",
     summary: "聊天室主頁、單一聊天室與訊息互動功能。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "10 分鐘",
+    status: "published",
   },
   {
     slug: "profile",
@@ -351,8 +351,8 @@ export const moorChapters: MoorChapter[] = [
     title: "我的頁面",
     subtitle: "PROFILE LODGE",
     summary: "創作者檔案、VIP 等級與 Lv.0 徽章、直播時段、內容管理、推薦、通知與設定。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "10 分鐘",
+    status: "published",
   },
   {
     slug: "analytics",
@@ -361,8 +361,8 @@ export const moorChapters: MoorChapter[] = [
     title: "數據分析",
     subtitle: "INSIGHT OBSERVATORY",
     summary: "直播收益、觀看、排名、日期範圍與成長數據的查看方式。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "10 分鐘",
+    status: "published",
   },
   {
     slug: "other",
@@ -371,13 +371,13 @@ export const moorChapters: MoorChapter[] = [
     title: "其他功能",
     subtitle: "HIDDEN PATHS",
     summary: "推薦計畫、通知設定與跨模組輔助功能。",
-    duration: "待安全整理",
-    status: "review",
+    duration: "8 分鐘",
+    status: "published",
   },
 ];
 
 export const publishedMoorChapters = moorChapters.filter(
-  (chapter) => chapter.status === "published" && chapter.sections,
+  (chapter) => chapter.status === "published",
 );
 
 export function getMoorChapter(slug: string) {

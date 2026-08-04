@@ -35,7 +35,44 @@ export const questBooks: QuestBook[] = [
     reward: "+120 EXP",
     theme: "mint",
     emblem: "🧭",
-    cta: "接受任務",
+    cta: "進入書庫",
+    href: "/library",
+  },
+  {
+    id: "error-code-field-guide",
+    category: "鑑定任務 · ERROR CODE V2",
+    title: "錯誤代碼鑑定圖鑑",
+    description: "依 Code、Backend Key、情境與處理範圍快速定位問題。",
+    progress: "7 類索引",
+    reward: "+90 EXP",
+    theme: "peach",
+    emblem: "🔎",
+    cta: "開始查詢",
+    href: "/library/error-codes",
+  },
+  {
+    id: "testing-tools",
+    category: "支線任務 · TOOL WORKSHOP",
+    title: "測試工具工坊",
+    description: "找到裝置、投影、直播、影音、留存與效率工具。",
+    progress: "8 組工具",
+    reward: "+80 EXP",
+    theme: "mint",
+    emblem: "🧰",
+    cta: "打開工具箱",
+    href: "/library/testing-tools",
+  },
+  {
+    id: "mobile-automation",
+    category: "進階任務 · MOBILE AUTOMATION",
+    title: "Maestro × Appium MCP",
+    description: "先探索 UI Tree，再把穩定流程寫成可重複執行的測試。",
+    progress: "2 卷手冊",
+    reward: "+160 EXP",
+    theme: "blue",
+    emblem: "⚙️",
+    cta: "研讀手冊",
+    href: "/library/maestro",
   },
   {
     id: "console-regression",
@@ -63,5 +100,5 @@ export const questBooks: QuestBook[] = [
 ];
 
 export const onboardingQuestBooks = questBooks.filter((quest) =>
-  ["product-world-map", "qa-onboarding"].includes(quest.id),
+  ["product-world-map", "qa-onboarding", "error-code-field-guide", "testing-tools", "mobile-automation"].includes(quest.id),
 );
