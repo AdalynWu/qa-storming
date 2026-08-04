@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm run check:images",
+    "prebuild": "npm run check:images && npm run build:chat-index",
     "build": "next build",
     "start": "next start",
     "deploy": "npm run build && firebase deploy --only hosting",
@@ -18,9 +18,13 @@
     "sync:regression": "tsx scripts/sync-regression.ts",
     "test:regression": "tsx --test scripts/sync-regression.test.ts",
     "sync:notion": "tsx scripts/sync-notion.ts",
-    "test:notion": "tsx --test scripts/sync-notion.test.ts"
+    "refresh:notion": "npm run sync:notion && npm run build:chat-index",
+    "test:notion": "tsx --test scripts/sync-notion.test.ts src/content/notion-markdown.test.ts",
+    "build:chat-index": "node --import tsx scripts/build-chat-index.ts",
+    "test:chatbot": "node --import tsx --test src/lib/chatbot-search.test.ts src/lib/chatbot.test.ts"
   },
   "dependencies": {
+    "firebase": "^12.17.0",
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6",
