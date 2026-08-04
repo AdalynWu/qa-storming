@@ -4,6 +4,33 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-04 — 迷霧測試林 `/rpg` 擴充題庫＋換色/角色/燈光/隱藏 bot
+
+- **題庫擴充**：`public/rpg/misty-test-forest.html` 由 6 題擴為 **13 盞題庫（14 小題）**，每局隨機抽 **6 盞**、保證至少一盞白盒覆蓋題（新增：巢狀判斷、決策表、迴圈/清單 0-1-多 邊界、狀態轉換負向、靜態 vs 動態、殺蟲劑悖論、預期結果/oracle）。抽題以 `LAMP_BANK`/`LAMP_CORE`/`LAMP_COUNT` 控制，`LAMPS` 改為隨機挑選＋等距角度；HUD 進度改動態（`燈 0 / ${LAMPS.length}`）；`showEnding()` 結尾清單改為列出**本局實際抽中的盞**（`lamps.map(m=>m.data.name/cite)`）。整合時**省略貼稿最上方「用法」註解**（其內引用的 `*/` 會使 JS 區塊註解提早關閉 → SyntaxError），並**修正 `buildNestedLamp` note 的空門檻字串**（`'+''+'`）。
+- **品牌換色 `#FF2D78`（桃紅）→ `#7ED6D6`（青綠）**：遊戲 CSS `--pink`/`--pink-dk`、JS `PINK` 常數；站內 `src/app/rpg/rpg.css` `--quest-pink`/`--quest-pink-soft`/topbar 邊框。`--teal`（通過判定/螢火蟲）保留。
+- **角色/場景**：移除角色圍巾；燈點亮光源升高並縮短範圍（core y 3.7→3.95、glow y 3.7→4.0、PointLight distance 10→7，不再照到燈桿底座）；地面指引光點加大加亮（半徑 0.16→0.24、opacity 0.28→0.5）；左臂改為上臂貼身、手部外開（rotation.z 0.28→-0.35）。
+- **遊戲頁隱藏 Chatbot**：新增 `src/components/KnowledgeChatbotMount.tsx`（`usePathname`，`/rpg` 不掛載），`layout.tsx` 改用之；其餘頁面照常。
+- **驗證**：抽出遊戲 `<script>` `node --check` 通過（無 SyntaxError）；遊戲 HTML 與 `out/rpg/misty-test-forest.html` 皆無 `FF2D78`/`scarf`/`vibe`、含 `7ED6D6` 與 13 個 builder、`LAMP_BANK`；`npx tsc --noEmit`、ESLint、`npm run build` 全通過；`knowledge-chatbot` 在 `out/index.html` 5 處、`out/rpg.html` **0 處**（prerender 即排除，無閃現），`out/library.html` 仍有。**尚待使用者重新部署後桌機瀏覽器實測**：每局 6 盞（≥1 白盒）、多玩題目會換、覆蓋率/set 各題型評分正常、結尾列出本局盞；全畫面青綠無桃紅、無圍巾、左臂姿勢、燈光不照底座、光點清楚。改動含 `public/`，需重新 `npm run deploy`。未部署，未執行 Git。
+
+## 2026-08-04 — Chatbot 修正 ②:「列舉全部」型問題(有哪些 error code)回不出來
+
+- 承上題:檢索修好後,真實 chatbot 複測 `JWT 過期的錯誤碼是什麼`、`登入失敗會回傳什麼 error code` 可答,但 `我們現在有哪些 error code` 仍回「賢者暫時無法完成回答,請稍後再試。」。查明:error-codes 在 index 是 4 個 chunk、共約 66 個錯誤碼,檢索時全進前 5(模型其實拿到完整清單),病灶不在檢索;「賢者暫時無法完成回答」是 `src/lib/chatbot.ts` 的 `ai-unavailable` 分支——模型想把 ~66 個碼全列出 → 超過 `maxOutputTokens: 800` → 回傳 JSON 被截斷 → `JSON.parse` 失敗。JWT/登入失敗只回一個碼,答案短所以沒事。
+- 修法(僅改 `src/lib/chatbot.ts`):(1) `SYSTEM_INSTRUCTION` 新增規則 9——「有哪些/列出全部/一覽」類大集合問題改以**分類或重點摘要**回答(說明分類、範圍、數量並提醒點來源看完整清單),不逐條窮舉,且此類摘要即視為 `sufficient: true`、在 `usedChunkIds` 列出引用 chunk;(2) `maxOutputTokens` 800 → 2048 當安全邊際。答案本質變短即不再截斷,同時就是使用者要的「分類摘要 + 圖鑑連結」UX(來源連結由既有 UI `KnowledgeChatbot.tsx` 的「查看資料來源」自動帶出,error-code chunk 的 href 皆為 `/library/error-codes`)。
+- **驗證**:`npm run test:chatbot` 16/16 通過(既有測試以 `generate` 依賴注入 mock 已解析物件,不踩真實 prompt/token,故不受影響)、`npx tsc --noEmit`、ESLint 通過。
+- **尚待人工複測**:prompt/token 的實際效果只能在真實模型呼叫觀察,此環境無法 headless 跑。需 `npm run dev` 在瀏覽器問 `我們現在有哪些 error code`,確認回**分類摘要**、不再出現「賢者暫時無法完成回答」、且「查看資料來源」有連到 `/library/error-codes`;JWT/登入失敗兩題仍正常。若仍偶發截斷,再落實計畫第 3 項(偵測 `finishReason === "MAX_TOKENS"` 降級)或再上調 token。未部署,未執行 Git。
+
+## 2026-08-04 — Chatbot 檢索修正:自然語句提問不再被中文填充詞稀釋
+
+- 問題:問「error code」找得到答案,問「我們現在有哪些 error code」卻無法回答。根因在 `src/lib/chatbot-search.ts` 的關鍵詞抽取:(1) 整句加分(最高 +28)要求整個正規化問題是欄位子字串,多幾個字就消失;(2) 中文沒有斷詞,一段中文被爆開成所有 2/3-gram(我們、們現、現在…),停用詞清單擋不掉,灌大覆蓋率分母、把 `matchedTerms/terms.length` 從 1.0 壓到 0.17,+8 覆蓋加分也沒了。而且一段填充詞若出現在某文件的**標題/章節**,其多個 n-gram 會集體超過真正關鍵詞。
+- 修法(僅改 `src/lib/chatbot-search.ts`):把「每段連續中文」聚合成**一個 query unit**(其 `variants` 為該段的 2/3-gram),讓一句填充詞只計為一個 unit、不再以 n-gram 數量灌分;對整份 `chunks` 即時計算每個 unit 的 document frequency,**丟掉 df=0 的雜訊 unit**;存活 unit 以 **IDF 加權(裁切到約 [0.5,1.5])**,讓 error/code 這種有辨識度的詞壓過 現在/我們,同時維持既有分數尺度與 `score >= 8` 門檻;覆蓋率改為**加權覆蓋率**(未命中的低訊號 unit 幾乎不進分母)。整句加分維持不動。
+- **驗證**:`npm run test:chatbot` 16/16 通過(新增 3 條 regression:填充詞包住關鍵詞仍命中、分數不相對純關鍵詞崩掉、關鍵詞只在內文的文件也檢索得到,含「填充詞出現在標題」這個最難的案例)。以一次性 script 對實際 `public/chatbot-search-index.json`(29 chunks)實測:`error code` 與 `我們現在有哪些 error code` 皆讓 4 個 error-code chunk 佔據前 4 名(前者 55–64 分、後者 27–36 分,取回的 top context 相同);全中文的 `JWT 過期的錯誤碼是什麼`、`登入失敗會回傳什麼 error code` 也都命中 error-code 文件;`maestro 怎麼用` 命中 Maestro 文件。`npx tsc --noEmit`、ESLint 通過。
+- **尚待人工複測**:後段 Gemini `sufficient` 判斷是 client-side 經 Firebase AI SDK 呼叫外部 API,此環境無法 headless 執行。需 `npm run dev` 在瀏覽器實問上述兩題確認能正常作答;因修正後自然語句餵給 Gemini 的 top chunks 已與可運作的純關鍵詞查詢相同,預期通過,若仍回「目前知識庫沒有足夠資訊」再放寬 `src/lib/chatbot.ts` 系統指令規則 3。未部署,未執行 Git。
+
+## 2026-08-04 — 迷霧測試林 `/rpg` 修正 WASD 相對鏡頭移動
+
+- `public/rpg/misty-test-forest.html`(遊戲 `tick()`)：移動向量修一個符號錯誤，`const dx=fx*c-fz*s,dz=fx*s+fz*c;` → `const dx=fx*c+fz*s,dz=fz*c-fx*s;`。原式讓 W 得到 `(sin,-cos)`、與相機 into-screen `(-sin,-cos)` 水平鏡射，導致用 ←→ 轉鏡頭後 WASD 不跟視角、W 會往下(轉約 90° 時 W 反而推向鏡頭)。修正後 W 永遠往畫面前方、S 往後、A/D 相對鏡頭左右，任意 yaw 皆成立；`player.rotation.y=Math.atan2(dx,dz)` 不動，角色面向也隨之正確。起始(yaw=0)行為不變。
+- **驗證**：`grep` 確認該行已更新為新式子；`npm run build` 通過，`out/rpg/misty-test-forest.html` 重新複製並含新式子。**尚待使用者重新部署後在真實桌機瀏覽器複測(此環境無法互動測鍵盤)：起始 W 往前、按 ←→ 轉任意角度後 W 仍往畫面前方、S 往後、A/D 相對左右。改動在 `public/`，需重新 `npm run deploy`。未部署，未執行 Git。**
+
 ## 2026-08-04 — 迷霧測試林 `/rpg` 上線後修正(標題裁切/卡住/移除 vibe-coding)
 
 - 修 iframe 高度塌陷(H1 被裁、`#start` 走進霧裡按鈕溢出視窗看不到而無法開始)：`src/app/rpg/rpg.css` 的 `.rpg-quest-shell` 由 `min-height` 改定值 `height:100dvh`(含 `100vh` fallback)；`.rpg-quest-iframe` 改 `position:absolute; inset:0` 撐滿 `position:relative` 的 `.rpg-quest-frame`，不再依賴 flex-item 百分比高度解析——遊戲載入讀 `innerHeight` 前即有正確全高，標題正常置中、按鈕可見、3D 場景尺寸正確。

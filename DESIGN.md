@@ -257,6 +257,9 @@ SEALED QUEST
 - 鍵盤優先：閘門按鈕可 Enter／Space／點擊；iframe 載入後同源交接焦點到遊戲 `#start`，讓純鍵盤能開場並用 WASD／方向鍵／E／Esc 操作；離開以 Shift+Tab 回到 topbar `返回世界樹`。
 - 一旦進入遊戲即 latch，之後縮小視窗不重建 iframe、不清進度，僅顯示「畫面較小」提示。
 - **reduced-motion 例外(如實記錄)**：此遊戲為第三方自帶場景，在 `prefers-reduced-motion` 下**僅降低裝飾動態(螢火蟲／光暈)，render loop 仍持續**，未完全符合站上裝飾層「離屏暫停／靜態降級」規範；屬第一版取捨，隱藏分頁／離屏暫停留待下一輪。決策見 `docs/DECISION.md` D25。
+- **題庫**：13 盞題庫（白盒覆蓋／黑盒設計技術／基礎觀念三類），每局隨機抽 6 盞並保證至少一盞白盒覆蓋題；結尾清單列出本局實際抽中的盞。要調整每局盞數改 `LAMP_COUNT`。
+- **品牌 accent**：`/rpg`（含站內 topbar 與遊戲內）accent 為青綠 `#7ED6D6`（取代原桃紅），與站上世界樹綠色系呼應；遊戲既有 `--teal` 保留給「通過判定/螢火蟲」。
+- **Chatbot**：`/rpg` 為全螢幕沉浸遊戲頁，**不顯示**全站賢者問答 Chatbot（`KnowledgeChatbotMount` 以 `usePathname` 於 prerender 即排除）；其餘頁面照常。
 
 ## 9. 動畫與互動
 
