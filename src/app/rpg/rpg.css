@@ -7,8 +7,8 @@
   --quest-line: #262a38;
   --quest-text: #e8e9ee;
   --quest-dim: #8b90a3;
-  --quest-pink: #ff2d78;
-  --quest-pink-soft: #ff6fa3;
+  --quest-pink: #7ed6d6;
+  --quest-pink-soft: #a8e8e8;
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -32,7 +32,7 @@
   align-items: center;
   gap: 20px;
   background: linear-gradient(180deg, #171a24, #12141c);
-  border-bottom: 1px solid #ff2d7855;
+  border-bottom: 1px solid #7ed6d655;
   font-weight: 700;
   letter-spacing: 0.04em;
 }

@@ -11,8 +11,8 @@
     --line:    #262A38;
     --text:    #E8E9EE;
     --dim:     #8B90A3;
-    --pink:    #FF2D78;
-    --pink-dk: #B41A54;
+    --pink:    #7ED6D6;
+    --pink-dk: #3E9E9E;
     --teal:    #37E0C8;
     --amber:   #FFB84D;
 
@@ -269,9 +269,10 @@ function minSize(prog,ok){
 const minStatement=p=>minSize(p,c=>c.miss.length===0);
 const minDecision =p=>minSize(p,c=>c.decMiss.length===0);
 
-/* ------------------------------------------------------------------
-   四盞燈：面向非 QA 使用者的文案，技術核心不變
-   ------------------------------------------------------------------ */
+/* ==================== 題庫（13 盞，每局抽 6；至少一盞白盒覆蓋） ==================== */
+
+/* ==================== A. 白盒：覆蓋率 ==================== */
+
 function buildCoverLamp(){
   const prog=programSingleIf();
   return {name:'路徑之燈',cite:'白盒 · 覆蓋率',
@@ -285,6 +286,7 @@ function buildCoverLamp(){
        prog,mode:'dec'}
     ]};
 }
+
 function buildBranchLamp(){
   const prog=programIfElse();
   return {name:'岔路之燈',cite:'白盒 · 覆蓋率',
@@ -294,6 +296,45 @@ function buildBranchLamp(){
       note:'想清楚哪幾行可以擠在同一筆測資裡。',
       prog,mode:'stmt'}]};
 }
+
+/* 新增：巢狀判斷（內層只在外層成立時才走得到） */
+function programNested(){
+  const a=pick([300,500,1000]), b=pick([1,3,5]);
+  return {
+    lines:[
+      {n:1, src:'READ total, points',       exec:'stmt',when:()=>true},
+      {n:2, src:`IF total >= ${a} THEN`,    exec:'stmt',when:()=>true,dec:'D1',test:v=>v.x>=a},
+      {n:3, src:`  IF points > ${b} THEN`,  exec:'stmt',when:v=>v.x>=a,dec:'D2',test:v=>v.y>b},
+      {n:4, src:'    fee = 0',              exec:'stmt',when:v=>v.x>=a&&v.y>b},
+      {n:5, src:'  ELSE',                   exec:'none'},
+      {n:6, src:'    fee = 30',             exec:'stmt',when:v=>v.x>=a&&!(v.y>b)},
+      {n:7, src:'  END IF',                 exec:'none'},
+      {n:8, src:'ELSE',                     exec:'none'},
+      {n:9, src:'  fee = 60',               exec:'stmt',when:v=>v.x<a},
+      {n:10,src:'END IF',                   exec:'none'},
+      {n:11,src:'PRINT fee',                exec:'stmt',when:()=>true}
+    ],
+    pool:shuffle([
+      {label:`total = ${a+200}, points = ${b+2}`, v:{x:a+200,y:b+2}},
+      {label:`total = ${a}, points = ${b}`,       v:{x:a,     y:b}},
+      {label:`total = ${a-50}, points = ${b+9}`,  v:{x:a-50,  y:b+9}},
+      {label:`total = ${a+50}, points = 0`,       v:{x:a+50,  y:0}},
+      {label:`total = 0, points = 0`,             v:{x:0,     y:0}},
+      {label:`total = ${a+900}, points = ${b+1}`, v:{x:a+900, y:b+1}}
+    ])
+  };
+}
+function buildNestedLamp(){
+  return {name:'巢狀之燈',cite:'白盒 · 覆蓋率',
+    takeaway:'巢狀判斷的路徑是「乘」出來的，不是「加」出來的。內層那個 IF 只有在外層成立時才走得到 —— 只測外層不成立的情況，內層的 bug 你一輩子看不到。',
+    acts:[{
+      ask:'運費邏輯包了一層 <code>IF</code> 在另一層裡面。挑<b>最少</b>幾筆測資讓每一行都被執行到？',
+      note:'第 3 行（內層 IF）只有在外層 total 條件成立時才會被執行。先想清楚有幾種「走得完」的情況。',
+      prog:programNested(),mode:'stmt'}]};
+}
+
+/* ==================== B. 黑盒：測試設計技術 ==================== */
+
 function buildBoundaryLamp(){
   const lo=pick([1,10,18,100]), hi=lo+pick([49,82,89,99]);
   const correct=[lo-1,lo,hi,hi+1];
@@ -323,6 +364,7 @@ function buildBoundaryLamp(){
           ev:ev.join('　')};
       }}]};
 }
+
 function buildPartitionLamp(){
   const [t1,t2]=pick([[300,1500],[500,2000],[800,2500]]);
   const parts=[
@@ -360,7 +402,120 @@ function buildPartitionLamp(){
           ev:ev.join('　')};
       }}]};
 }
-/* ---- 概念題：名詞辨析（error / defect / failure）---- */
+
+/* 新增：決策表（條件組合） */
+function buildDecisionTableLamp(){
+  const T=pick([1000,1500,2000]);
+  const combos=[
+    {id:'YY',name:`會員 + 金額 ≥ ${T}`,  test:c=>c.m&&c.a>=T},
+    {id:'YN',name:`會員 + 金額 < ${T}`,  test:c=>c.m&&c.a<T},
+    {id:'NY',name:`非會員 + 金額 ≥ ${T}`,test:c=>!c.m&&c.a>=T},
+    {id:'NN',name:`非會員 + 金額 < ${T}`,test:c=>!c.m&&c.a<T}
+  ];
+  const mk=(m,a)=>({label:`${m?'會員':'非會員'}，金額 ${a}`,v:{m,a}});
+  const pool=shuffle([
+    mk(true, T+rand(100,800)), mk(true, T-rand(100,800)),
+    mk(false,T+rand(100,800)), mk(false,T-rand(100,800)),
+    mk(true, T+rand(900,1600)),mk(false,T-rand(850,950))
+  ]);
+  return {name:'組合之燈',cite:'黑盒 · 決策表測試',
+    takeaway:'兩個條件就有 4 種組合，三個條件就 8 種。條件一多，靠感覺測一定漏 —— 先把組合表列出來，再挑測資。「我測過會員也測過大額」不代表你測過「會員 + 大額」。',
+    acts:[{
+      ask:`折扣規則同時看兩個條件：<b>是否會員</b>、<b>金額是否達 ${T}</b>。<br>用<b>最少</b>幾筆測資把 4 種組合都測到？`,
+      note:'兩個是非題 → <b>2 × 2 = 4</b> 種組合。每種組合挑一個代表，不要重複。',
+      kind:'set',pool,
+      grade(sel){
+        const map={};combos.forEach(c=>map[c.id]=[]);
+        sel.forEach(o=>{const c=combos.find(c=>c.test(o.v));if(c)map[c.id].push(o.label);});
+        const empty=combos.filter(c=>!map[c.id].length);
+        const dup=combos.filter(c=>map[c.id].length>1);
+        if(!empty.length&&!dup.length)
+          return {pass:true,msg:'4 種組合各一筆，決策表整張填滿了。',
+                  ev:combos.map(c=>`${c.name} → ${map[c.id][0]}`).join('　|　')};
+        const ev=[];
+        if(empty.length)ev.push(`沒測到的組合：${empty.map(c=>c.name).join('、')}`);
+        if(dup.length)ev.push(`重複：${dup.map(c=>c.name).join('、')}`);
+        return {pass:false,
+          msg:empty.length
+            ? '有組合完全沒被測到。這種漏洞在線上長這樣：「一般人都正常，只有會員買大額會壞」。'
+            : '每個組合都碰到了，但不是最少 —— 同一格填兩次不會多測到什麼。',
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* 新增：清單／迴圈的 0-1-多 邊界 */
+function buildLoopLamp(){
+  const N=pick([10,20,50]);
+  const correct=[0,1,N,N+1];
+  const poolVals=[...new Set([0,1,2,Math.floor(N/2),N-1,N,N+1,N+rand(5,20)])].sort((a,b)=>a-b);
+  return {name:'空白之燈',cite:'黑盒 · 迴圈與清單邊界',
+    takeaway:'清單、迴圈、分頁的四個必測點：0 筆、1 筆、剛好滿、超過一點。其中 0 筆最常爆 —— 因為你的開發環境永遠有假資料，永遠不是空的。',
+    acts:[{
+      ask:`收藏清單一頁最多顯示 <b>${N}</b> 筆。挑<b>最少</b>幾種資料量，就能抓出這頁的邊界 bug？`,
+      note:'想想哪幾種數量會走到不同的程式邏輯：<b>沒有資料</b>、<b>只有一筆</b>、<b>剛好塞滿一頁</b>、<b>多到要換頁</b>。中間那些數量走的都是同一段 code。',
+      kind:'set',
+      pool:poolVals.map(n=>({label:`${n} 筆`,v:n})),
+      grade(sel){
+        const got=sel.map(o=>o.v).sort((a,b)=>a-b);
+        const want=[...correct].sort((a,b)=>a-b);
+        const missing=want.filter(n=>!got.includes(n));
+        const extra=got.filter(n=>!want.includes(n));
+        if(!missing.length&&!extra.length)
+          return {pass:true,msg:'0 / 1 / 剛好滿 / 超過一點 —— 四種都在，這就是最小集合。',
+                  ev:`測試資料量：${want.map(n=>n+' 筆').join('、')}`};
+        const ev=[];
+        if(missing.length)ev.push(`漏了：${missing.map(n=>n+' 筆').join('、')}`);
+        if(extra.length)ev.push(`不必要：${extra.map(n=>n+' 筆').join('、')}`);
+        return {pass:false,
+          msg:missing.includes(0)
+            ? '<b>0 筆沒測到。</b>空清單是線上最常見的 bug 來源：空狀態文案沒做、算平均時除以 0、抓 list[0] 直接爆。'
+            : (extra.length&&!missing.length
+              ? '四個關鍵點都有了，但多測的那幾種走的是同一段 code，覆蓋沒有增加。'
+              : '還有走到不同邏輯的資料量沒被測到。'),
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* 新增：狀態轉換（負向測試） */
+function buildStateLamp(){
+  const VALID=[
+    ['待付款','已付款'],['已付款','已出貨'],['已出貨','已完成'],
+    ['待付款','已取消'],['已付款','已取消']
+  ];
+  const INVALID=[
+    ['已出貨','已取消'],['已完成','已取消'],['已付款','待付款'],
+    ['已出貨','已付款'],['待付款','已出貨'],['已完成','已出貨']
+  ];
+  const pool=shuffle([
+    ...shuffle([...VALID]).slice(0,3).map(t=>({label:`${t[0]} → ${t[1]}`,v:'ok'})),
+    ...shuffle([...INVALID]).slice(0,3).map(t=>({label:`${t[0]} → ${t[1]}`,v:'bad'}))
+  ]);
+  return {name:'流轉之燈',cite:'黑盒 · 狀態轉換測試',
+    takeaway:'狀態機的自測重點不是「正常流程走得順」，而是「非法轉換有沒有被擋住」。前端把按鈕藏起來不算擋住 —— 直接打 API、按上一頁、重送表單，狀態還是會被推到不該去的地方。',
+    acts:[{
+      ask:'訂單狀態設計為：<code>待付款 → 已付款 → 已出貨 → 已完成</code>，且<b>只有「待付款」和「已付款」可以取消</b>。<br>挑出所有<b>不該被允許</b>的狀態轉換。',
+      note:'這些是你該<b>刻意去試、並且預期會失敗</b>的操作（負向測試）。能成功就是 bug。',
+      kind:'set',pool,
+      grade(sel){
+        const want=pool.filter(o=>o.v==='bad');
+        const missing=want.filter(o=>!sel.includes(o));
+        const extra=sel.filter(o=>o.v!=='bad');
+        if(!missing.length&&!extra.length)
+          return {pass:true,msg:'三個非法轉換全部抓到，而且沒有誤傷合法流程。',
+                  ev:want.map(o=>o.label).join('　/　')};
+        const ev=[];
+        if(missing.length)ev.push(`漏了：${missing.map(o=>o.label).join('；')}`);
+        if(extra.length)ev.push(`誤抓（這些是合法的）：${extra.map(o=>o.label).join('；')}`);
+        return {pass:false,
+          msg:missing.length
+            ? '還有非法轉換沒被挑出來。逐條問自己：這條路在規則裡存在嗎？如果不存在，系統擋得住嗎？'
+            : '有合法轉換被當成非法了 —— 對照規則再讀一次箭頭方向。',
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* ==================== C. 基礎觀念 ==================== */
+
 function buildTermLamp(){
   const BANK={
     error:[
@@ -386,7 +541,6 @@ function buildTermLamp(){
     defect:'缺陷（defect）是躺在<b>程式碼或文件裡</b>的瑕疵，還沒執行就已經存在。',
     failure:'失效（failure）是<b>執行時</b>才觀察得到的不正確行為。'
   }[target];
-  // 每類抽 2 個，共 6 個情境
   const pool=shuffle(
     Object.entries(BANK).flatMap(([k,list])=>
       shuffle([...list]).slice(0,2).map(s=>({label:s,v:k})))
@@ -415,7 +569,6 @@ function buildTermLamp(){
       }}]};
 }
 
-/* ---- 概念題：確認測試 vs 回歸測試 ---- */
 function buildRegressionLamp(){
   const CONFIRM=[
     '重跑當初抓到 bug 的那筆測資，確認真的修好了',
@@ -461,19 +614,157 @@ function buildRegressionLamp(){
       }}]};
 }
 
-const LAMPS=[
-  {build:buildCoverLamp,     angle:  0},
-  {build:buildBranchLamp,    angle: 60},
-  {build:buildBoundaryLamp,  angle:120},
-  {build:buildPartitionLamp, angle:180},
-  {build:buildTermLamp,      angle:240},
-  {build:buildRegressionLamp,angle:300}
+/* 新增：靜態測試 vs 動態測試 */
+function buildStaticLamp(){
+  const STATIC=[
+    '開 PR 逐行 review AI 生出來的 code',
+    '拿規格文件跟同事對一遍，找出互相矛盾的描述',
+    '跑 lint 與靜態掃描工具檢查程式碼',
+    '用型別檢查（type check）找出不合法的呼叫'
+  ];
+  const DYNAMIC=[
+    '手動點過一次完整的結帳流程',
+    '執行單元測試套件',
+    '用 Postman 打 API 看回傳內容',
+    '對頁面做壓力測試，觀察反應時間'
+  ];
+  const pool=shuffle([
+    ...shuffle([...STATIC]).slice(0,3).map(s=>({label:s,v:'s'})),
+    ...shuffle([...DYNAMIC]).slice(0,3).map(s=>({label:s,v:'d'}))
+  ]);
+  return {name:'靜默之燈',cite:'基礎 · 靜態 vs 動態測試',
+    takeaway:'AI 生的 code 先「讀」再「跑」。靜態測試（不執行程式）直接找到缺陷本身，動態測試只看得到失效現象、還要反推是哪一行 —— 前者便宜得多，而且愈早做愈省。',
+    acts:[{
+      ask:'下面六個活動裡，挑出<b>所有</b>屬於「<b>靜態測試（static testing）</b>」的。',
+      note:'判斷標準只有一條：這件事<b>需要把程式跑起來</b>嗎？不需要的就是靜態。',
+      kind:'set',pool,
+      grade(sel){
+        const want=pool.filter(o=>o.v==='s');
+        const missing=want.filter(o=>!sel.includes(o));
+        const extra=sel.filter(o=>o.v!=='s');
+        if(!missing.length&&!extra.length)
+          return {pass:true,msg:'三個靜態測試活動全部命中 —— 它們都不需要執行程式。',
+                  ev:want.map(o=>o.label).join('　/　')};
+        const ev=[];
+        if(missing.length)ev.push(`漏了：${missing.map(o=>o.label).join('；')}`);
+        if(extra.length)ev.push(`誤抓：${extra.map(o=>`「${o.label}」要把程式跑起來，是動態測試`).join('；')}`);
+        return {pass:false,
+          msg:extra.length
+            ? '有活動必須執行程式才做得到，那是<b>動態測試</b>。'
+            : '還有不需要執行程式的活動沒被挑出來 —— review 跟工具掃描都算。',
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* 新增：殺蟲劑悖論 */
+function buildPesticideLamp(){
+  const EFFECTIVE=[
+    '依這一版的新需求補上新的測試案例',
+    '換角度設計測資：異常流程、邊界、極端資料',
+    '定期 review 舊測試案例，刪掉過期的、補上缺的',
+    '拿線上實際發生的 bug 反推，補成新的測試案例'
+  ];
+  const USELESS=[
+    '把同一套測試從每天跑一次改成每小時跑一次',
+    '換更快的機器，讓同一套測試跑得更快',
+    '把同一套測試重複執行 100 次',
+    '幫測試報表加上更漂亮的通過率圖表'
+  ];
+  const pool=shuffle([
+    ...shuffle([...EFFECTIVE]).slice(0,3).map(s=>({label:s,v:'y'})),
+    ...shuffle([...USELESS]).slice(0,3).map(s=>({label:s,v:'n'}))
+  ]);
+  return {name:'鈍化之燈',cite:'基礎 · 殺蟲劑悖論',
+    takeaway:'同一套測試跑久了就抓不到新 bug，這叫殺蟲劑悖論（pesticide paradox）。要 AI 生一百筆測資很容易 —— 但如果都走同一條路，覆蓋跟一筆一樣。要換角度，不是換次數。',
+    acts:[{
+      ask:'你的測試套件半年來每次都全綠，但線上還是持續冒出 bug。<br>挑出<b>所有</b>能真正改善這件事的做法。',
+      note:'問自己：這個做法會讓測試<b>走到新的路徑</b>嗎？還是只是把舊路徑再走一遍？',
+      kind:'set',pool,
+      grade(sel){
+        const want=pool.filter(o=>o.v==='y');
+        const missing=want.filter(o=>!sel.includes(o));
+        const extra=sel.filter(o=>o.v!=='y');
+        if(!missing.length&&!extra.length)
+          return {pass:true,msg:'全部命中 —— 三個做法的共同點都是「讓測試走到沒走過的地方」。',
+                  ev:want.map(o=>o.label).join('　/　')};
+        const ev=[];
+        if(missing.length)ev.push(`漏了：${missing.map(o=>o.label).join('；')}`);
+        if(extra.length)ev.push(`沒有幫助：${extra.map(o=>o.label).join('；')}`);
+        return {pass:false,
+          msg:extra.length
+            ? '有做法只是把<b>同一套</b>測試跑更多次或跑更快 —— 抓不到的 bug 再跑一萬次還是抓不到。'
+            : '還有能打破鈍化的做法沒被挑出來。',
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* 新增：預期結果 / test oracle */
+function buildOracleLamp(){
+  const GOOD=[
+    '輸入 100，預期折扣欄顯示 10',
+    '輸入 -1，預期出現錯誤訊息「數量需大於 0」',
+    '未登入時點收藏，預期跳出登入視窗且不新增收藏',
+    '送出空白表單，預期停留原頁並將必填欄位標紅'
+  ];
+  const BAD=[
+    '輸入 100，看看會發生什麼',
+    '隨便點一點，確認沒問題',
+    '測試登入功能是否正常',
+    '確認結帳頁面運作良好'
+  ];
+  const pool=shuffle([
+    ...shuffle([...GOOD]).slice(0,3).map(s=>({label:s,v:'y'})),
+    ...shuffle([...BAD]).slice(0,3).map(s=>({label:s,v:'n'}))
+  ]);
+  return {name:'預言之燈',cite:'基礎 · 預期結果',
+    takeaway:'沒有預期結果的不是測試，是操作。自測時先寫下「我預期看到什麼」再去執行 —— 不然你只會看到你想看到的，畫面一出來就自動說服自己「應該沒錯」。',
+    acts:[{
+      ask:'下面六個描述裡，挑出<b>所有</b>「<b>能判定通過或失敗</b>」的測試案例。',
+      note:'一個測試案例至少要說清楚：<b>做什麼</b>、以及<b>預期看到什麼</b>。只說「確認正常」的，執行完你也不知道算不算過。',
+      kind:'set',pool,
+      grade(sel){
+        const want=pool.filter(o=>o.v==='y');
+        const missing=want.filter(o=>!sel.includes(o));
+        const extra=sel.filter(o=>o.v!=='y');
+        if(!missing.length&&!extra.length)
+          return {pass:true,msg:'全部命中 —— 這三個都寫明了預期結果，別人接手也能執行。',
+                  ev:want.map(o=>o.label).join('　/　')};
+        const ev=[];
+        if(missing.length)ev.push(`漏了：${missing.map(o=>o.label).join('；')}`);
+        if(extra.length)ev.push(`不可判定：${extra.map(o=>o.label).join('；')}`);
+        return {pass:false,
+          msg:extra.length
+            ? '有描述沒有預期結果，執行完無法判定過或不過 —— 那是「操作步驟」，不是測試案例。'
+            : '還有寫明預期結果的案例沒被挑出來。',
+          ev:ev.join('　')};
+      }}]};
+}
+
+/* ==================== 抽題：每局隨機 6 盞 ==================== */
+
+const LAMP_BANK=[
+  buildCoverLamp, buildBranchLamp, buildNestedLamp,      // 白盒覆蓋
+  buildBoundaryLamp, buildPartitionLamp,                  // 黑盒設計
+  buildDecisionTableLamp, buildLoopLamp, buildStateLamp,
+  buildTermLamp, buildRegressionLamp,                     // 基礎觀念
+  buildStaticLamp, buildPesticideLamp, buildOracleLamp
 ];
+// 每局至少保證一盞白盒覆蓋題（那是這座林子的核心）
+const LAMP_CORE=[buildCoverLamp,buildBranchLamp,buildNestedLamp];
+const LAMP_COUNT=6;   // 想更長就調大，最多 LAMP_BANK.length
+
+const LAMPS=shuffle([
+  pick(LAMP_CORE),
+  ...shuffle(LAMP_BANK.filter(f=>!LAMP_CORE.includes(f))).slice(0,LAMP_COUNT-1)
+]).map((build,i)=>({build,angle:i*(360/LAMP_COUNT)}));
+
+// HUD 進度文字改成動態（原本 HTML 寫死「燈 0 / 6」）
+document.getElementById('progress').textContent=`燈 0 / ${LAMPS.length} 亮起`;
 
 /* ------------------------------------------------------------------
    世界：夜霧森林
    ------------------------------------------------------------------ */
-const BG=0x14182A, PINK=0xFF2D78, TEAL=0x37E0C8, WARM=0xFFC168, TRUNK=0x232A3E, CANOPY=0x1B2236;
+const BG=0x14182A, PINK=0x7ED6D6, TEAL=0x37E0C8, WARM=0xFFC168, TRUNK=0x232A3E, CANOPY=0x1B2236;
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(BG);
@@ -502,8 +793,8 @@ LAMPS.forEach(L=>{
   const a=L.angle*Math.PI/180;
   for(let d=6;d<24;d+=2.2){
     const dot=new THREE.Mesh(
-      new THREE.CircleGeometry(0.16,8),
-      new THREE.MeshBasicMaterial({color:PINK,transparent:true,opacity:0.28})
+      new THREE.CircleGeometry(0.24,8),
+      new THREE.MeshBasicMaterial({color:PINK,transparent:true,opacity:0.5})
     );
     dot.rotation.x=-Math.PI/2;
     dot.position.set(Math.cos(a)*d+(Math.random()-0.5)*0.6,0.02,Math.sin(a)*d+(Math.random()-0.5)*0.6);
@@ -589,10 +880,10 @@ const lamps=LAMPS.map((L,i)=>{
 
   const coreMat=new THREE.MeshBasicMaterial({color:0x3A3F55});
   const core=new THREE.Mesh(new THREE.SphereGeometry(0.34,16,12),coreMat);
-  core.position.y=3.7;g.add(core);
+  core.position.y=3.95;g.add(core);
 
-  const glow=new THREE.PointLight(PINK,0,10);
-  glow.position.y=3.7;g.add(glow);
+  const glow=new THREE.PointLight(PINK,0,7);
+  glow.position.y=4.0;g.add(glow);
 
   const beamMat=new THREE.MeshBasicMaterial({color:PINK,transparent:true,opacity:0});
   const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.55,22,10,1,true),beamMat);
@@ -616,10 +907,6 @@ robe.position.y=0.62;player.add(robe);
 // 胸口
 const chest=new THREE.Mesh(new THREE.SphereGeometry(0.32,14,12),robeMat);
 chest.scale.set(1,1.15,0.9);chest.position.y=1.38;player.add(chest);
-// 圍巾：品牌桃紅
-const scarf=new THREE.Mesh(new THREE.TorusGeometry(0.24,0.075,10,20),
-  new THREE.MeshStandardMaterial({color:PINK,roughness:0.55,emissive:PINK,emissiveIntensity:0.25}));
-scarf.rotation.x=Math.PI/2;scarf.position.y=1.68;player.add(scarf);
 // 頭 + 兜帽 + 臉
 const head=new THREE.Mesh(new THREE.SphereGeometry(0.26,16,14),skinMat);
 head.position.y=1.98;player.add(head);
@@ -629,9 +916,9 @@ const brim=new THREE.Mesh(new THREE.TorusGeometry(0.27,0.045,8,20),hoodMat);
 brim.rotation.x=Math.PI/2.4;brim.position.set(0,1.98,0.05);player.add(brim);
 // 左臂：自然下垂
 const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.09,0.72,8),robeMat);
-armL.position.set(-0.36,1.32,0);armL.rotation.z=0.28;player.add(armL);
+armL.position.set(-0.30,1.32,0);armL.rotation.z=-0.35;player.add(armL);
 const handL=new THREE.Mesh(new THREE.SphereGeometry(0.085,10,8),skinMat);
-handL.position.set(-0.46,0.98,0);player.add(handL);
+handL.position.set(-0.55,0.98,0);player.add(handL);
 // 右臂：抬起持杖
 const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.09,0.68,8),robeMat);
 armR.position.set(0.34,1.42,0.16);armR.rotation.set(-0.5,0,-0.55);player.add(armR);
@@ -681,7 +968,7 @@ function tick(dt,t){
     if(fx||fz){
       const l=Math.hypot(fx,fz);fx/=l;fz/=l;
       const s=Math.sin(yaw),c=Math.cos(yaw);
-      const dx=fx*c-fz*s,dz=fx*s+fz*c;
+      const dx=fx*c+fz*s,dz=fz*c-fx*s;
       let nx=player.position.x+dx*sp*dt, nz=player.position.z+dz*sp*dt;
       // 樹碰撞：滑開
       for(const tr of trees){
@@ -874,9 +1161,8 @@ function showEnding(){
   const secs=Math.round((performance.now()-startAt)/1000);
   const mm=Math.floor(secs/60),ss=String(secs%60).padStart(2,'0');
   document.getElementById('end-msg').innerHTML=
-    '六盞燈都亮了。下次改完 code、上線之前，過一遍這張單：<br>'+
-    '每行都走過了嗎？每個 IF 兩邊都測了嗎？邊界測了沒？每種輸入都有代表嗎？<br>'+
-    '修好的 bug 確認了嗎？其他功能回歸了嗎？';
+    `${LAMPS.length} 盞燈都亮了。下次改完 code、上線之前，把這一局的清單過一遍：<br>`+
+    lamps.map(m=>`· <b>${m.data.name}</b>　${m.data.cite}`).join('<br>');
   document.getElementById('end-stats').innerHTML=
     `用時 <b>${mm}:${ss}</b>　·　總嘗試 <b>${totalTries}</b> 次`;
   document.getElementById('ending').classList.add('on');
