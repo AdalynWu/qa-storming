@@ -4,6 +4,19 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-05 — Chatbot 修正 ③:預設建議題「直播間遇到 404」改成答得出來的題目
+
+- 問題:預設建議 chip「直播間遇到 404 應注意什麼？」點下去 bot 回「目前知識庫沒有足夠資訊。」。查明:此為 `chatbot.ts` 的 `NOT_ENOUGH_INFORMATION` 分支(檢索有回 chunk、但模型判 `sufficient:false`),而且這次**是正確行為**——實際 index 裡**沒有「直播間 404」相關內容**(字串 404 幾乎不出現),檢索只回到 Moor/Web 的直播「功能」段落(分數 9~15),那些在講直播工具/互動,並沒有回答「直播間遇到 404 怎麼辦」,模型拒絕硬掰。病灶不在檢索或模型,而在**這個 default 題目本身問了知識庫沒有的東西**。
+- 修法(僅改 `src/components/KnowledgeChatbot.tsx` 的 `SUGGESTIONS`):把第一個建議改為「Web 直播體驗要驗證什麼？」——同樣是直播主題,但知識庫確實有對應內容(`web-live-experience` 文件章節目標即「驗證直播首屏、語音直播、簡化 UI、聊天室、排行榜與募資互動的跨端體驗」)。以實際 index 實測此題檢索:`Web 直播體驗` 以 23.9 排第一、直接對題;其餘三個建議(Maestro selector、Moor 開播前檢查、今天適合上班的趣味題)不動。
+- **替代方案(未採用,供參)**:若希望 bot 真能回答 404／錯誤恢復,需把該內容加入**核准的**知識庫(Notion → `sync:notion` → `build:chat-index`),非本次程式改動可解。
+- **驗證**:`npx tsc --noEmit`、ESLint 通過;檢索層以 script 對實際 index 確認新題命中正確文件。**尚待瀏覽器人工複測**:點新的建議 chip 應得到具體回答並附來源,不再顯示「沒有足夠資訊」。未部署,未執行 Git。
+
+## 2026-08-05 — Chatbot 關閉視窗後重開回到初始狀態(不保留前次對話)
+
+- 需求:賢者問答面板關掉再打開時應回到初始狀態,不保留上一次的對話。查明:`src/components/KnowledgeChatbot.tsx` 全程以 `useState` 保存 `messages`,**無 localStorage/sessionStorage 持久化**;元件是全域掛載(`KnowledgeChatbotMount`),關閉面板只切換 `open`、元件不卸載,所以對話留在 state、重開會重現(關瀏覽器分頁本來就會清空,故「關掉視窗」指的是聊天面板)。
+- 修法(僅改 `src/components/KnowledgeChatbot.tsx`):新增 `openFreshSession()`——每次由 launcher 開啟面板時重置 `messages` 為初始問候、清空輸入、`loading=false`、`nextMessageId=1`,並遞增新增的 `sessionRef`;launcher 的 `onClick` 由 `setOpen(true)` 改為 `openFreshSession`。`submitQuestion` 在送出時捕捉當下 `session`,`await` 後若 `sessionRef` 已變(代表期間重開了新工作階段)就略過寫入與 `setLoading`,避免上一段對話的 in-flight 回應污染新的乾淨狀態。關閉路徑(關閉鈕、Esc)維持不變,重置發生在下次開啟。
+- **驗證**:`npx tsc --noEmit`、ESLint 通過。**尚待瀏覽器人工複測**(此環境無法互動測面板開關):開啟→提問→關閉→再開,應只見初始問候與建議題、無前次對話;關閉瀏覽器分頁重開亦為初始;送出提問中途關閉再開,舊回應不會冒出。未部署,未執行 Git。
+
 ## 2026-08-04 — 迷霧測試林 `/rpg` 擴充題庫＋換色/角色/燈光/隱藏 bot
 
 - **題庫擴充**：`public/rpg/misty-test-forest.html` 由 6 題擴為 **13 盞題庫（14 小題）**，每局隨機抽 **6 盞**、保證至少一盞白盒覆蓋題（新增：巢狀判斷、決策表、迴圈/清單 0-1-多 邊界、狀態轉換負向、靜態 vs 動態、殺蟲劑悖論、預期結果/oracle）。抽題以 `LAMP_BANK`/`LAMP_CORE`/`LAMP_COUNT` 控制，`LAMPS` 改為隨機挑選＋等距角度；HUD 進度改動態（`燈 0 / ${LAMPS.length}`）；`showEnding()` 結尾清單改為列出**本局實際抽中的盞**（`lamps.map(m=>m.data.name/cite)`）。整合時**省略貼稿最上方「用法」註解**（其內引用的 `*/` 會使 JS 區塊註解提早關閉 → SyntaxError），並**修正 `buildNestedLamp` note 的空門檻字串**（`'+''+'`）。
