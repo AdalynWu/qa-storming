@@ -787,8 +787,16 @@
 }
 
 .moor-reader-layout > *,
+.moor-reader-main > *,
 .moor-reader-banner > * {
   min-width: 0;
+}
+
+/* Wrapper is invisible on desktop so toc/manuscript/qa stay direct items of
+   the 3-column grid. Below, it becomes a real box that bounds the sticky toc
+   to the manuscript's height (so it stops before .moor-qa-notes). */
+.moor-reader-main {
+  display: contents;
 }
 
 .moor-toc,
@@ -842,6 +850,12 @@
 
 .moor-toc a.is-nested {
   padding-left: 18px;
+}
+
+.moor-toc a.is-parent {
+  grid-template-columns: 1fr;
+  color: #f0c968;
+  font-weight: 700;
 }
 
 .moor-toc > small {
@@ -1218,7 +1232,14 @@
   }
 
   .moor-reader-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .moor-reader-main {
+    display: grid;
     grid-template-columns: 180px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
   }
 
   .moor-qa-notes {
@@ -1393,6 +1414,10 @@
     width: 100%;
     min-width: 0;
     padding: 22px max(12px, env(safe-area-inset-right)) 50px max(12px, env(safe-area-inset-left));
+  }
+
+  .moor-reader-main {
+    display: block;
   }
 
   .moor-toc {

@@ -71,9 +71,18 @@ export default async function WebChapterPage({ params }: PageProps) {
       </section>
 
       <div className="web-reader-layout">
+        <div className="web-reader-main">
         <nav className="web-toc" aria-label="本章目錄">
           <p>ADVENTURE GUIDE</p><h2>本章路標</h2>
-          {tocItems.map((section, index) => <a className={section.level === 2 ? "is-nested" : undefined} href={`#${section.id}`} key={section.id}><i>{String(index + 1).padStart(2, "0")}</i><span>{section.title}</span></a>)}
+          {(() => {
+            const hasNesting = tocItems.some((section) => section.level === 2);
+            let counter = 0;
+            return tocItems.map((section) => {
+              const isParent = hasNesting && section.level === 1;
+              const number = isParent ? null : String(++counter).padStart(2, "0");
+              return <a className={isParent ? "is-parent" : section.level === 2 ? "is-nested" : undefined} href={`#${section.id}`} key={section.id}>{number !== null && <i>{number}</i>}<span>{section.title}</span></a>;
+            });
+          })()}
           <small>{generatedDocument ? "內容來源：Notion 同步版本" : `來源更新：${chapter.sourceUpdatedAt}`}</small>
         </nav>
 
@@ -90,6 +99,7 @@ export default async function WebChapterPage({ params }: PageProps) {
             {next ? <Link href={`/products/web/${next.slug}`}>{next.title} →</Link> : <Link href="/products/web">返回章節地圖 →</Link>}
           </footer>
         </article>
+        </div>
 
         <aside className="web-qa-notes">
           <p>QA FIELD NOTES</p><h2>冒險札記</h2>

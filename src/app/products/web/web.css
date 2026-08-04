@@ -787,8 +787,16 @@
 }
 
 .web-reader-layout > *,
+.web-reader-main > *,
 .web-reader-banner > * {
   min-width: 0;
+}
+
+/* Wrapper is invisible on desktop so toc/manuscript/qa stay direct items of
+   the 3-column grid. Below, it becomes a real box that bounds the sticky toc
+   to the manuscript's height (so it stops before .web-qa-notes). */
+.web-reader-main {
+  display: contents;
 }
 
 .web-toc,
@@ -842,6 +850,12 @@
 
 .web-toc a.is-nested {
   padding-left: 18px;
+}
+
+.web-toc a.is-parent {
+  grid-template-columns: 1fr;
+  color: #f0c968;
+  font-weight: 700;
 }
 
 .web-toc > small {
@@ -1218,7 +1232,14 @@
   }
 
   .web-reader-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .web-reader-main {
+    display: grid;
     grid-template-columns: 180px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
   }
 
   .web-qa-notes {
@@ -1393,6 +1414,10 @@
     width: 100%;
     min-width: 0;
     padding: 22px max(12px, env(safe-area-inset-right)) 50px max(12px, env(safe-area-inset-left));
+  }
+
+  .web-reader-main {
+    display: block;
   }
 
   .web-toc {
