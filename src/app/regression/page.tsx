@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { regressionCases, regressionStats, regressionSuites, type TestCase } from "@/content/regression";
 import "./regression.css";
@@ -124,7 +124,88 @@ function RegressionExplorer() {
 }
 
 function FilterSelect({ label, value, options, onChange, defaultLabel = "全部", defaultValue = "all", includeAll = false }: { label: string; value: string; options: string[]; onChange: (value: string) => void; defaultLabel?: string; defaultValue?: string; includeAll?: boolean }) {
-  return <label className="filter-select"><span>{label}</span><select value={value} onChange={(event) => onChange(event.target.value)}><option value={defaultValue}>{defaultLabel}</option>{includeAll && <option value="all">全部</option>}{options.map((option) => <option value={option} key={option}>{statusLabel(option)}</option>)}</select></label>;
+  const items = useMemo(() => [
+    { value: defaultValue, label: defaultLabel },
+    ...(includeAll ? [{ value: "all", label: "全部" }] : []),
+    ...options.map((option) => ({ value: option, label: statusLabel(option) })),
+  ], [options, defaultValue, defaultLabel, includeAll]);
+
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const baseId = useId();
+  const labelId = `${baseId}-label`;
+  const valueId = `${baseId}-value`;
+  const listId = `${baseId}-list`;
+
+  const selectedIndex = Math.max(0, items.findIndex((item) => item.value === value));
+  const selectedLabel = items[selectedIndex]?.label ?? defaultLabel;
+
+  // Close when clicking outside the control.
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [open]);
+
+  // On open: move focus into the list (the highlight is set in openList()).
+  useEffect(() => {
+    if (open) listRef.current?.focus();
+  }, [open]);
+
+  function openList() {
+    setActiveIndex(Math.max(0, items.findIndex((item) => item.value === value)));
+    setOpen(true);
+  }
+
+  // Keep the highlighted option scrolled into view.
+  useEffect(() => {
+    if (!open) return;
+    document.getElementById(`${listId}-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [open, activeIndex, listId]);
+
+  function choose(index: number) {
+    const item = items[index];
+    if (item) onChange(item.value);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  function onTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); openList(); }
+  }
+
+  function onListKeyDown(event: KeyboardEvent<HTMLUListElement>) {
+    if (event.key === "ArrowDown") { event.preventDefault(); setActiveIndex((i) => Math.min(items.length - 1, i + 1)); }
+    else if (event.key === "ArrowUp") { event.preventDefault(); setActiveIndex((i) => Math.max(0, i - 1)); }
+    else if (event.key === "Home") { event.preventDefault(); setActiveIndex(0); }
+    else if (event.key === "End") { event.preventDefault(); setActiveIndex(items.length - 1); }
+    else if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(activeIndex); }
+    else if (event.key === "Escape") { event.preventDefault(); setOpen(false); triggerRef.current?.focus(); }
+    else if (event.key === "Tab") { setOpen(false); }
+  }
+
+  return (
+    <div className="filter-select" ref={rootRef}>
+      <span id={labelId}>{label}</span>
+      <button ref={triggerRef} type="button" className="fs-trigger" aria-haspopup="listbox" aria-expanded={open} aria-labelledby={`${labelId} ${valueId}`} onClick={() => (open ? setOpen(false) : openList())} onKeyDown={onTriggerKeyDown}>
+        <span className="fs-value" id={valueId}>{selectedLabel}</span>
+        <svg className="fs-caret" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+      </button>
+      {open && (
+        <ul className="fs-list" role="listbox" id={listId} tabIndex={-1} ref={listRef} aria-labelledby={labelId} aria-activedescendant={`${listId}-opt-${activeIndex}`} onKeyDown={onListKeyDown}>
+          {items.map((item, index) => (
+            <li key={item.value} id={`${listId}-opt-${index}`} role="option" aria-selected={item.value === value} className={index === activeIndex ? "is-active" : undefined} onMouseEnter={() => setActiveIndex(index)} onClick={() => choose(index)}>{item.label}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 function CaseListButton({ testCase, active, onClick }: { testCase: TestCase; active: boolean; onClick: () => void }) {

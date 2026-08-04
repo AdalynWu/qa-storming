@@ -25,7 +25,7 @@ const INITIAL_MESSAGE: Message = {
 };
 
 const SUGGESTIONS = [
-  "直播間遇到 404 應注意什麼？",
+  "Web 直播體驗要驗證什麼？",
   "Maestro selector 如何選？",
   "Moor 開播前要檢查什麼？",
   "今天適合上班嗎？",
@@ -56,6 +56,7 @@ export function KnowledgeChatbot() {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
   const nextMessageId = useRef(1);
+  const sessionRef = useRef(0);
   const wasOpen = useRef(false);
   const titleId = useId();
   const descriptionId = useId();
@@ -87,9 +88,23 @@ export function KnowledgeChatbot() {
     endRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "end" });
   }, [messages, loading, open]);
 
+  // Open with a clean slate: each time the panel is opened it starts from the
+  // initial greeting, so closing the window discards the previous conversation.
+  // Bumping the session id also causes any in-flight request from a previous
+  // session to be ignored when it resolves.
+  const openFreshSession = () => {
+    sessionRef.current += 1;
+    nextMessageId.current = 1;
+    setMessages([INITIAL_MESSAGE]);
+    setQuestion("");
+    setLoading(false);
+    setOpen(true);
+  };
+
   const submitQuestion = async (value: string) => {
     const trimmed = value.trim();
     if (!trimmed || loading) return;
+    const session = sessionRef.current;
     const userMessage: Message = { id: nextMessageId.current++, role: "user", content: trimmed };
     setMessages((current) => [...current, userMessage]);
     setQuestion("");
@@ -97,6 +112,7 @@ export function KnowledgeChatbot() {
 
     try {
       const result = await askKnowledgeBase(trimmed);
+      if (sessionRef.current !== session) return;
       setMessages((current) => [...current, {
         id: nextMessageId.current++,
         role: "assistant",
@@ -105,6 +121,7 @@ export function KnowledgeChatbot() {
         sources: result.sources,
       }]);
     } catch (error) {
+      if (sessionRef.current !== session) return;
       const content = error instanceof ChatbotError
         ? error.message
         : "賢者問答櫃台暫時無法使用，請稍後再試。";
@@ -115,7 +132,7 @@ export function KnowledgeChatbot() {
         error: true,
       }]);
     } finally {
-      setLoading(false);
+      if (sessionRef.current === session) setLoading(false);
     }
   };
 
@@ -140,7 +157,7 @@ export function KnowledgeChatbot() {
             ref={launcherRef}
             className="knowledge-chatbot-launcher"
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={openFreshSession}
             aria-haspopup="dialog"
             aria-label="開啟賢者問答：有什麼疑問可以問我唷"
           >
