@@ -1,6 +1,3 @@
-<callout icon="🧪" color="green_bg">
-	本頁是 QA Storming 網站的公開安全整理版，不包含公司帳號、內部網址、Token、付款資訊或個人資料。
-</callout>
 # 章節目標
 取得測試版本、確認環境並完成主播帳號登入；讓第一次接觸 Moor 的 QA 能以一致方式記錄測試條件與觀察結果。
 ## 開始前準備
@@ -33,9 +30,5 @@ Moor 可能依版本與地區提供手機驗證碼、Email 密碼或第三方登
 <callout icon="⚠️" color="yellow_bg">
 	媒體、身分與申請資料只使用核准測試素材；公開 issue 應遮蔽個資、檔案內容與任何可追溯申請人的資訊。
 </callout>
-<details>
-<summary>Demo 時如何驗證同步</summary>
-	修改下方的同步展示文字，儲存後執行 npm run sync:notion，再重新整理網站。
-</details>
 ## 同步展示文字
-目前版本：**森林嚮導已準備完成**。
+test
