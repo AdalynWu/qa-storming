@@ -1,7 +1,7 @@
 {
   "_meta": {
     "schemaVersion": 2,
-    "contentHash": "c3dc0bd954014957"
+    "contentHash": "1880ed12769dffe8"
   },
   "suites": [
     {
@@ -13,7 +13,7 @@
         "Web",
         "Chrome"
       ],
-      "description": "SWAG Web Production（swag.live）PC Web 核心回歸範圍：登入與驗證、探索首頁、直播、影片與短影音、搜尋與分類、個人頁與日誌、聊天、鑽石相關流程。依 2026-07-12 八支螢幕錄影與越南外包 QA Need Clarification 案例整理，Mobile Web 差異尚未涵蓋。",
+      "description": "SWAG Web Production（swag.live）PC Web 核心回歸範圍：登入與驗證、探索首頁、直播、影片與短影音、搜尋與分類、個人頁與日誌、聊天、鑽石相關流程。",
       "status": "active"
     }
   ],
@@ -2303,6 +2303,33 @@
       ],
       "lifecycleStatus": "draft",
       "updatedAt": "2026-07-12"
+    },
+    {
+      "id": "WEB_CHUN-001",
+      "suiteId": "web-production",
+      "module": "VIP",
+      "title": "test test",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "Chrome"
+      ],
+      "preconditions": [
+        "testtt"
+      ],
+      "testData": [
+        "testtt"
+      ],
+      "steps": [
+        "testtt"
+      ],
+      "expectedResults": [
+        "testtt"
+      ],
+      "tags": [
+        "testtt"
+      ],
+      "lifecycleStatus": "draft"
     }
   ]
 }
