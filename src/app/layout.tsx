@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { preload } from "react-dom";
-import { KnowledgeChatbot } from "@/components/KnowledgeChatbot";
+import { KnowledgeChatbotMount } from "@/components/KnowledgeChatbotMount";
 import "./globals.css";
 import "@/components/knowledge-chatbot.css";
 
@@ -43,7 +43,7 @@ export default function RootLayout({
 
   return (
     <html lang="zh-Hant">
-      <body>{children}<KnowledgeChatbot /></body>
+      <body>{children}<KnowledgeChatbotMount /></body>
     </html>
   );
 }
