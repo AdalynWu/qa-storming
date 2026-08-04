@@ -62,7 +62,7 @@ export function MistyForestGate() {
   return (
     <div className="rpg-quest-state">
       <div className="rpg-quest-card">
-        <p className="rpg-quest-kicker">MISTY TEST FOREST · VIBE CODING 自測副本</p>
+        <p className="rpg-quest-kicker">MISTY TEST FOREST · 自測副本</p>
         <h1 className="rpg-quest-title">迷霧測試林</h1>
         <p className="rpg-quest-desc">使用 WASD、方向鍵、E 與 Esc 操作。準備好就走進迷霧。</p>
         <button
@@ -95,7 +95,7 @@ function GameFrame() {
       iframe.contentWindow?.focus();
       const startButton = iframe.contentDocument?.getElementById("start");
       if (startButton instanceof HTMLElement) {
-        startButton.focus();
+        startButton.focus({ preventScroll: true });
       } else {
         iframe.focus();
       }

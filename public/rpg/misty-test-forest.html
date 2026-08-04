@@ -141,9 +141,9 @@
 </div>
 
 <div class="full" id="title">
-  <p class="mark">SWAG QA · VIBE CODING 自測入門</p>
+  <p class="mark">SWAG QA · 自測入門</p>
   <h1>迷霧測試林</h1>
-  <p class="sub">你剛 vibe coding 完一個功能。它看起來會動。<br>
+  <p class="sub">你剛寫完一個功能。它看起來會動。<br>
   但「會動」跟「測過」是兩件事 —— 走進霧裡，把六盞燈點亮，<br>你就知道下次上線前該怎麼自己測。</p>
   <div class="rule"></div>
   <button class="btn" id="start">走進霧裡</button>
@@ -171,7 +171,7 @@
 <script>
 /* =====================================================================
    迷霧測試林 — one-shot demo
-   給非 QA 部門：vibe coding 完怎麼自測
+   給非 QA 部門：寫完功能怎麼自測
    世界：three.js 程序生成迷霧森林；評分：離線、每次隨機
    ===================================================================== */
 const rand = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
@@ -270,7 +270,7 @@ const minStatement=p=>minSize(p,c=>c.miss.length===0);
 const minDecision =p=>minSize(p,c=>c.decMiss.length===0);
 
 /* ------------------------------------------------------------------
-   四盞燈：面向 vibe coder 的文案，技術核心不變
+   四盞燈：面向非 QA 使用者的文案，技術核心不變
    ------------------------------------------------------------------ */
 function buildCoverLamp(){
   const prog=programSingleIf();
@@ -438,7 +438,7 @@ function buildRegressionLamp(){
     {label:pick(NEITHER),v:'n'}
   ]);
   return {name:'回歸之燈',cite:'基礎 · 確認 vs 回歸',
-    takeaway:'修完 bug 要做兩件事：確認測試（confirmation testing）證明「修好了」，回歸測試（regression testing）證明「沒改壞別的」。vibe coding 改一行 code 也一樣 —— AI 修東常常壞西。',
+    takeaway:'修完 bug 要做兩件事：確認測試（confirmation testing）證明「修好了」，回歸測試（regression testing）證明「沒改壞別的」。改一行 code 也一樣 —— AI 修東常常壞西。',
     acts:[{
       ask:`工程師剛修好一個結帳金額算錯的 bug。下面六個活動裡，挑出<b>所有</b>屬於「<b>回歸測試（regression testing）</b>」的。`,
       note:'回歸測試問的是「<b>其他既有功能</b>有沒有被這次修改弄壞」；直接驗證那個 bug 本身修好了沒，是另一件事。',

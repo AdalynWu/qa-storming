@@ -9,8 +9,8 @@
   --quest-dim: #8b90a3;
   --quest-pink: #ff2d78;
   --quest-pink-soft: #ff6fa3;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--quest-bg);
@@ -157,6 +157,8 @@
   min-height: 0;
 }
 .rpg-quest-iframe {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;

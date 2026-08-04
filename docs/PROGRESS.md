@@ -4,6 +4,13 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-04 — 迷霧測試林 `/rpg` 上線後修正(標題裁切/卡住/移除 vibe-coding)
+
+- 修 iframe 高度塌陷(H1 被裁、`#start` 走進霧裡按鈕溢出視窗看不到而無法開始)：`src/app/rpg/rpg.css` 的 `.rpg-quest-shell` 由 `min-height` 改定值 `height:100dvh`(含 `100vh` fallback)；`.rpg-quest-iframe` 改 `position:absolute; inset:0` 撐滿 `position:relative` 的 `.rpg-quest-frame`，不再依賴 flex-item 百分比高度解析——遊戲載入讀 `innerHeight` 前即有正確全高，標題正常置中、按鈕可見、3D 場景尺寸正確。
+- 焦點交接防捲動：`src/components/MistyForestGate.tsx` 的 `handleLoad` 內 `#start` 聚焦改 `focus({ preventScroll: true })`，避免再度把標題內容往上捲裁掉 H1。
+- 移除 vibe-coding 字樣(使用者要求整個畫面不出現)：站內外框 `src/app/rpg/page.tsx`(topbar「MISTY TEST FOREST · 自測副本」、metadata 描述)與 `MistyForestGate.tsx`(gate kicker)；遊戲 `public/rpg/misty-test-forest.html` 標題畫面 `.mark`、`.sub`、回歸測試 takeaway 與兩處註解共 5 處改寫(如「你剛寫完一個功能」)。
+- **驗證**：`npx tsc --noEmit`、ESLint、`npm run build` 通過，`out/rpg.html` 與 `out/rpg/misty-test-forest.html` 重新產出；`grep -i vibe` 於遊戲 HTML 與 `src/app/rpg`、`MistyForestGate.tsx` 皆為 0；built CSS 確認 `.rpg-quest-iframe{position:absolute;inset:0}` 與 shell `height:100dvh`；`python3 -m http.server` 靜態伺服 `/rpg.html`、`/rpg/misty-test-forest.html` 皆 200。**尚待使用者重新部署後在真實桌機瀏覽器複測(此環境無法互動測 WebGL/鍵盤)：標題完整置中、按 Enter/點擊走進霧裡→3D 森林可 WASD、全畫面無 vibe coding。改動含 `public/`，需重新 `npm run deploy`。未部署，未執行 Git。**
+
 ## 2026-08-04 — 迷霧測試林 3D 教學遊戲整合(`/rpg`)
 
 - 新增 `/rpg` 路由：一份自帶 three.js r128、零外部依賴的完整教學遊戲(vibe coding 自測練習)複製到 `public/rpg/misty-test-forest.html`(UTF-8 逐字複製，未改內容)，由新 route 以**同源 `<iframe>` 執行/樣式隔離**載入，未改寫成 React、不共用站上 `three@^0.185`。
