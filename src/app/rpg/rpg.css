@@ -1,0 +1,208 @@
+/* 迷霧測試林 /rpg —— 全視窗 iframe 遊戲外框，站內品牌 topbar 橋接遊戲的深色調。
+   規則全命名空間於 .rpg-quest-shell，避免與 globals.css 全域類名衝突。 */
+
+.rpg-quest-shell {
+  --quest-bg: #0c0d12;
+  --quest-panel: #14161e;
+  --quest-line: #262a38;
+  --quest-text: #e8e9ee;
+  --quest-dim: #8b90a3;
+  --quest-pink: #ff2d78;
+  --quest-pink-soft: #ff6fa3;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--quest-bg);
+  color: var(--quest-text);
+  overflow: hidden;
+}
+
+.rpg-quest-shell * {
+  box-sizing: border-box;
+}
+
+.rpg-quest-topbar {
+  position: relative;
+  z-index: 20;
+  min-height: 60px;
+  padding: 0 clamp(18px, 5vw, 60px);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(180deg, #171a24, #12141c);
+  border-bottom: 1px solid #ff2d7855;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.rpg-quest-topbar a {
+  color: inherit;
+  text-decoration: none;
+}
+.rpg-quest-topbar a:hover {
+  color: var(--quest-pink-soft);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.rpg-quest-topbar a:last-child {
+  justify-self: end;
+  color: var(--quest-dim);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+.rpg-quest-topbar-title {
+  justify-self: center;
+  font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--quest-pink);
+  white-space: nowrap;
+}
+
+/* 狀態畫面（checking / blocked / gate）共用置中版位 */
+.rpg-quest-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(ellipse at 50% 30%, #171a24 0%, var(--quest-bg) 70%);
+}
+
+.rpg-quest-checking {
+  font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--quest-dim);
+  margin: 0;
+}
+
+.rpg-quest-card {
+  max-width: 460px;
+  text-align: center;
+  background: var(--quest-panel);
+  border: 1px solid var(--quest-line);
+  border-radius: 14px;
+  padding: 36px 30px 30px;
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.55);
+}
+.rpg-quest-kicker {
+  font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--quest-pink);
+  margin: 0 0 14px;
+}
+.rpg-quest-title {
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  margin: 0 0 14px;
+  text-shadow: 0 0 32px rgba(255, 45, 120, 0.28);
+}
+.rpg-quest-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--quest-dim);
+  margin: 0 0 22px;
+}
+.rpg-quest-btn {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  background: var(--quest-pink);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 9px;
+  transition: filter 0.12s, transform 0.1s;
+}
+.rpg-quest-btn:hover {
+  filter: brightness(1.12);
+}
+.rpg-quest-btn:active {
+  transform: scale(0.98);
+}
+.rpg-quest-btn-ghost {
+  background: transparent;
+  border: 1px solid var(--quest-line);
+  color: var(--quest-dim);
+}
+.rpg-quest-btn-ghost:hover {
+  color: var(--quest-text);
+  border-color: var(--quest-dim);
+  filter: none;
+}
+.rpg-quest-btn:focus-visible {
+  outline: 2px solid var(--quest-pink);
+  outline-offset: 3px;
+}
+.rpg-quest-note {
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #565b70;
+  margin: 16px 0 0;
+}
+
+/* 遊戲外框：iframe 填滿 topbar 以下的視窗 */
+.rpg-quest-frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.rpg-quest-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.rpg-quest-small-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--quest-text);
+  background: rgba(20, 22, 30, 0.9);
+  border: 1px solid var(--quest-pink);
+  pointer-events: none;
+  display: none;
+}
+/* 進入 playing 後若視窗縮小（latch 不卸載 iframe），僅顯示提示 */
+@media (max-width: 1023px), (max-height: 599px) {
+  .rpg-quest-small-hint {
+    display: block;
+  }
+}
+
+.rpg-quest-topbar a:focus-visible {
+  outline: 2px solid var(--quest-pink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (max-width: 720px) {
+  .rpg-quest-topbar {
+    grid-template-columns: 1fr 1fr;
+    min-height: 56px;
+    font-size: 14px;
+  }
+  .rpg-quest-topbar-title {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rpg-quest-btn {
+    transition: none;
+  }
+}

@@ -48,6 +48,7 @@ export default function Home() {
           <a href="#onboarding">新手村</a>
           <a href="#regression">試煉之森</a>
           <a href="#knowhow">賢者書庫</a>
+          <Link className="rpg-quest-entry" href="/rpg">迷霧測試林</Link>
         </nav>
         <div className="guild-level"><span>GUILD LV.</span><b>25</b><i><em /></i></div>
         <details className="rpg-mobile-nav" ref={mobileNavRef}>
