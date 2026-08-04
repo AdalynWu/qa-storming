@@ -4,6 +4,244 @@ dated 進度日誌,**最新在上**。每次完成工作附加一條(日期、�
 
 ---
 
+## 2026-08-04 — 迷霧測試林 3D 教學遊戲整合(`/rpg`)
+
+- 新增 `/rpg` 路由：一份自帶 three.js r128、零外部依賴的完整教學遊戲(vibe coding 自測練習)複製到 `public/rpg/misty-test-forest.html`(UTF-8 逐字複製，未改內容)，由新 route 以**同源 `<iframe>` 執行/樣式隔離**載入，未改寫成 React、不共用站上 `three@^0.185`。
+- 站內對齊：`src/app/rpg/page.tsx`(server component，metadata、noindex 沿用 layout)＋ scoped `src/app/rpg/rpg.css`(命名空間 `.rpg-quest-shell`)，站內品牌深色 topbar(`← 返回世界樹` 置於 iframe 前、`MISTY TEST FOREST` kicker、`賢者書庫` 交叉連結)。
+- 桌機專屬入口：首頁 `src/app/page.tsx` 導覽 `.rpg-links` 新增 `迷霧測試林`(`/rpg`)，以**純 CSS 能力 gate**(`globals.css`：預設 `display:none`；`@media (min-width:1024px) and (min-height:600px)` 顯示；`@media (hover:none) and (pointer:coarse)` 再隱藏)避免 hydration 位移，不放進手機選單。
+- 裝置判斷與閘門：新增 `src/hooks/useIsComputerDevice.ts`(`useSyncExternalStore` 三態 `null/true/false`＝`min 1024×600` 且非純觸控；刻意不偵測滑鼠)與 `src/components/MistyForestGate.tsx`(狀態：checking→blocked/gate→playing，`entered` latch；blocked 顯示擋頁＋「我有鍵盤，仍要進入」覆寫，不載入 iframe；gate 為原生 button，Enter/Space/點擊確認；`onLoad` 同源交接焦點 `contentWindow.focus()`→遊戲 `#start`)。
+- 治理文件：`DECISION.md` 新增 D25(iframe 執行/樣式隔離非安全邊界、桌機專屬、reduced-motion 與離屏暫停第一版取捨、公開資產須確認無機密)；同步更新 `ARCHITECTURE.md`(路由/目錄/部署與限制)、`DESIGN.md`(§7 Navbar、§8 新增遊戲場景)、`CHANGELOG.md`、`PLAN.md`、`TASK.md`、`MEMORY.md`、`PRODUCT.md`。
+- **驗證**：`npx tsc --noEmit` 與 ESLint 通過；`npm run build` 成功，路由表出現 `○ /rpg`，產出 `out/rpg.html`(12 KB)與 `out/rpg/misty-test-forest.html`(644 KB，UTF-8、title 正常)。built CSS 確認三段 gate rule(base `display:none`＋`min-width:1024px and min-height:600px`＋`hover:none and pointer:coarse`)皆輸出；`GAME_SRC` 僅在 JS chunk、SSR 的 `out/rpg.html` 只渲染 topbar＋「正在確認裝置…」placeholder(未含 iframe，符合 opt-in 後才載入)。以 `python3 -m http.server` 靜態伺服確認 `/rpg.html`(200)與 `/rpg/misty-test-forest.html`(200，直接存取)皆正常。**尚待使用者在真實桌機瀏覽器人工 QA(此環境無法互動測試)**：三段裝置矩陣(1023×768 fine→blocked、1280×800 coarse→blocked、1280×800 fine→eligible)、gate 進入後 iframe `#start` 焦點交接與純鍵盤全程(WASD/方向/E/Esc/Shift+Tab 返回)、遊戲中 1024↔1023 resize 不重建 iframe、reduced-motion 表現、公開資產內容不含機密之最終確認。**未部署，未執行 Git。**
+
+## 2026-08-04 — Firebase AI Logic 過載自動重試
+
+- 確認 `gemini-3.5-flash-lite` 仍為 Firebase AI Logic／Gemini Developer API 支援的 GA 穩定模型；本次 `500 INTERNAL high demand` 是模型容量尖峰，不是 Markdown 索引或模型名稱失效。
+- 模型呼叫對 `429`、`500`、`502`、`503`、`504` 最多退避重試兩次（400ms、1000ms），持續過載時改顯示安全繁中忙碌提示；403、App Check、設定與解析錯誤不重試，也不將 provider 詳細錯誤顯示給使用者。
+- **驗證**：Chatbot 單元測試 13/13 通過，涵蓋過載兩次後成功、持續 503、403 不重試與既有檢索／引用流程；ESLint 通過，`next build --webpack` 完成 TypeScript 與 28 個靜態頁輸出，並正常重建 20 份文件／29 個段落索引。未以人工製造的正式 provider 過載做 live call，未部署，未執行 Git。
+
+## 2026-08-04 — Terminal 同步、驗證與部署操作手冊
+
+- 新增 `docs/terminal-command-playbook.md`，整理 Regression Sheet、Notion preview／正式同步、AI Bot 索引、本機預覽、測試、圖片管線與 Firebase 部署的可複製指令及執行順序。
+- 明確區分 `sync:notion`、`refresh:notion`、`build:chat-index` 與一般 `build`：Bot 無遠端知識庫同步，`refresh:notion` 才會同時取得最新 Notion 內容並重建本地搜尋索引；build 不會連線 Notion 或 Google Sheet。
+- 補上 active Regression 封存流程、Notion 發布門檻、常見錯誤、分享會前完整檢查流程，並在 `AGENTS.md` 文件索引加入本手冊。本次未實際同步外部資料、build、部署或執行 Git。
+
+## 2026-08-04 — Regression 正式 Sheet 狀態核對與分享講稿更正
+
+- 核對 `.env.local` 已設定 `REGRESSION_SHEET_ID` 與 `GOOGLE_APPLICATION_CREDENTIALS`；`src/content/generated/regression.json` 目前為 Web Production 1 個 Suite、71 個 Cases，確認已完成正式 Sheet 串接與首次 sample baseline 替換。
+- 更正 `PLAN.md`、`TASK.md` 與分享講稿中的舊狀態：Regression 已可透過 `npm run sync:regression` 手動同步，後續工作是內容複核節奏與自動部署，不再列為「待接正式 Sheet」。
+- 本次只做設定鍵名與既有 generated 產出的唯讀核對，未顯示任何 ID／憑證內容，也未重新呼叫 Google API、執行同步、build、部署或 Git。
+
+## 2026-08-04 — Quest 超寬版比例、文件導覽與書庫閱讀器收斂
+
+- 首屏 `.hero-copy-rpg` 在桌機改為較寬的流動容器，強調句於 `>900px` 維持單行；Quest Scene 在 `≥2000px` 放大中央卡與五格軌道，避免超寬螢幕上的互動主體失去份量。
+- Quest 左右控制與卡面 CTA 由一般亮色圓鈕／膠囊改為深森林琺瑯、黃銅描邊與書扣式 SVG 控制，補齊 hover、active、focus 與 disabled 狀態。
+- Web／Moor 閱讀頁移除重複的同步前言與 callout，Topbar 改為「首頁 > 產品地圖 > 產品 > 目前章節」的完整可返回麵包屑；Notion renderer 新增可由消費頁關閉 callout 的選項。
+- 賢者書庫移除重複安全提醒，徽章文字改為穩定的縱向排列；閱讀頁以具名 grid areas 重排目錄、正文與相關札記，窄桌機先讓目錄獨佔一列、手機再完整單欄堆疊。
+- **驗證**：Notion fixture 12/12、Regression fixture 14/14、ESLint、`tsc --noEmit` 與 production build 全數通過，28 個靜態頁成功輸出。1454×900、2230×1239、900×900、700×900、390×844 實看皆無水平溢位；超寬 Quest 卡、完整麵包屑、書庫徽章與窄版閱讀器排列正常。未部署，未執行 Git。
+
+## 2026-08-04 — Chatbot 本地趣味隨機回答
+
+- 新增人工核准的趣味問答 allowlist；問題正規化後只有完整命中才會從該題答案中本地隨機挑選，命中時不載入公開索引、不呼叫 Firebase AI Logic／Gemini，近似問題仍走正式知識庫流程。
+- `ChatAnswer` 新增 `knowledge | fun` 類型，趣味回答在 UI 顯示「史萊姆閒聊」與淡綠羊皮紙材質且不附來源；建議問題加入「今天適合上班嗎？」作為可發現入口。
+- **驗證**：Chatbot 單元測試 11/11、ESLint、`tsc --noEmit`、Impeccable layout detector 與 `next build --webpack` 全數通過，20 份文件／29 個段落索引正常重建並輸出 28 個靜態頁；本機桌機實看確認建議題可送出、訊息帶有 `.is-fun` 與「史萊姆閒聊」標籤、從核准答案中回覆且沒有來源 `<details>`。未部署，未執行 Git。
+
+## 2026-08-04 — 首屏向下探索提示對齊與對比
+
+- 修正 `.rpg-scroll` 後置重複規則將米白前景覆寫為 `color: inherit` 的問題；依最終回饋維持無底色、無外框，以米白／金色前景與深色柔和陰影提高生命樹插畫上的辨識度。
+- 控制器改為置中的 grid，固定箭頭盒寬並取消 `<i>` 預設斜體，讓箭頭、文字與 viewport 共用同一水平中心；箭頭與文字增加 8px grid gap、縮短 bob 位移並補上 hover／`focus-visible` 回饋。
+- **驗證**：1440×900 與 390×844 實測整組相對 viewport 中線偏差皆為 0px、箭頭與文字中心差皆為 0px，頁面無水平溢位；圖片預算、ESLint、TypeScript、Impeccable layout detector 與 production build 全數通過，28 個靜態頁成功輸出。未部署，未執行 Git。
+
+## 2026-08-04 — Chatbot 泡泡貼近史萊姆並移除尾巴
+
+- 移除 `knowledge-chatbot-speech::after` 尾巴；邀請列 gap 歸零，泡泡以 `margin-left: -28px` 壓入史萊姆 sprite 的透明畫布，使兩者更緊密但不碰到實際角色圖形。
+- **驗證**：ESLint、TypeScript、Impeccable layout detector 與 `next build --webpack` 通過，28 個靜態頁成功輸出。1440×900 與 390×844 實測泡泡皆與 sprite DOM 水平重疊 28px，上方位移分別為 25px／18px；偽元素 computed content 為 `none`，兩尺寸均無水平溢位，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-04 — 任務卡光暈、位置指示與 Chatbot 泡泡校準
+
+- 任務卡移除 hover 時疊加的矩形 drop-shadow，將 `::after` 改為內縮、透明邊緣的單一 radial-gradient 光團，消除卡片上下兩層光暈的斷層。
+- 桌機卡位由舞台 50% 上移至 46%，手機由 49% 上移至 44%；`quest-position` 提升至獨立 z-index 30，避免被中央卡片遮蓋。
+- Chatbot 邀請列改為頂端對齊，桌機／手機泡泡分別上移 24px／18px；`::after` 尾巴移至泡泡左下角，斜指史萊姆，形成明確的斜右上關係。
+- **驗證**：圖片預算、ESLint、TypeScript、Impeccable layout detector 與 production build 全數通過，28 個靜態頁成功輸出。1440×900／390×844 實測卡片底緣與 `quest-position` 分別保留約 38–49px／39px 間距，位置指示器 z-index 為 30；桌機／手機泡泡分別高於史萊姆 24px／18px，並向右錯開 7px。最終樣式確認卡片本體 filter 為 `none`、光團無 box-shadow、頁面無水平溢位，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-04 — 賢者書庫星穹典藏殿與互動星群
+
+- 生成並接入賢者書庫桌機 `1672×941` 與手機 `941×1672` 星穹典藏殿背景，以深藍綠石材、直線柱廊、邊緣書架、黃銅星盤與開放星空形成獨立場景；AVIF 分別為 115.1 KB、150.1 KB。
+- 新增 `DeferredLibraryStarfield`／`LibraryStarfield`：書庫接近 viewport 且瀏覽器空閒後才 dynamic import 原生 Three.js，星群在游標附近產生低幅度牽引與視差；手機粒子降至約六成，DPR 上限 1.25，離屏／隱藏分頁停止 render loop，reduced-motion 不載入。
+- 移除舊 Unicode `floating-motes` 與直條漸層裝飾；靜態插畫為完整 fallback，HTML 標題、CTA 與卷冊維持最上層，狼降至內容後方避免遮住卷冊文字。
+- **驗證**：1440×900 載入桌機 AVIF 與 Three.js canvas，390×844 載入手機 AVIF 且四張卷冊完整位於 section；兩者無水平溢位。圖片預算、ESLint、TypeScript、Impeccable layout detector 與 `next build --webpack` 皆通過，28 個靜態頁成功輸出。未部署，未執行 Git。
+
+## 2026-08-04 — 蝙蝠編隊右上移與巨龍分層
+
+- 試煉之森六蝙蝠編隊桌機水平起點由 60% 移至 70%、垂直起點由 34% 提至 24%；手機水平起點由 64% 移至 70%、垂直起點由 20% 提至 14%，讓蝙蝠留在傳送門上半部，與下方巨龍 sprite 拉開視覺距離。
+- **驗證**：TypeScript、Impeccable layout detector 與 `next build --webpack` 通過，28 個靜態頁成功輸出。1440×900 實測蝙蝠群為 x=862–1173px、y=310–473px，與巨龍上緣相隔 78px；390×844 為 x=223–361px、y=157–225px，與巨龍上緣相隔 281px。兩尺寸皆無水平溢位，console 0 warning／error。全專案 ESLint 仍被未屬於本次修改的 `LibraryStarfield.tsx:177` effect 內同步 setState 擋住，本次 CSS detector 本身無問題。未部署，未執行 Git。
+
+## 2026-08-04 — 六蝙蝠編隊起點右移
+
+- 試煉之森六蝙蝠編隊的桌機基準點由 52% 右移至 60%；手機依 390px 實測邊界由 50% 調至 64%，避免照抄桌機比例後仍落在畫面左半，同時保留右側安全空間。
+- **驗證**：TypeScript、Impeccable layout detector 與直接執行的 `next build --webpack` 通過，28 個靜態頁成功輸出。1440×900 實測六隻蝙蝠橫跨 x=702–1012px，390×844 橫跨 x=200–338px，均位於場景右側、保留右緣空間且無水平溢位，console 0 warning／error。完整 `npm run build` 被另一項進行中的 `rpg-library-celestial.avif` 缺檔擋住；全專案 ESLint 被未屬於本次修改的 `LibraryStarfield.tsx:177` effect 內同步 setState 擋住，本次 CSS detector 本身無問題。未部署，未執行 Git。
+
+## 2026-08-04 — 六蝙蝠編隊與裁切後任務卡校準
+
+- 試煉之森蝙蝠編隊由四隻增加為六隻，新增右側翼位與後方尾隨位，分別配置獨立尺寸、拍翼速度與負延遲；整群桌機起點由 46% 右移至 52%，手機由 43% 右移至 50%。
+- 確認使用者裁切後的 `rpg-quest-card` PNG／WebP／AVIF 均為有效 811×1318 RGBA 圖片；依新比例將桌機卡高改為寬度的 1.625 倍、手機上限改為 377px，羊皮紙水平內距改為約 23%，glow inset 由舊畫布的 13.1% 收斂至新圖約 0.55%。
+- **驗證**：`npm run optimize:images` 已由裁切後 PNG 重生 AVIF／WebP；圖片預算、ESLint、`tsc --noEmit`、Impeccable layout detector 與 `next build --webpack` 全數通過，28 個靜態頁成功輸出。1440×900 與 390×844 實看皆確認任務卡比例為 1.625、瀏覽器實際載入 `rpg-quest-card.avif`（HTTP 200）、試煉之森有 6 隻蝙蝠且頁面無水平溢位，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-04 — Realm Window 四領域純風景替換
+
+- 為試煉之森四個 realm 生成各自獨立的 `1672×941` 純風景：晨光瀑布谷、月光水晶峽谷、暮色熔岩原與藍綠沉沒庭園；四張皆以中央 45% 為主要景深，圖片內不含角色、文字、UI 或傳送門框。
+- `TrialForestPortal` 不再覆用生命樹與產品世界地圖；每個 realm 改以 `<picture>` 提供 AVIF、WebP 與 PNG fallback，實測 Chromium 選用 AVIF，四次切換依序載入四張不同圖片。
+- 四張 PNG 母檔已納入既有圖片最佳化與 35% payload 預算；AVIF 分別為 272.5 KB、193.8 KB、158.5 KB、227.6 KB。
+- **驗證**：1440×900 桌機實看門洞、巨龍、蝙蝠與 HUD 無重疊，390×844 手機中央裁切保留場景焦點且無水平溢位；圖片預算、ESLint、TypeScript、Impeccable layout detector 與 production build 皆通過，28 個靜態頁成功輸出。未部署，未執行 Git。
+
+## 2026-08-04 — 蝙蝠編隊移至試煉之森
+
+- 將四隻 `sprite-bat` 編隊由新手村製圖工坊移至 `trial-forest-zone`，保留原本的相對隊形、尺寸差、拍翼速度與負延遲相位。
+- 捲動位移基準改為試煉場景附近的 `scrollY - 1500`，水平係數維持 `.5`、垂直係數由 `-.34` 收斂為 `-.12`，讓整群以更平緩的角度往右上飛；reduced-motion selector 同步改掛試煉之森。
+- **驗證**：ESLint、`tsc --noEmit`、本次修改檔案的 Impeccable detector 與 `next build --webpack` 通過，28 個靜態頁成功輸出。1440×900 與 390×844 實看確認新手村蝙蝠數為 0、試煉之森為 4，桌機編隊落在傳送門上方且未遮 HUD，手機編隊位於標題與門框之間；兩尺寸皆無水平溢位，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-04 — Quest Zone 製圖工坊正式接入
+
+- 將已確認的室內公會製圖工坊接入首頁 Quest Zone：桌機採 `1672×941` 橫幅、手機採 `941×1672` 直式獨立 art direction，以直線木構、矩形高窗、地圖櫃與長形製圖桌區隔生命樹首屏及森林遺跡試煉。
+- 新增 `rpg-quest-workshop` 桌機／手機 PNG 母檔及 AVIF／WebP 衍生資產，納入既有 `optimize:images`／`check:images` 管線；AVIF 分別為 95.1 KB 與 70.0 KB。
+- Quest Zone 改用對應 `image-set()`，移除只服務舊森林背景的丘陵視差 DOM／CSS；既有五卡軌道、方向、進場、hover／focus glow 與蝙蝠編隊均保留。
+- **驗證**：1440×900 與 390×844 實看分別載入桌機／手機 AVIF，標題與中央卡完整位於場景內，無水平溢出；圖片預算、lint、TypeScript、Impeccable layout detector 與 production build 皆通過。未部署，未執行 Git。
+
+## 2026-08-04 — Quest Zone 製圖工坊背景概念
+
+- 為新手村生成純背景的室內公會製圖工坊概念：以水平木樑、矩形高窗、地圖櫃、黃銅儀器與長形製圖桌建立暖色建築場景，避開首屏生命樹的巨大樹冠與試煉之森的森林遺跡／圓形傳送門。
+- 第一版仍出現大型拱形屋架，第二版針對此單點改為直線木構與矩形高窗；保留左上標題安全區、中央五卡軌道空間及左右方向控制區，圖片內不包含卡片、文字、箭頭或 UI。
+- 本次僅為方向預覽，生成圖留在 Codex 預覽輸出，尚未加入 `public/`、切換 CSS、執行 build 或部署；未執行 Git。
+
+## 2026-08-04 — 首頁入口、蝙蝠編隊與舊任務書資產整理
+
+- Chatbot 由右下改為左下固定，史萊姆、對話泡泡尾端與面板裁切展開方向同步鏡像；手機仍保留 12px 安全邊距與完整 viewport 面板。
+- 移除 Hero「開始冒險」CTA 及其專用 `.rpg-primary` CSS；新手村單隻蝙蝠改為四隻大小、隊形、拍翼速度與相位皆不同的裝飾編隊，從主卡上方隨捲動往右上離場，reduced-motion 下停止位移與拍翼。
+- 任務卡 PNG 量測為 1086×1448，實際非透明內容約 802×1315（左右各 13.1%、上 4.1%、下 5.1% 為透明邊界）；保留母檔畫布與文字安全區，將 hover／focus glow 改由此實體邊界的偽元素承載，避免整個透明畫布發光。
+- 「內容秘藏地」領域改用既有產品世界地圖取景；移除舊 `rpg-quest-book` 的 PNG／AVIF／WebP、圖片最佳化清單項目，以及輪播中早已隱藏的書頁、書脊與護角 DOM／CSS。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算與本次修改檔案的 Impeccable detector 通過；`next build --webpack` 成功輸出 28 個靜態頁。1440×900 與 390×844 實看確認 Chatbot 分別固定左側 28px／12px、面板完整落在 viewport、Hero 已無 `.rpg-primary`、蝙蝠為四隻且不同尺寸、卡面 glow inset 對應透明邊界，兩尺寸 body 皆無水平溢位。一般 `npm run build` 的 Turbopack 再次停在最佳化階段且無新輸出，已只中止該程序並改用 webpack 完成驗證。未部署，未執行 Git。
+
+## 2026-08-04 — 新手村魔法任務卡替換與互動光暈
+
+- 以既有 `rpg-quest-book.png` 為美術基準生成薄型對稱魔法卡，移除書脊、書頁與厚度，保留深森林琺瑯、黃銅、藤蔓、寶石及 HTML 羊皮紙安全區；透明 PNG 母檔加入 `public/rpg-quest-card.png`，並納入圖片管線產出 210.3 KB AVIF／304.3 KB WebP。
+- `QuestBookCarousel` 的五卡偽 3D 軌道、方向、拖曳、鍵盤切換及進場動畫全部維持原狀，只把封面 image-set 切換為魔法卡；中央卡新增 hover／`focus-within` 金綠 glow，reduced-motion 下取消 transition。
+- quest-zone 背景暫不替換；後續另往室內公會作戰室／製圖工坊探索，避免同時重複首屏生命樹與下一屏試煉森林的戶外自然場景。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算與 Impeccable layout detector 通過，`next build --webpack` 成功輸出 28 個靜態頁。1440×900 與 390×844 實看皆載入新卡、HTML 文字無溢位且 body 無水平溢位；手機中央卡約 245×364px。未部署，未執行 Git。
+
+## 2026-08-04 — Chatbot 角色去重與對話框動效
+
+- 移除首頁 Hero 原本的 `animal-sprite sprite-jelly` 與「任務準備好了嗎？」提示，清除其專用定位／RWD／reduced-motion CSS；全站只保留固定右下角的 Chatbot 史萊姆入口。
+- Chatbot 邀請泡泡改為深森林底、羊皮紙文字與黃銅細邊的角色對話框，從貼近史萊姆的尾端以 440ms 裁切、模糊與縮放展開一次；手機維持緊湊寬度，`prefers-reduced-motion` 下取消動效。
+- **驗證**：ESLint、TypeScript、production build 與 Impeccable detector 通過，28 個靜態頁成功輸出；1440×900、390×844 實看皆只剩一個 Chatbot `sprite-jelly`，對話框完成態文字與尾端完整、無 body 水平溢出，動畫名稱／時間為 `chat-speech-pop`／440ms。未部署，未執行 Git。
+
+## 2026-08-04 — Quest Zone 場景與魔法卡概念探索
+
+- 確認 `quest-zone` 與首屏相似的主因是沿用生命樹背景及其巨大樹冠、中央金光、綠色霧景構圖；提出改為低視角的「冒險者營地／符文訓練廣場」，以石台、帳篷、木牌與遠山建立不同的水平場景骨架。
+- 以既有畫面作風格參考，生成一張五張漂浮魔法任務卡概念圖：保留深森林琺瑯、黃銅、藤蔓、寶石與羊皮紙安全區，移除書脊與厚書體積；本次僅供方向比較，尚未加入 `public/`、修改輪播或替換正式圖片。
+- 未執行 build、部署或 Git；既有 Regression、Notion 同步與 Firebase 靜態部署架構均未變動。
+
+## 2026-08-04 — Chatbot 史萊姆入口
+
+- 將右下角「詢問賢者」書庫徽章改為既有六幀 `sprite-jelly` 動畫角色，關閉時在角色左側顯示「有什麼疑問可以問我唷」對話泡泡，點擊後沿原錨點展開既有羊皮紙 Chatbox。
+- 入口保留語意化按鈕、明確 aria-label、鍵盤 focus 與至少 44px 操作區；手機縮小角色與泡泡但不遮斷文案，`prefers-reduced-motion` 下停止 sprite、泡泡與面板展開動畫。
+- **驗證**：ESLint 與 production build 通過，28 個靜態頁成功輸出；以 1440×900、390×844 實機檢查關閉／展開狀態，泡泡與 sprite 無裁切、面板完整落在 viewport、頁面無水平溢出，輸入框開啟後自動聚焦，關閉後焦點回到史萊姆入口。`sprite-jelly.webp` 維持既有 80.1 KB 首選資產。未部署，未執行 Git。
+
+## 2026-08-04 — Moor Notion 八章遷移完成
+
+- 將 Creator Hub、貼文、聊天、我的頁面、數據分析與其他功能六篇 Notion 草稿補成公開安全版 QA 指引，涵蓋主要旅程、狀態同步、權限、弱網路、錯誤恢復與個資保護。
+- 六筆 Catalog 由 `hidden + draft + in-review` 切換為 `full + published + approved`；Moor 八章目前全數通過發布閘門，來源頁標題亦移除「待整理」。
+- `src/content/moor.ts` 將六章狀態改為 published，並讓靜態路由以發布狀態決定輸出；正文優先使用 approved generated Markdown，不要求每章另存一份重複的 TypeScript sections。
+- 正式執行 `npm run sync:notion` 後 generated 文件由 14 增為 20 篇，Moor 8/8 皆有核准 Markdown；Chatbot 索引同步增為 20 份文件、29 個段落。
+- **驗證**：Notion／Markdown tests 12/12、ESLint 與 production build 通過；28 個靜態頁成功輸出，Moor `quick-start`、`live`、`creator-hub`、`posts`、`chat`、`profile`、`analytics`、`other` 八個路由全部產生。首次 sandbox build 卡在 Turbopack 無進度，改於獲准的本機環境重跑後成功。未部署，未執行 Git。
+
+## 2026-08-04 — Firebase AI Logic 賢者問答 Chatbot
+
+- 新增全站「賢者問答櫃台」：桌機為右下固定羊皮紙工作台、手機為 viewport 內滿寬面板；支援歡迎訊息、建議問題、loading／error／disabled、Enter／Shift+Enter、Escape 關閉、來源 `<details>`、44px 操作區與 reduced-motion。
+- 新增 manifest allowlist 索引器，只讀取 `full + approved + markdownPath` 的 generated Markdown；build 會產生 `public/chatbot-search-index.json`，目前涵蓋 14 份核准文件、23 個段落，不會收錄治理文件、hidden／link-only 或未審內容。
+- 新增中文 2–3 字 n-gram、英文／技術詞、標題／章節加權與最低分數門檻；最多傳入 5 個 chunks。無檢索結果時在瀏覽器直接拒答，不呼叫模型。
+- 整合 Firebase AI Logic Web SDK、Gemini Developer API backend、`gemini-3.5-flash-lite`、reCAPTCHA Enterprise App Check 與本機 debug token 流程；Gemini 使用 structured output 回傳 `sufficient`／`answer`／`usedChunkIds`，前端只接受本次檢索到的引用。Gemini Developer API Key 不進前端；Firebase Web config 與 App Check site key 仍待使用者在 `.env.local` 填入並於 Console 完成設定。
+- Notion 仍維持手動 `sync:notion`；新增 `refresh:notion` 串接同步與索引，`prebuild` 每次依既有 generated Markdown 重建索引，不讓正式 build 強制依賴 Notion Token 或網路。
+- **驗證**：Chatbot unit tests 9/9、ESLint、`tsc --noEmit`、圖片預算、Impeccable detector 0 findings、`next build --webpack` 通過，22 個靜態頁成功輸出。1280×900／390×844 實看面板完整落在 viewport、body 無水平溢位、console 0 warning／error；「今天天氣」正確本地拒答，缺少 Firebase 設定時顯示安全錯誤。`npm audit --omit=dev` 另回報既有 Next／PostCSS／sharp 鏈 3 項 high，修正需升級到目前鎖定範圍外或 breaking 版本，本次未執行 `--force`；Firebase 未出現在公告清單。未以真實 Firebase Console 設定呼叫 Gemini，未部署，未執行 Git。
+
+## 2026-08-04 — 賢者書庫 CTA 與段落間距修正
+
+- 將 `.book-copy` 內的書庫 CTA 由 inline formatting context 改為獨立 flex 區塊，並以 `clamp(24px, 3dvh, 32px)` 保留明確的響應式段落間距；同步固定前一段落的行高與下邊距，避免按鈕視覺位移壓到第二行文字。
+- **驗證**：ESLint、`tsc --noEmit` 與 Impeccable layout detector 通過；2048×1125、768×1024、390×844 實測 CTA 與段落分別保留 32px、30.72px、25.31px，三者皆無重疊或 body 水平溢位，CTA 高度維持 52px。圖片預算與聊天索引前置檢查通過；完整 build 因工作區另一個既有 Next build 持續占用 `.next/lock`，未中止該程序或移除鎖。未部署，未執行 Git。
+
+## 2026-08-03 — 賢者知識書庫、Error Code V2 與測試工具文件
+
+- 在 `QA Storming Demo Lab` 的 `QA Storming Sync Lab` 建立 Error Code V2、測試工具、Maestro、Appium MCP 四份公開安全版來源頁，並新增四筆 `standalone + full + published + approved` Catalog 項目；正式同步後 generated 全文由 10 篇增為 14 篇。
+- 新增 `/library` 查詢櫃台與產品手冊／QA 參考資料／測試工具三座分類書架；新增 `/library/error-codes`，直接從 Notion generated Markdown 表格衍生 64 筆可搜尋索引，不另維護重複資料。
+- 新增 `/library/testing-tools`、`/library/maestro`、`/library/appium-mcp` 共用 standalone 文件閱讀器，具目錄、相關卷冊、code／callout／表格樣式與手機內層捲動邊界。
+- 首頁 Quest Books 由 2 卷補為 5 卷，加入 Error Code、工具工坊與 Mobile Automation；賢者書庫 CTA 及 Moor／Web／Error Code／工具卷冊全部接上有效路由。
+- 公開內容移除 Slack Workspace／頻道、UID 範例、正式環境重置指令與內部 issue URL，只保留「內部 Runbook」占位；新增 `PRODUCT.md` 記錄此安全邊界與產品真相。
+- **驗證**：Notion/parser tests 12/12、ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 通過，22 個靜態頁成功輸出。瀏覽器實測 Error Code 搜尋 `4012` 為 1/64；1280px 書庫首屏與 390×844 書庫、Error Code、Maestro 無 body 水平溢位，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-03 — Web Notion 八章遷移完成
+
+- 將「個人檔案與內容」及「影音與聊天」兩篇 Notion 草稿補成完整公開安全版，涵蓋角色／權限矩陣、內容生命週期、影音類型、聊天狀態、失敗恢復與跨裝置檢查。
+- 兩筆 Catalog 由 `hidden + draft + in-review` 改為 `full + published + approved`；Web 八章目前全數通過發布閘門，不再保留 Web 待審章節。
+- 正式執行 `npm run sync:notion` 後 generated 全文由 8 篇增為 10 篇（Moor 2、Web 8）；`profile-content` 與 `media-chat` production HTML 均顯示 `NOTION SYNCED EDITION`，不再使用 `web.ts` fallback。
+- **驗證**：Notion 同步／parser tests 12/12、ESLint、圖片預算與 production build 通過，17 個靜態頁面成功輸出。未部署，未執行 Git。
+
+## 2026-08-03 — Web 八章 Notion 映射與 generated 閱讀器接軌
+
+- 在 `QA Storming Sync Lab` 建立 Web 八篇來源頁與 Catalog chapter 映射；帳號、直播、支付、探索、Landing／SEO、設定六篇為 `full + published + approved`，個人檔案／內容與影音／聊天兩篇維持 `hidden + draft + in-review`。
+- Web 閱讀器改為 build time 優先載入 approved Notion generated Markdown，無同步內容時回退 `src/content/web.ts`；共用安全 renderer 可依 Moor／Web namespace 套用既有 RPG 手稿樣式。
+- 正式同步產出 8 篇全文（Moor 2、Web 6）；production HTML 確認六篇 Web 正式章節顯示 `NOTION SYNCED EDITION`，兩篇待審章節顯示 `QA CURATED EDITION` 且沒有 generated Markdown。
+- **驗證**：Notion 同步／parser tests 12/12、ESLint、圖片預算與 production build 通過，17 個靜態頁面成功輸出。首次 sandbox build 因 Turbopack 綁定本機連接埠被拒，於允許建置程序的環境重跑成功；未部署，未執行 Git。
+
+## 2026-08-03 — SWAG Master sitemap 完整映射與 Web 八章補齊
+
+- 唯讀盤點 SWAG Master `Functional Map` 與對應頁面，確認 00–13 共 14 個主域；未修改 Figma 節點、留言、檔案或分享設定。
+- 「個人檔案與內容」由待審核改為正式閱讀頁，收錄三種觀看角色、創作建立／更新／刪除、個人檔案管理及 Desktop／Tablet／Mobile QA 矩陣。
+- 「影音與聊天」由待審核改為正式閱讀頁，收錄 Video、Short、Story、Chat 主頁／詳情範圍、播放與訊息狀態、恢復路徑及跨裝置覆蓋。
+- SWAG Master 的 14 個主域維持映射到既有八章資訊架構，不另造重複章節；Web 八章皆可由產品 Hub 與靜態路由閱讀。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算、Impeccable detector 與 `next build --webpack` 通過，17 個靜態頁面成功輸出；1280×900／390×844 實看兩個新章，body 無水平溢位、表格維持內層橫向捲動，console 0 warning／error。未部署，未執行 Git。
+
+## 2026-08-03 — Moor 八章建立為 Notion 來源與 Catalog 映射
+
+- 將網站目前的 Moor 八章建立為 `QA Storming Sync Lab` 對應文件：既有快速入門更新為網站安全整理版，新增直播功能完整正文，以及 Creator Hub、貼文、聊天、我的頁面、數據分析、其他功能六篇整理草稿。
+- `Website Docs Catalog` 現有 8 筆 Moor chapter：快速入門與直播功能為 `full + published + approved`；其餘六篇為 `hidden + draft + in-review`，保留章節路由與摘要但不會進入公開 generated 內容。
+- 正式執行 `npm run sync:notion` 後輸出全文 2 篇、連結 0 篇；production HTML 已確認 `/products/moor/quick-start` 與 `/products/moor/live` 均顯示 `NOTION SYNCED EDITION`，六篇草稿未輸出。
+- **驗證**：Notion 測試 12/12、ESLint、`tsc --noEmit`、圖片預算與 `next build --webpack` 通過；15 個靜態頁面成功輸出。未部署，未執行 Git。
+
+## 2026-08-03 — Moor 閱讀器優先採用 Notion generated Markdown
+
+- 新增 build-time generated 文件讀取器與安全 Markdown parser；只從 `src/content/generated/docs/` 讀取 manifest 核准的產品章節，並拒絕越界路徑，不在 React runtime 或每次 render 呼叫 Notion API。
+- `/products/moor/[chapter]` 改為對應的 Notion generated Markdown 優先；manifest 沒有該產品章節時，保留 `src/content/moor.ts` 內建內容作 fallback。目前 `quick-start` 顯示 Notion 同步版，`live` 驗證仍使用 curated fallback。
+- 新增符合既有 RPG 手稿風格的 Markdown 標題、清單、表格、callout、toggle、引用與 code block renderer；不用 `dangerouslySetInnerHTML`，連結限定安全協定，手機表格維持內層橫向捲動。
+- `test:notion` 納入 parser fixtures；12/12 測試、ESLint、`tsc --noEmit`、圖片預算、Impeccable detector 與 `next build --webpack` 通過。production HTML 已確認 quick-start 含 `NOTION SYNCED EDITION` 與同步展示文字，live 含 `QA CURATED EDITION`。未執行 Git 或部署。
+
+## 2026-08-03 — 獨立 Demo Workspace Catalog 與 Moor 同步樣本
+
+- 確認 Codex Notion OAuth 已切換至獨立的 `QA Storming Demo Lab` Workspace，不再指向 SWAG；在 `QA Storming Sync Lab` 父頁下建立 schema v2 完整欄位的 `Website Docs Catalog`。
+- 新 Catalog data source 為 `16d3010e-3844-405e-8fbc-4c2fb447d8b9`；欄位型別、Select 選項與 `scripts/sync-notion.ts` 的必要 schema 一致。
+- 建立不含公司機密的 `Moor 快速入門｜同步 Demo` 來源頁，並新增 `full + published + approved` 的 `product / moor / quick-start` Catalog 項目；查詢驗證只有一筆且路由欄位完整。
+- 本機 `.env.local` 已有 Notion 兩個變數，但 Data Source ID 仍是舊值；待使用者換成新 ID、確認父頁已分享給唯讀 Connection，再執行 preview。未讀取或記錄 Token，未執行 Git、同步、build 或部署。
+
+## 2026-08-03 — 第二批 Figma 2026 產品情報整合
+
+- 以唯讀方式核對 11 份新增 Figma 檔案；只採用 `Design Merged` 的現行 Mockup 與封面版本資訊，未進入 Prototype 原檔、Sandbox 或遺棄版本，也未修改節點、留言、分享設定或檔案內容。
+- Web 直播章新增 SWAG／Moor 跨端語音直播；交易章補 Shop Detail、First Pay、信用卡快速／一般支付；Landing／SEO 章補 Mobile／Tablet／Desktop 的 404 與錯誤恢復檢查。
+- Web「個人中心與設定」由待審核改為可閱讀第六章，收錄聯盟夥伴入口版位、設定密碼安全路徑、VIP 1–100 與 Lv.0 不顯示徽章的邊界案例。
+- Moor 快速入門加入創作者註冊媒體上傳本人同意；直播章加入語音直播與 AI 助理隔離／失敗狀態；我的頁面摘要補上 VIP／Lv.0。Ramen／Ramen MDM 的產品地圖摘要加入下載 App 分流與 fallback。
+- 內容僅保留可公開的功能範圍與 QA 觀察，沒有寫入 Figma URL、ticket、人名、帳號、留言原文或敏感設定。
+- **驗證**：ESLint、`tsc --noEmit`、圖片預算、Impeccable detector 與 `next build --webpack` 通過；靜態頁由 14 增至 15。1440×900 實看 Web 設定章，390×844 實測設定、交易、Web 直播、錯誤頁、Moor 快速入門與直播章皆無 body 水平溢出；手機表格維持在 316px 內層橫向捲動容器。未執行 Git、部署或 Figma 寫入。
+
+## 2026-08-03 — 新手村／試煉場景標題基準統一
+
+- 將新手村 `.zone-title` 從置中的 `.zone-content` 拆出，改為 section 直屬的語意化 `header`；書環仍保留在最大寬度容器中，標題不再受其 `margin: auto` 影響。
+- 桌機新手村標題文字與試煉之森標題統一從 `6vw` 起始；新手村垂直光線移到文字基準左側，不額外推移標題內容。
+- 將試煉之森 `.portal-copy` 全面更名為 `.portal-title`，同步更新 JSX 與所有桌機／平板／手機 selector，舊 class 無殘留。
+- **驗證**：ESLint、獨立 `tsc --noEmit`、圖片體積檢查與 `next build --webpack` 全數通過；14 個靜態頁面成功輸出。本機預覽伺服器無法由內建瀏覽器連入，因此未宣稱 live browser 視覺驗證。未執行 Git 或部署。
+
+## 2026-08-03 — Notion Catalog 五欄位實機建立與既有資料回填
+
+- 在 `Website Docs Catalog` data source 實際新增 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`；Product Key 提供 `moor`／`web`，文件類型與審核狀態選項與 schema v2 一致。
+- 四筆既有 POC 項目皆回填為 `Document Type=standalone`：三筆 published full／link-only 保留原發布語意並設為 `Review Status=approved`，`隱藏草稿` 設為 `draft`；產品 key、章節與父層欄位維持空白，未虛構產品映射。
+- 重新查詢 data source 驗證五欄 schema 與四筆資料全部符合預期；正式 Internal Connection token、preview 圖片本地化與 Moor Catalog 映射仍維持獨立待辦。未執行 Git、正式內容同步或部署。
+- **驗證**：Notion fixture tests 10/10、Regression tests 14/14、ESLint、圖片預算與 `next build --webpack` 通過；production build 的 TypeScript 階段成功並輸出 14 個靜態頁面。額外 `tsc --noEmit` 因 `.next/types` 與空的 `.next/dev/types` generated route declarations 同時載入而報型別衝突，未修改或刪除 Next 暫存產物。
+
 ## 2026-08-03 — 產品 Hub 全尺寸內容邊界強化
 
 - 新增共用 `product-hub.css`，在不混用產品 DOM namespace 的前提下，統一 Moor／Web 的首屏高度、卡片、徽章、統計與短視窗收斂規則。

@@ -11,20 +11,21 @@
 - ✅ **Critter 動畫** — jelly / wolf / bat / lol-dragon 雪碧圖(皆重排成等距格避免裁切)。
 - ✅ **目錄重構 + 文件治理系統** — 原始碼進 `src/`;新增 AGENTS/CHANGELOG/PLAN/PROGRESS/DECISION/TASK/MEMORY/ARCHITECTURE/DESIGN。(2026-07-19)
 - ✅ **Moor Know-how POC** — `/products/moor` 產品 Hub＋「快速入門／直播功能」章節閱讀器，產品地圖與賢者書庫雙入口。(2026-08-01)
-- ✅ **Web 2026 Know-how** — `/products/web` 產品 Hub＋五個已整理章節、三個待審核節點；產品地圖收斂為摘要入口。(2026-08-03)
+- ✅ **Web 2026 Know-how** — `/products/web` 產品 Hub＋八個已整理章節；SWAG Master sitemap 的 14 個主域已映射到公開 QA 路徑，產品地圖收斂為摘要入口。(2026-08-03)
 - ✅ **次要場景視覺升級** — `quest-zone` 林間任務舞台、`moor-journey` 世界地圖路徑與 `moor-reader-layout` 實體典籍材質；完成 375px／768px／1440px live visual QA 與觸控收尾。(2026-08-02)
 - ✅ **Three.js 生命樹 Hero** — 以原生 Three.js 建立全景 shader、空間光塵與鏡頭差速，保留圖片／DOM fallback、reduced-motion 與純靜態輸出。(2026-08-02)
 - ✅ **圖片效能管線** — PNG 母檔可重現產生 AVIF／WebP，場景與 sprite 使用現代格式 fallback，prebuild 以體積預算防止回退。(2026-08-02)
+- ✅ **Notion 手動同步前台 POC** — 獨立 Workspace／Connection／Catalog、Moor quick-start 正式同步，以及 generated Markdown 優先／`moor.ts` fallback 的靜態閱讀流程。(2026-08-03)
+- ✅ **Web Notion 八章遷移** — Web 八章來源頁與 Catalog 映射全部完成，皆為 `full + published + approved`，網站閱讀器全數使用 generated Markdown。(2026-08-03)
+- ✅ **賢者知識書庫第一版** — `/library` 查詢櫃台＋分類書架、Error Code V2 互動索引、測試工具／Maestro／Appium MCP generated 文件閱讀器，以及首頁 Quest Books／書庫入口補齊。(2026-08-03)
+- ✅ **站內 AI 知識 Chatbot 第一版** — approved Markdown build-time 索引、中文／英文關鍵字檢索、Firebase AI Logic＋Gemini structured answer、來源驗證、App Check 與全站賢者問答 UI；Console 正式設定待使用者完成。(2026-08-04)
+- ✅ **Moor Notion 八章遷移** — Moor 八篇來源與 Catalog 映射全部完成，皆為 `full + published + approved`；八個靜態章節閱讀器全數使用 generated Markdown，並納入 Chatbot 文件索引。(2026-08-04)
+- ✅ **正式 Regression Google Sheet 串接** — `.env.local` 已設定正式 Sheet 與唯讀 Google 憑證，手動同步管線可更新 generated JSON；目前產出為 Web Production 1 個 Suite、71 個 Cases。(2026-08-04)
+- ✅ **迷霧測試林 3D 教學副本整合** — `/rpg` 以同源 iframe 隔離嵌入自帶 three.js 的完整教學遊戲，首頁桌機專屬入口(CSS 能力 gate)＋`/rpg` 三態裝置判斷、鍵盤確認與 iframe 焦點交接，手機擋頁＋覆寫入口；決策見 `DECISION.md` D25。後續加關卡/調整另議。(2026-08-04)
 
 ## 進行中 / 待決(見 `docs/TASK.md` 優先級)
 
-- 🔲 **Moor Notion 正式同步** — POC 已建立；待完成 Internal Connection 實機驗證、為 Catalog 補產品／章節映射，並逐章完成安全審核後取代暫時的 curated TypeScript 內容。
 - 🔲 **自動部署(CI)** — 目前 deploy 全手動;是否導入 GitHub Actions(排程/手動觸發)使內容更新自動上線。
-- 🔲 **填入正式 Regression Sheet** — 目前為 sample baseline,待接上團隊實際 Google Sheet。
-
-## 之後(暫不做)
-
-- ⏸️ **站內 AI bot / RAG** — 從知識庫回答;需引入 key-holding serverless 端點,會離開純靜態,延後。
 
 ## 里程碑更新規範
 

@@ -18,6 +18,7 @@
 | `TASK.md` | `docs/` | 待辦事項與優先級 | 領取/完成/新增任務時 |
 | `MEMORY.md` | `docs/` | 長期知識與專案慣例、地雷 | 發現新慣例/踩雷時 |
 | `ARCHITECTURE.md` | `docs/` | 系統架構與設計說明 | 架構變動時 |
+| `terminal-command-playbook.md` | `docs/` | Regression、Notion、AI Bot、驗證與部署指令手冊 | 指令或工作流改變時 |
 | `DESIGN.md` | root | 前端視覺、互動、圖片與 RWD 規範 | 視覺/風格調整時 |
 | `CLAUDE.md` | root | Claude Code 專用指引、build/deploy、地雷 | — |
 

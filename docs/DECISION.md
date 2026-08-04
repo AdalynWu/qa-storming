@@ -4,6 +4,41 @@
 
 ---
 
+## D25 — 迷霧測試林 3D 教學遊戲以同源 iframe 執行/樣式隔離嵌入、桌機專屬入口 · 2026-08-04
+- **決策**：把一份自帶 three.js r128、零外部依賴的完整遊戲 HTML 放在 `public/rpg/misty-test-forest.html`,由 `/rpg` 路由用 `<iframe>` 載入,不改寫成 React、不共用站上 `three@^0.185`。首頁導覽新增桌機專屬「迷霧測試林」入口,採**純 CSS 能力 gate**(`min-width:1024px and min-height:600px`,並排除 `(hover:none) and (pointer:coarse)` 純觸控);`/rpg` 內另有 JS 三態判斷(`useIsComputerDevice`,`useSyncExternalStore`)＋按鈕/鍵盤確認才載入 iframe,不合格顯示擋頁但保留「我有鍵盤,仍要進入」覆寫;iframe `onLoad` 後同源交接鍵盤焦點到遊戲 `#start`。
+- **原因**：遊戲是全螢幕沉浸、`html,body{overflow:hidden}`、自帶一整套 DOM/CSS 與 r128 的一次性教學內容;iframe 提供 **CSS/DOM、全域 JavaScript、React 生命週期、three.js 版本的「執行與樣式隔離」**,零改寫即可整合、之後加關卡只改該 HTML,且與 SPA 互不汙染。桌機專屬與延後載入是因為遊戲核心為鍵盤操作,且 3D 場景在手機耗效能。
+- **取捨**：(1)**iframe 非安全邊界**——此為同源、未加 `sandbox`,遊戲仍可存取 parent;因是內部、版本受控 HTML 故接受,若日後要真隔離可評估 `sandbox="allow-scripts"`,但會影響同源 focus 交接與未來 localStorage,需另驗證。(2)遊戲自帶一份 r128,與站上 `three@^0.185` 各自載入(僅桌機、僅此路由,可接受)。(3)**第一版已知取捨**:iframe 只在 opt-in(確認)後載入、**離開路由才完整停止**;遊戲在 `prefers-reduced-motion` 下**僅降低裝飾更新(螢火蟲/光暈脈動),`requestAnimationFrame` 與 renderer 仍持續**,**未**符合站上裝飾層(D11/D17/D22)的「離屏暫停/靜態降級」規範——隱藏分頁暫停與離屏暫停留待下一輪。(4)`public/` 為公開靜態資產,`noindex`／裝置 gate／隱藏導覽皆非權限控制,遊戲內容須確認不含機密(見 PROGRESS 上線前確認)。沿用 D1 純靜態架構,未新增 R3F/Drei/GSAP 或 server 服務。
+
+## D24 — Firebase AI 暫時性 HTTP 錯誤採有限次指數退避 · 2026-08-04
+- **決策**：模型呼叫遇到 `429`、`500`、`502`、`503` 或 `504` 時，原請求最多再重試兩次，等待 400ms、1000ms；仍失敗則顯示不含供應商細節的繁中忙碌提示。權限、App Check、模型設定與資料解析等非暫時性錯誤不重試。
+- **原因**：Gemini 容量尖峰屬短暫供應端錯誤，一次失敗不應直接中斷已完成的 Markdown 檢索；有限退避可提升成功率，同時避免無上限重送、請求風暴與隱藏真正的設定問題。
+- **取捨**：過載請求最長增加約 1.4 秒等待，且每次重試仍可能計入 provider quota；不自動切換模型，以免未經確認改變成本、配額或回答品質。模型名稱仍可透過既有公開環境設定調整。
+
+## D23 — Chatbot 趣味回答採本地精準題庫前置攔截 · 2026-08-04
+- **決策**：在問題格式與長度驗證後、載入搜尋索引前，以正規化後的完整字串精準比對人工核准趣味題；命中時從該題的 2–3 則答案中本地隨機回傳 `kind=fun`，不附來源、不呼叫 Gemini。未命中則完整沿用正式知識庫檢索與拒答流程。
+- **原因**：趣味互動不需要模型推論，本地 allowlist 能固定語氣、避免意外冒犯或把玩笑當成 QA 規範，同時不產生模型費用與網路延遲。
+- **取捨**：只支援人工列出的精準問法與少量別名，不做模糊意圖辨識；新增問答需經人工審閱與程式發布。UI 以「史萊姆閒聊」和不同材質明確區隔正式「賢者」回答。
+
+## D22 — 賢者書庫採靜態星穹場景＋延遲 Three.js 星群 · 2026-08-04
+- **決策**：首頁賢者書庫以桌機／手機獨立星穹典藏殿圖片承擔完整場景，另以原生 Three.js 疊加少量可受游標牽引的星群。`DeferredLibraryStarfield` 只有在書庫接近 viewport 且瀏覽器空閒時才 dynamic import；reduced-motion 不載入，canvas 離屏或分頁隱藏時停止 `setAnimationLoop`，DPR 上限 1.25，手機粒子量降為桌機約六成。
+- **原因**：書庫原本的單色漸層完成度低於生命樹、製圖工坊與試煉之森；星穹插畫能在 WebGL 不可用時完整成立，而低成本星圖牽引讓典藏殿具備自己的互動辨識度，不必讓內容或操作依賴 canvas。
+- **取捨**：新增第二個延遲 Three.js entry 與一組桌機／手機圖片，但 Three.js 依賴可與 Hero 共用、首屏不預載，且所有正文、卷冊與 CTA 仍為語意化 DOM。未導入 R3F、Drei、GSAP 或新 runtime 服務，純靜態 Firebase 架構不變。
+
+## D21 — AI Chatbot 維持靜態站，以 allowlist 索引＋Firebase AI Logic 直連 · 2026-08-04
+- **決策**：不新增 Cloud Functions、API route、向量資料庫或 runtime Notion request。build 時只從 generated manifest 中 `full + approved` 的 Markdown 產生公開 JSON 索引；瀏覽器先做關鍵字檢索與最低分數門檻，再以 Firebase AI Logic Web SDK＋App Check 將最多 5 個 chunks 傳給 Gemini Developer API。模型回傳 structured output 與 chunk IDs，前端只顯示通過 allowlist 驗證的來源。
+- **原因**：Firebase AI Logic 提供受 App Check 保護的 client SDK gateway，可由純靜態 Hosting 安全使用 Gemini，而不把 Gemini Developer API Key 放進前端。沿用既有 Notion manifest 審核閘門，也能避免治理文件、內部草稿或 link-only 內容被打包進公開索引。
+- **取捨**：App Check 防止非核准 app 濫用，但不等於使用者身分驗證；目前索引與問答只可使用公開安全版內容。第一版關鍵字檢索對同義詞與跨段推論有限，且 Firebase Web config、reCAPTCHA Enterprise、AI Logic enforcement／quota 需在 Console 人工設定。沒有有效檢索、有效引用或模型失敗時一律降級拒答。
+
+## D20 — 產品閱讀器共用 Notion generated 優先契約 · 2026-08-03
+- **決策**：將 D19 的章節資料來源契約擴充到 Web：Moor 與 Web 閱讀器都以 `Product Key + Chapter Slug` 查找 approved generated Markdown，並以共用安全 parser／renderer 輸出；各產品以 class prefix 保留獨立視覺 namespace，沒有 generated 項目時分別回退 `moor.ts`／`web.ts`。
+- **原因**：Website Docs Catalog 已能用同一 schema 管理不同產品章節，若每個產品另寫 renderer 或同步規則，會增加格式落差與維護成本。共用內容層可讓 Notion 更新流程一致，同時保持 Moor／Web 各自的 RPG 場景設計。
+- **取捨**：過渡期仍有 generated 與 TypeScript fallback 兩種正文來源，Catalog 的審核狀態必須與網站發布路由分開理解；換取逐章遷移、未核准內容不輸出及 Demo 時的穩定 fallback。
+
+## D19 — Notion generated Markdown 優先，型別內容作章節 fallback · 2026-08-03
+- **決策**：Moor 章節在 build time 依 `Product Key + Chapter Slug` 查找 approved generated manifest；找到 `full` 文件時安全解析本地 Markdown並輸出，找不到時才使用 `src/content/moor.ts` 的既有 sections。manifest 已宣告但 Markdown 檔缺失或路徑越界視為內容產物損壞，建置失敗而非靜默回退。
+- **原因**：POC 需要讓 Notion 修改經 `npm run sync:notion` 後真正反映在網站，同時不能讓尚未搬入 Catalog 的章節消失。build-time 本地讀取能維持純靜態、可重現與零 runtime API；安全 parser 避免直接注入 Notion HTML。
+- **取捨**：過渡期同時存在 generated 與 curated 兩種來源，章節 metadata 仍依既有 `moor.ts` 決定可發布路由；換取逐章遷移、可控 fallback 與 Demo 穩定性。完成全部章節審核後，可再移除對應的 curated 正文。
+
 ## D18 — Notion 產品文件使用 manifest v2 與獨立審核閘門 · 2026-08-03
 - **決策**：Website Docs Catalog 增加 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`；manifest 升為 schema v2。同步輸出除了 `Status=published`、Publish Mode 非 hidden，還必須是 `Review Status=approved`。同步器驗證 standalone／hub／chapter 欄位組合與產品路由唯一性。
 - **原因**：一般文件 slug 無法可靠表達 `/products/<product>/<chapter>` 階層，而 `Status=published` 也不能取代內容是否適合放進公開靜態站的安全審核。若兩者混用，仍在產品流程審核中的文件可能意外進入 Firebase 靜態產物。

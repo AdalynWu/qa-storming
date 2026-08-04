@@ -4,20 +4,33 @@
 
 ## 待辦
 
-- 🔴 **完成 Notion Internal Connection 實機驗證** — 程式與私人 POC 已完成;待 Workspace Owner 建立/確認唯讀 `QA Storming Docs Reader`、將 Sync Lab 分享給它、填入 `NOTION_TOKEN`,再跑 preview 並手動加入一張安全測試圖片。
-- 🟡 **在 Website Docs Catalog 實際新增產品階層欄位** — 程式端 schema v2、同步器與 fixtures 已完成；待有 Notion 編輯權限的人員在 `QA Storming Sync Lab` Catalog 新增 `Product Key`、`Chapter Slug`、`Document Type`、`Review Status`、`Parent Slug`，並為既有項目補預設值。
-- 🟡 **完成 Moor 剩餘六章全文與 Catalog 映射** — 已用 MOOR Master 補齊 Creator Hub、貼文、聊天、我的頁面、數據分析、其他功能的安全摘要；仍需補產品 key／章節 slug 映射並逐章完成可公開全文審核。
-- 🔴 **接上正式 Regression Google Sheet** — 目前為內建 sample baseline;需設定 `.env.local`(`REGRESSION_SHEET_ID`、`GOOGLE_APPLICATION_CREDENTIALS`)並以 `--replace-sample-baseline` 首次替換。
+- 🟢 **Notion 圖片本地化實機樣本** — Internal Connection、Catalog、正式同步與 Moor quick-start 前台消費已完成；若 Demo 要展示圖片同步，再於來源頁手動加入一張無機密資訊的測試圖片並重跑 preview。
 - 🟡 **自動部署(CI)** — 評估 GitHub Actions(排程 cron + 手動觸發),讓內容/Sheet 更新自動 build+deploy。牽涉導入 Firebase 部署憑證。
 - 🟢 **robots noindex** — `layout.tsx` 目前 `noindex`;正式對外收錄前記得改。
 - 🟢 **清理未使用便利 helper** — `getCasesForSuite`(`regression.ts`)目前無人使用;確定不需要再移除(非必要)。
 
-## 暫緩
-
-- ⏸️ **站內 AI bot / RAG** — 需 serverless key proxy,離開純靜態;待文件管線與 CI 定案後再議。
-
 ## 已完成
 
+- ✅ 迷霧測試林 3D 教學遊戲整合：`/rpg` 同源 iframe 隔離嵌入、首頁桌機專屬 CSS 能力 gate 入口、`useIsComputerDevice` 三態判斷＋鍵盤/按鈕確認＋iframe 焦點交接、手機擋頁與覆寫入口（2026-08-04）
+- ✅ Chatbot 對 Firebase AI Logic `429`／暫時性 `5xx` 加入兩次有限退避重試與安全忙碌提示（2026-08-04）
+- ✅ 正式 Regression Google Sheet 已設定 Sheet ID 與唯讀憑證，完成首次 sample baseline 替換；目前 generated 資料為 Web Production 1 Suite／71 Cases，可使用 `npm run sync:regression` 手動同步（確認於 2026-08-04）
+- ✅ Chatbot 新增人工核准的本地趣味題庫、隨機回答與「史萊姆閒聊」視覺區隔，命中時不使用索引或 Gemini（2026-08-04）
+- ✅ 首屏「向下探索」提示提高對比，並將箭頭、文字與控制器精準置中（2026-08-04）
+- ✅ 賢者書庫改為桌機／手機獨立星穹典藏殿背景，並加入延遲載入、離屏暫停、reduced-motion 降級的 Three.js 互動星群（2026-08-04）
+- ✅ 試煉之森四個 realm 改用各自生成的純奇幻風景，並以 AVIF／WebP／PNG `<picture>` 接入既有圖片效能管線（2026-08-04）
+- ✅ Quest Zone 改用室內公會製圖工坊桌機／手機獨立背景，移除生命樹覆用與森林丘陵視差，並接入圖片效能管線（2026-08-04）
+- ✅ Moor 剩餘六章完成公開安全正文與審核，八章全部切換為 `full + published + approved` 並輸出靜態閱讀頁（2026-08-04）
+- ✅ 站內 AI Chatbot 第一版：approved Markdown 關鍵字索引、Firebase AI Logic／Gemini、App Check、引用驗證與全站賢者問答 UI；Firebase Console 正式設定與真實模型 smoke test 由使用者完成（2026-08-04）
+- ✅ 建立賢者知識書庫、Error Code V2 查詢、測試工具／Maestro／Appium MCP 網站與 Notion 對應文件，並補滿首頁 Quest Books（2026-08-03）
+- ✅ Web 八章 Notion 正文全部完成審核並切換為 `full + published + approved`，網站不再使用 Web fallback 正文（2026-08-03）
+- ✅ Web 八章建立 Notion 來源與 Catalog 映射；六篇核准章節使用 generated Markdown，兩篇待審章節安全回退 `web.ts`（2026-08-03）
+- ✅ 依 SWAG Master 完整 sitemap 補齊 Web「個人檔案與內容」及「影音與聊天」，八章全部成為可閱讀靜態頁（2026-08-03）
+- ✅ Moor 八章建立 Notion 來源與 Catalog 映射；快速入門／直播正式同步，其餘六章安全保留為待審核草稿（2026-08-03）
+- ✅ Moor quick-start 優先讀取 Notion generated Markdown，無同步資料時回退 `moor.ts`，並完成 parser／build 驗證（2026-08-03）
+- ✅ 獨立 Demo Workspace、唯讀 Internal Connection、schema v2 Catalog、Moor 快速入門樣本與正式同步實機驗證（2026-08-03）
+- ✅ 唯讀核對第二批 11 份 Design Merged Figma，整合 Web 設定第六章、直播／交易／錯誤頁、Moor 合規／語音／AI 與 Ramen 下載分流（2026-08-03）
+- ✅ 新手村標題脫離置中書環容器、與試煉標題共用桌機左緣，並將 `portal-copy` 語意化為 `portal-title`(2026-08-03)
+- ✅ Website Docs Catalog 實際新增五個產品階層欄位，並完成四筆既有資料回填與查詢驗證（2026-08-03）
 - ✅ Moor／Web Hero 卡片、徽章與統計的六尺寸 padding／overflow 邊界驗證(2026-08-03)
 - ✅ Notion Catalog 產品階層程式支援：manifest schema v2、approved 發布閘門、欄位組合／路由唯一驗證與 fixtures（2026-08-03）
 - ✅ `.env.example` 已提供 Regression 與唯讀 Notion 所需環境變數範本（確認於 2026-08-03）

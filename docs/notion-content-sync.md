@@ -81,11 +81,13 @@ Notion 官方 Markdown API 可以轉換多數常見區塊，但網站端仍需�
 
 ### 目前 POC 位置
 
-- Notion 私人根頁：[`QA Storming Sync Lab`](https://app.notion.com/p/3a8926e209a38130b147e5524027869c)
-- 根頁下方的 database：[`Website Docs Catalog`](https://app.notion.com/p/2fc847a5d5724ab0a207ca9c899d53cd)
-- Data source ID：`0bbf8ab7-08e2-48e8-8af2-3a79d692d509`
+- 獨立 Workspace：`QA Storming Demo Lab`
+- Notion 私人根頁：[`QA Storming Sync Lab`](https://app.notion.com/p/3b14769bed6a8094972fcd7b26233860)
+- 根頁下方的 database：[`Website Docs Catalog`](https://app.notion.com/p/f661c7d6e24446d698c0c8b261bf8616)
+- Data source ID：`16d3010e-3844-405e-8fbc-4c2fb447d8b9`
+- 同步示範來源：[`Moor 快速入門｜同步 Demo`](https://app.notion.com/p/3b14769bed6a81798427ecb26bde5f90)
 
-`QA Storming Sync Lab` 是工作區根層的私人 POC 頁面，不是新的 Teamspace，也不會因建立頁面而自動分享給其他成員。Catalog 是該私人頁面底下的 database；其實際可見範圍仍由 Notion 分享設定決定。
+`QA Storming Sync Lab` 位於隔離的單人 Demo Workspace，不是 SWAG Teamspace，也不會因建立頁面而自動分享給 SWAG 成員。Catalog 是該私人頁面底下的 database；其實際可見範圍仍由 Notion 分享與 Connection 設定決定。原 SWAG 私人頁面的 Catalog 保留為早期 POC，不再作為下週 Demo 的同步來源。
 
 建立一個獨立的 Notion database，名稱建議為：
 
@@ -122,7 +124,7 @@ Catalog 只管理網站同步設定，不取代或搬動原始文件。
 | `Review Status` | Select | 是 | `draft`、`in-review`、`approved` |
 | `Parent Slug` | Rich text | 否 | 未來子章節或群組的父層識別 |
 
-程式端已由 manifest schema v2、同步器與 fixtures 支援這些欄位；Notion POC database 仍須由有權限的人員實際新增欄位後才能進行 preview。
+程式端已由 manifest schema v2、同步器與 fixtures 支援這些欄位；Notion POC database 已於 2026-08-03 實際新增欄位並完成既有資料回填。
 
 欄位組合規則：
 
@@ -371,7 +373,7 @@ scripts/sync-notion.ts
 1. ✅ 在 Private 區域建立 `QA Storming Sync Lab`、Catalog 與四種 POC。
 2. ✅ 實作型別、schema、preview、同步器、圖片本地化與 fixture tests。
 3. ✅ 程式端支援 Product Key／Chapter Slug／Document Type／Review Status／Parent Slug 與 manifest schema v2。
-4. 在 POC Catalog 實際新增五個階層欄位，並為既有項目補 `Document Type`／`Review Status`。
+4. ✅ 在 POC Catalog 實際新增五個階層欄位，並為既有項目補 `Document Type`／`Review Status`。
 5. 建立唯讀 `QA Storming Docs Reader`,將 Sync Lab 分享給它。
 6. 將 token 寫入 `.env.local` 後執行 `npm run sync:notion -- --preview`。
 7. 在「API 測試魔法書」手動加入一張安全圖片,重跑 preview 驗證本地化。
