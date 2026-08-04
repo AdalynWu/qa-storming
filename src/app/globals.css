@@ -472,11 +472,15 @@ button {
   color: #fff8dc;
   text-align: center;
   text-decoration: none;
-  text-shadow: 0 2px 5px #061b16, 0 0 12px #eecf6880;
+  text-shadow:
+    0 2px 5px #061b16,
+    0 0 12px #eecf6880;
   font-weight: bold;
   line-height: 1;
   cursor: pointer;
-  transition: color 180ms ease, text-shadow 180ms ease;
+  transition:
+    color 180ms ease,
+    text-shadow 180ms ease;
 }
 .rpg-scroll i,
 .rpg-scroll span {
@@ -499,7 +503,9 @@ button {
 }
 .rpg-scroll:hover {
   color: #ffe79d;
-  text-shadow: 0 2px 6px #061b16, 0 0 18px #ffe79dcc;
+  text-shadow:
+    0 2px 6px #061b16,
+    0 0 18px #ffe79dcc;
 }
 .rpg-scroll:focus-visible {
   outline: 3px solid #ffe79d;
@@ -875,7 +881,13 @@ button {
   position: relative;
   padding: 130px 7vw;
   background:
-    linear-gradient(90deg, #03131bd1 0%, #071c2699 34%, #07192347 62%, #04131fc2 100%),
+    linear-gradient(
+      90deg,
+      #03131bd1 0%,
+      #071c2699 34%,
+      #07192347 62%,
+      #04131fc2 100%
+    ),
     linear-gradient(180deg, #04151e66 0%, transparent 42% 72%, #031119b8 100%),
     var(--image-library-celestial) center / cover no-repeat;
   color: #fdf6d7;
@@ -981,7 +993,7 @@ button {
 }
 .animal-wolf {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   bottom: 3%;
   will-change: transform;
@@ -1767,9 +1779,7 @@ button {
   height: 52px;
   border: 1px solid #d6b35f;
   border-radius: 10px 22px 10px 22px;
-  background:
-    linear-gradient(145deg, #315f4d, #12372f 72%),
-    #173f35;
+  background: linear-gradient(145deg, #315f4d, #12372f 72%), #173f35;
   box-shadow:
     inset 0 0 0 3px #f1d57b24,
     inset 0 0 18px #f1d57b1f,
@@ -1777,7 +1787,10 @@ button {
   color: #f5d477;
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 .quest-arrow:hover,
 .quest-arrow:focus-visible {
@@ -1958,7 +1971,10 @@ button {
     inset 0 0 0 2px #fff1a417,
     inset 0 0 18px #e5c46714,
     0 8px 18px #172c2447;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 .book-cta:not(.is-disabled):hover,
 .book-cta:not(.is-disabled):focus-visible {
@@ -2836,7 +2852,13 @@ button {
   }
   .library-zone {
     background:
-      linear-gradient(180deg, #03131bd1 0%, #0619238f 26%, #0719235c 55%, #031119c2 100%),
+      linear-gradient(
+        180deg,
+        #03131bd1 0%,
+        #0619238f 26%,
+        #0719235c 55%,
+        #031119c2 100%
+      ),
       var(--image-library-celestial-mobile) center top / cover no-repeat;
     padding: clamp(52px, 7dvh, 68px) 22px clamp(68px, 9dvh, 88px);
   }
