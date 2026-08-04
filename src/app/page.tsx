@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { DeferredImmersiveTreeHero } from "@/components/DeferredImmersiveTreeHero";
+import { DeferredLibraryStarfield } from "@/components/DeferredLibraryStarfield";
 import { QuestBookCarousel } from "@/components/QuestBookCarousel";
 import { TrialForestPortal } from "@/components/TrialForestPortal";
 import { onboardingQuestBooks } from "@/content/quests";
@@ -15,9 +16,9 @@ const fruits = [
 
 const lore = [
   { number: "I", title: "Moor App 創作者手冊", text: "快速入門、直播流程與創作者端 QA Know-how。", badge: "OPEN", href: "/products/moor" },
-  { number: "II", title: "缺陷鑑定圖鑑", text: "Severity、priority 與可靠證據的判定方式。", badge: "V3.2" },
-  { number: "III", title: "測試環境世界地圖", text: "Dev、Staging、UAT 的入口與守門人。", badge: "9 MAPS" },
-  { number: "IV", title: "回歸測試典藏室", text: "依產品、模組與風險查閱 Regression Test Cases。", badge: "OPEN", href: "/regression" },
+  { number: "II", title: "SWAG Web 冒險手冊", text: "帳號、直播、付費、探索與 Landing 流程。", badge: "OPEN", href: "/products/web" },
+  { number: "III", title: "錯誤代碼鑑定圖鑑", text: "依 Code、Backend Key 與使用者情境快速查詢。", badge: "V2", href: "/library/error-codes" },
+  { number: "IV", title: "測試工具工坊", text: "Maestro、Appium MCP 與裝置測試工具手冊。", badge: "NEW", href: "/library/testing-tools" },
 ];
 
 export default function Home() {
@@ -71,7 +72,6 @@ export default function Home() {
           <p className="rpg-kicker"><span>✦</span> THE GREAT TREE OF QUALITY <span>✦</span></p>
           <h1>知識之樹，<br /><em>守護每次冒險。</em></h1>
           <p>在世界樹的枝葉之間，探索團隊累積的測試智慧。<br />採下果實，選擇你的任務旅程。</p>
-          <a className="rpg-primary" href="#onboarding"><span>開始冒險</span><i>➜</i></a>
         </div>
 
         <div className="fruit-nav" aria-label="知識區域導航">
@@ -83,28 +83,36 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="animal animal-fox" style={{ transform: `translateX(${scrollY * .28}px)` }}><span className="animal-sprite sprite-jelly" role="img" aria-label="史萊姆嚮導" /><i>任務準備好了嗎？</i></div>
         <a className="rpg-scroll" href="#onboarding"><i>⌄</i><span>向下探索</span></a>
       </section>
 
       <section className="quest-zone" id="onboarding">
-        <div className="parallax-hills hills-back" style={{ transform: `translateY(${(scrollY - 650) * .06}px)` }} />
-        <div className="parallax-hills hills-front" style={{ transform: `translateY(${(scrollY - 650) * .12}px)` }} />
         <header className="zone-title"><p>✦ ADVENTURER&apos;S BEGINNING ✦</p><h2>新手村任務書</h2><span>從團隊指南與產品世界地圖開始，準備你的第一場 QA 冒險。</span></header>
         <div className="zone-content">
           <QuestBookCarousel quests={onboardingQuestBooks} />
         </div>
-        <div className="critter bat" style={{ transform: `translate(${(scrollY - 650) * .5}px, ${(scrollY - 650) * -.34}px)` }}><span className="animal-sprite sprite-bat" role="img" aria-label="飛行的蝙蝠" /></div>
       </section>
 
       <section className="trial-forest-zone" id="regression">
         <TrialForestPortal />
+        <div
+          className="critter bat-flock"
+          style={{ transform: `translate3d(${(scrollY - 1500) * .5}px, ${(scrollY - 1500) * -.12}px, 0)` }}
+          aria-hidden="true"
+        >
+          <span className="flock-bat bat-lead"><span className="animal-sprite sprite-bat" /></span>
+          <span className="flock-bat bat-wing-one"><span className="animal-sprite sprite-bat" /></span>
+          <span className="flock-bat bat-wing-two"><span className="animal-sprite sprite-bat" /></span>
+          <span className="flock-bat bat-wing-three"><span className="animal-sprite sprite-bat" /></span>
+          <span className="flock-bat bat-tail"><span className="animal-sprite sprite-bat" /></span>
+          <span className="flock-bat bat-trailer"><span className="animal-sprite sprite-bat" /></span>
+        </div>
       </section>
 
       <section className="library-zone" id="knowhow">
-        <div className="floating-motes" style={{ transform: `translateY(${(scrollY - 1500) * -.08}px)` }}>✦　·　✧　　　·　✦　　✧　·　✦</div>
+        <DeferredLibraryStarfield />
         <div className="library-inner">
-          <div className="book-copy"><p className="rpg-kicker"><span>✦</span> THE SAGE&apos;S ARCHIVE</p><h2>賢者的知識書庫</h2><p>把經驗寫成可以傳承的冒險筆記。所有卷軸都以 Markdown 保存，跟著版本一同成長。</p><button className="rpg-secondary">開啟完整圖書館　➜</button></div>
+          <div className="book-copy"><p className="rpg-kicker"><span>✦</span> THE SAGE&apos;S ARCHIVE</p><h2>賢者的知識書庫</h2><p>把經驗寫成可以傳承的冒險筆記。所有卷軸都以 Markdown 保存，跟著版本一同成長。</p><Link className="rpg-secondary" href="/library">開啟完整圖書館　➜</Link></div>
           <div className="lore-list">
             {lore.map((item) => {
               const entry = <article><b>{item.number}</b><div><small>KNOWLEDGE SCROLL</small><h3>{item.title}</h3><p>{item.text}</p></div><span>{item.badge}</span></article>;

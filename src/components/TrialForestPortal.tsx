@@ -6,10 +6,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { regressionCases, regressionSuites } from "@/content/regression";
 
 const realms = [
-  { id: "explore", module: "Home", title: "探索之森", subtitle: "首頁與旅程入口", image: "/rpg-life-tree.webp", imagePosition: "24% 72%" },
-  { id: "identity", module: "Authentication", title: "守門者峽谷", subtitle: "登入與身份驗證", image: "/rpg-product-world-map.webp", imagePosition: "14% 43%" },
-  { id: "live", module: "Live Streaming", title: "直播星火原", subtitle: "開播與觀看核心流程", image: "/rpg-product-world-map.webp", imagePosition: "84% 52%" },
-  { id: "library", module: "Content Library", title: "內容秘藏地", subtitle: "影片與內容探索", image: "/rpg-quest-book.webp", imagePosition: "50% 45%" },
+  { id: "explore", module: "Home", title: "探索之森", subtitle: "首頁與旅程入口", imageBase: "/rpg-realm-dawn-valley", imagePosition: "50% 50%" },
+  { id: "identity", module: "Authentication", title: "守門者峽谷", subtitle: "登入與身份驗證", imageBase: "/rpg-realm-crystal-canyon", imagePosition: "50% 50%" },
+  { id: "live", module: "Live Streaming", title: "直播星火原", subtitle: "開播與觀看核心流程", imageBase: "/rpg-realm-ember-plain", imagePosition: "56% 50%" },
+  { id: "library", module: "Content Library", title: "內容秘藏地", subtitle: "影片與內容探索", imageBase: "/rpg-realm-sunken-garden", imagePosition: "56% 54%" },
 ] as const;
 
 export function TrialForestPortal() {
@@ -59,7 +59,11 @@ export function TrialForestPortal() {
     <div className={`trial-portal ${turning ? "is-turning" : ""}`}>
       <div className="portal-scene">
         <div className="realm-window" aria-live="polite">
-          <Image key={realm.id} className="realm-landscape-image" src={realm.image} alt={`${realm.title}的試煉領域景色`} fill sizes="(max-width: 600px) 68vw, 31vw" style={{ objectPosition: realm.imagePosition }} />
+          <picture className="realm-landscape-picture" key={realm.id}>
+            <source srcSet={`${realm.imageBase}.avif`} type="image/avif" />
+            <source srcSet={`${realm.imageBase}.webp`} type="image/webp" />
+            <Image className="realm-landscape-image" src={`${realm.imageBase}.png`} alt={`${realm.title}的試煉領域景色`} fill sizes="100vw" style={{ objectPosition: realm.imagePosition }} />
+          </picture>
           <div className="portal-mist" aria-hidden="true" />
         </div>
         <div className="trial-dragon"><span className="animal-sprite sprite-lol-dragon" role="img" aria-label="守護石台的試煉巨龍" /></div>

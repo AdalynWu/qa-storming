@@ -60,6 +60,18 @@ function orbitSlotStyle(revealOrder: number): CSSProperties {
   } as CSSProperties;
 }
 
+function QuestChevron({ direction = "right" }: { direction?: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className="quest-chevron"
+      viewBox="0 0 24 24"
+    >
+      <path d={direction === "left" ? "m15 5-7 7 7 7" : "m9 5 7 7-7 7"} />
+    </svg>
+  );
+}
+
 export function QuestBookCarousel({
   quests = questBooks,
 }: {
@@ -129,7 +141,7 @@ export function QuestBookCarousel({
         onClick={() => move(-1)}
         aria-label="上一項任務"
       >
-        ‹
+        <QuestChevron direction="left" />
       </button>
 
       <div
@@ -174,10 +186,6 @@ export function QuestBookCarousel({
                 <article
                   className={`quest-book theme-${quest.theme} ${isActive ? "is-active" : ""} ${quest.sealed ? "is-sealed" : ""}`}
                 >
-                  <div className="book-pages" aria-hidden="true" />
-                  <div className="book-spine" aria-hidden="true" />
-                  <div className="book-corner corner-one" aria-hidden="true">◆</div>
-                  <div className="book-corner corner-two" aria-hidden="true">◆</div>
                   <div className="book-cover">
                     {quest.sealed && <span className="book-seal" aria-hidden="true">✦</span>}
                     <small>{quest.category}</small>
@@ -186,17 +194,17 @@ export function QuestBookCarousel({
                     {quest.sealed ? (
                       <span className="book-cta is-disabled">
                         {quest.cta}
-                        <span>◇</span>
+                        <span className="book-cta-icon">◇</span>
                       </span>
                     ) : quest.href ? (
                       <Link className="book-cta" href={quest.href} tabIndex={isActive ? 0 : -1}>
                         {quest.cta}
-                        <span>➜</span>
+                        <span className="book-cta-icon"><QuestChevron /></span>
                       </Link>
                     ) : (
                       <button className="book-cta" type="button" tabIndex={isActive ? 0 : -1}>
                         {quest.cta}
-                        <span>➜</span>
+                        <span className="book-cta-icon"><QuestChevron /></span>
                       </button>
                     )}
                   </div>
@@ -213,7 +221,7 @@ export function QuestBookCarousel({
         onClick={() => move(1)}
         aria-label="下一項任務"
       >
-        ›
+        <QuestChevron />
       </button>
       <p className="quest-position" aria-live="polite">
         {activeIndex + 1} / {orbitBooks.length}

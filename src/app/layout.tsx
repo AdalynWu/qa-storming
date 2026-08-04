@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { preload } from "react-dom";
+import { KnowledgeChatbot } from "@/components/KnowledgeChatbot";
 import "./globals.css";
+import "@/components/knowledge-chatbot.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://qa-storming.web.app"),
@@ -41,7 +43,7 @@ export default function RootLayout({
 
   return (
     <html lang="zh-Hant">
-      <body>{children}</body>
+      <body>{children}<KnowledgeChatbot /></body>
     </html>
   );
 }

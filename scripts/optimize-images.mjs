@@ -8,8 +8,16 @@ const CHECK_ONLY = process.argv.includes("--check");
 
 const assets = [
   { name: "rpg-life-tree", formats: ["avif", "webp"] },
+  { name: "rpg-library-celestial", formats: ["avif", "webp"] },
+  { name: "rpg-library-celestial-mobile", formats: ["avif", "webp"] },
   { name: "rpg-product-world-map", formats: ["avif", "webp"] },
-  { name: "rpg-quest-book", formats: ["avif", "webp"] },
+  { name: "rpg-quest-card", formats: ["avif", "webp"] },
+  { name: "rpg-quest-workshop", formats: ["avif", "webp"] },
+  { name: "rpg-quest-workshop-mobile", formats: ["avif", "webp"] },
+  { name: "rpg-realm-dawn-valley", formats: ["avif", "webp"] },
+  { name: "rpg-realm-crystal-canyon", formats: ["avif", "webp"] },
+  { name: "rpg-realm-ember-plain", formats: ["avif", "webp"] },
+  { name: "rpg-realm-sunken-garden", formats: ["avif", "webp"] },
   { name: "rpg-trial-portal", formats: ["avif", "webp"] },
   { name: "rpg-trial-portal-mobile", formats: ["avif", "webp"] },
   { name: "rpg-trial-portal-alpha", formats: ["avif", "webp"] },

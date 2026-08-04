@@ -14,15 +14,35 @@
     url("/rpg-life-tree.webp") type("image/webp"),
     url("/rpg-life-tree.png") type("image/png")
   );
+  --image-library-celestial: image-set(
+    url("/rpg-library-celestial.avif") type("image/avif"),
+    url("/rpg-library-celestial.webp") type("image/webp"),
+    url("/rpg-library-celestial.png") type("image/png")
+  );
+  --image-library-celestial-mobile: image-set(
+    url("/rpg-library-celestial-mobile.avif") type("image/avif"),
+    url("/rpg-library-celestial-mobile.webp") type("image/webp"),
+    url("/rpg-library-celestial-mobile.png") type("image/png")
+  );
   --image-product-world-map: image-set(
     url("/rpg-product-world-map.avif") type("image/avif"),
     url("/rpg-product-world-map.webp") type("image/webp"),
     url("/rpg-product-world-map.png") type("image/png")
   );
-  --image-quest-book: image-set(
-    url("/rpg-quest-book.avif") type("image/avif"),
-    url("/rpg-quest-book.webp") type("image/webp"),
-    url("/rpg-quest-book.png") type("image/png")
+  --image-quest-card: image-set(
+    url("/rpg-quest-card.avif") type("image/avif"),
+    url("/rpg-quest-card.webp") type("image/webp"),
+    url("/rpg-quest-card.png") type("image/png")
+  );
+  --image-quest-workshop: image-set(
+    url("/rpg-quest-workshop.avif") type("image/avif"),
+    url("/rpg-quest-workshop.webp") type("image/webp"),
+    url("/rpg-quest-workshop.png") type("image/png")
+  );
+  --image-quest-workshop-mobile: image-set(
+    url("/rpg-quest-workshop-mobile.avif") type("image/avif"),
+    url("/rpg-quest-workshop-mobile.webp") type("image/webp"),
+    url("/rpg-quest-workshop-mobile.png") type("image/png")
   );
   --image-trial-portal-alpha: image-set(
     url("/rpg-trial-portal-alpha.avif") type("image/avif"),
@@ -138,6 +158,22 @@ button {
 }
 .rpg-links a:hover {
   color: #b27b36;
+}
+/* 迷霧測試林 /rpg 入口：純 CSS 能力 gate（不用 JS，避免 hydration 後 navbar 位移）。
+   預設隱藏；畫面 >=1024x600 才顯示；純觸控環境再隱藏。真正的能力判斷＋鍵盤確認在 /rpg。 */
+.rpg-links .rpg-quest-entry {
+  display: none;
+}
+@media (min-width: 1024px) and (min-height: 600px) {
+  .rpg-links .rpg-quest-entry {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .rpg-links .rpg-quest-entry {
+    display: none;
+  }
 }
 .guild-level {
   display: grid;
@@ -292,7 +328,6 @@ button {
   line-height: 1.9;
   color: #6b745e;
 }
-.rpg-primary,
 .rpg-secondary {
   margin-top: 18px;
   border: 2px solid #6d5c36;
@@ -304,23 +339,6 @@ button {
   padding: 12px 15px 12px 25px;
   font-weight: bold;
   cursor: pointer;
-}
-.rpg-primary {
-  width: max-content;
-  display: inline-flex;
-  align-items: center;
-  color: inherit;
-  text-decoration: none;
-}
-.rpg-primary i {
-  display: inline-grid;
-  place-items: center;
-  margin-left: 22px;
-  width: 27px;
-  height: 27px;
-  border-radius: 50%;
-  background: #fff7d4;
-  font-style: normal;
 }
 .fruit-nav {
   position: absolute;
@@ -437,70 +455,67 @@ button {
     translate: 0 -12px;
   }
 }
-.animal {
-  position: absolute;
-  z-index: 9;
-  font-size: 64px;
-  will-change: transform;
-  filter: drop-shadow(0 5px 3px #273f2780);
-}
-.animal i {
-  position: absolute;
-  white-space: nowrap;
-  bottom: 90%;
-  left: 65%;
-  font: 12px Arial;
-  background: #fff8dc;
-  border: 2px solid #856e47;
-  border-radius: 18px;
-  padding: 8px 12px;
-}
-.animal-fox {
-  left: 18%;
-  bottom: 9%;
-}
 .rpg-scroll {
   position: absolute;
   z-index: 11;
   bottom: 22px;
   left: 50%;
+  display: grid;
+  min-width: 112px;
+  min-height: 66px;
+  padding: 6px 16px 8px;
+  place-items: center;
+  gap: 8px;
   translate: -50% 0;
   border: 0;
   background: none;
-  color: #fff8d8;
-  text-shadow: 0 2px 4px #183b2b;
-  font-weight: bold;
-  cursor: pointer;
-}
-.rpg-scroll {
-  color: inherit;
+  color: #fff8dc;
+  text-align: center;
   text-decoration: none;
+  text-shadow: 0 2px 5px #061b16, 0 0 12px #eecf6880;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 180ms ease, text-shadow 180ms ease;
 }
 .rpg-scroll i,
 .rpg-scroll span {
   display: block;
 }
 .rpg-scroll i {
+  width: 32px;
+  height: 24px;
+  color: #ffe79d;
+  font-style: normal;
   font-size: 32px;
+  line-height: 0.7;
+  text-align: center;
   animation: bob 1.3s infinite;
+}
+.rpg-scroll span {
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.rpg-scroll:hover {
+  color: #ffe79d;
+  text-shadow: 0 2px 6px #061b16, 0 0 18px #ffe79dcc;
+}
+.rpg-scroll:focus-visible {
+  outline: 3px solid #ffe79d;
+  outline-offset: 4px;
 }
 @keyframes bob {
   50% {
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
 }
 .quest-zone {
   min-height: 940px;
   position: relative;
   background:
-    linear-gradient(
-      180deg,
-      #0b332ccd 0%,
-      #2456418f 28%,
-      #8db27670 68%,
-      #173f32e8 100%
-    ),
-    var(--image-life-tree) center 72% / cover no-repeat;
+    linear-gradient(180deg, #0717138f 0%, transparent 38% 70%, #071713a8 100%),
+    var(--image-quest-workshop) center / cover no-repeat;
   padding: 118px 6vw 150px;
   isolation: isolate;
   overflow: hidden;
@@ -512,56 +527,11 @@ button {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 50% 62%, #fff5a852 0 12%, transparent 43%),
-    linear-gradient(90deg, #092a26ba, transparent 24% 76%, #092a26ba),
-    linear-gradient(180deg, #092b27b8, transparent 30% 72%, #0a2924d6);
+    linear-gradient(90deg, #081613b8 0%, #08161366 25%, transparent 54%),
+    linear-gradient(180deg, #07151270, transparent 33% 76%, #0715129c);
 }
 .quest-zone::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 12%;
-  right: 12%;
-  bottom: -9%;
-  height: 35%;
-  pointer-events: none;
-  border-radius: 50% 50% 0 0;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    #dcefae73,
-    #274c36db 62%,
-    #0a2925 100%
-  );
-  filter: blur(1px);
-}
-.parallax-hills {
-  position: absolute;
-  left: -6%;
-  right: -6%;
-  z-index: -1;
-  will-change: transform;
-  pointer-events: none;
-}
-.hills-back {
-  top: 10%;
-  height: 42%;
-  background:
-    radial-gradient(ellipse at 22% 50%, #c9eeb15e, transparent 34%),
-    radial-gradient(ellipse at 78% 45%, #88cfa85c, transparent 32%);
-  filter: blur(28px);
-  opacity: 0.75;
-}
-.hills-front {
-  bottom: -11%;
-  height: 38%;
-  background:
-    radial-gradient(
-      ellipse at 50% 5%,
-      transparent 0 23%,
-      #173b2f99 52%,
-      #09251f 76%
-    ),
-    linear-gradient(180deg, transparent, #09251f 74%);
+  content: none;
 }
 .zone-content {
   position: relative;
@@ -711,9 +681,45 @@ button {
   font-size: 52px;
   will-change: transform;
 }
-.bat {
-  left: 8%;
-  bottom: 12%;
+.bat-flock {
+  left: 70%;
+  top: 24%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.flock-bat {
+  position: absolute;
+  display: block;
+}
+.bat-lead {
+  left: 0;
+  top: 0;
+}
+.bat-wing-one {
+  left: -92px;
+  top: 38px;
+  transform: rotate(-7deg);
+}
+.bat-wing-two {
+  left: -138px;
+  top: -22px;
+  transform: rotate(8deg);
+}
+.bat-wing-three {
+  left: 54px;
+  top: 48px;
+  transform: rotate(-4deg);
+}
+.bat-tail {
+  left: -48px;
+  top: 78px;
+  transform: rotate(-12deg);
+}
+.bat-trailer {
+  left: -178px;
+  top: 64px;
+  transform: rotate(6deg);
 }
 .trial-forest-zone {
   min-height: 980px;
@@ -869,29 +875,42 @@ button {
   position: relative;
   padding: 130px 7vw;
   background:
-    radial-gradient(circle at 15% 20%, #5b866f, transparent 30%),
-    linear-gradient(140deg, #173b31, #295d48);
+    linear-gradient(90deg, #03131bd1 0%, #071c2699 34%, #07192347 62%, #04131fc2 100%),
+    linear-gradient(180deg, #04151e66 0%, transparent 42% 72%, #031119b8 100%),
+    var(--image-library-celestial) center / cover no-repeat;
   color: #fdf6d7;
   overflow: hidden;
+  isolation: isolate;
 }
 .library-zone:before {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 79px, #fff1 80px);
-  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 58% 18%, #9edbe92e 0 8%, transparent 40%),
+    linear-gradient(180deg, #03141d2e 0%, transparent 56%, #020d14a8 100%);
 }
-.floating-motes {
+.immersive-library-stars {
   position: absolute;
-  inset: 15% 5% auto;
-  color: #ffe899;
-  font-size: 25px;
-  letter-spacing: 5vw;
-  opacity: 0.65;
-  will-change: transform;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.immersive-library-stars.is-ready {
+  opacity: 0.82;
+}
+.immersive-library-stars canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .library-inner {
   position: relative;
+  z-index: 2;
   max-width: 1200px;
   margin: auto;
   display: grid;
@@ -900,12 +919,19 @@ button {
   align-items: center;
 }
 .book-copy > p:last-of-type {
+  margin-bottom: 0;
   line-height: 1.9;
   color: #c6d5b9;
 }
 .rpg-secondary {
   background: #f8e8af;
   color: #315741;
+}
+.book-copy .rpg-secondary {
+  display: flex;
+  width: max-content;
+  margin-top: clamp(24px, 3dvh, 32px);
+  text-decoration: none;
 }
 .lore-list {
   display: flex;
@@ -955,6 +981,7 @@ button {
 }
 .animal-wolf {
   position: absolute;
+  z-index: 1;
   left: 0;
   bottom: 3%;
   will-change: transform;
@@ -1096,9 +1123,6 @@ button {
   .fruit-name {
     display: block;
   }
-  .animal-fox {
-    left: 10%;
-  }
   .quest-grid {
     grid-template-columns: 1fr;
     max-width: 560px;
@@ -1169,12 +1193,6 @@ button {
   .fruit-green {
     left: 66%;
   }
-  .animal {
-    font-size: 48px;
-  }
-  .animal i {
-    display: none;
-  }
   .zone-title span {
     font-size: 12px;
   }
@@ -1243,6 +1261,11 @@ button {
   transition:
     filter 0.24s,
     opacity 0.24s;
+}
+.realm-landscape-picture {
+  position: absolute;
+  inset: 0;
+  display: block;
 }
 .realm-landscape-image {
   object-fit: cover;
@@ -1436,9 +1459,6 @@ button {
   .mist,
   .hero-leaves,
   .hero-copy-rpg,
-  .animal,
-  .parallax-hills,
-  .floating-motes,
   .critter,
   .animal-wolf {
     transform: none !important;
@@ -1487,6 +1507,35 @@ button {
   animation-name: batCycle;
   animation-duration: 0.82s;
 }
+.bat-lead .sprite-bat {
+  --sprite-size: 118px;
+  animation-delay: -0.18s;
+}
+.bat-wing-one .sprite-bat {
+  --sprite-size: 86px;
+  animation-duration: 0.76s;
+  animation-delay: -0.44s;
+}
+.bat-wing-two .sprite-bat {
+  --sprite-size: 66px;
+  animation-duration: 0.88s;
+  animation-delay: -0.62s;
+}
+.bat-wing-three .sprite-bat {
+  --sprite-size: 74px;
+  animation-duration: 0.79s;
+  animation-delay: -0.53s;
+}
+.bat-tail .sprite-bat {
+  --sprite-size: 54px;
+  animation-duration: 0.72s;
+  animation-delay: -0.31s;
+}
+.bat-trailer .sprite-bat {
+  --sprite-size: 48px;
+  animation-duration: 0.91s;
+  animation-delay: -0.71s;
+}
 .sprite-wolf {
   --sprite-size: 200px;
   background-image: var(--image-sprite-wolf);
@@ -1516,8 +1565,47 @@ button {
   .sprite-lol-dragon {
     --sprite-size: 150px;
   }
-  .sprite-bat {
-    --sprite-size: 110px;
+  .bat-flock {
+    left: 70%;
+    top: 14%;
+  }
+  .bat-lead .sprite-bat {
+    --sprite-size: 40px;
+  }
+  .bat-wing-one {
+    left: -36px;
+    top: 14px;
+  }
+  .bat-wing-one .sprite-bat {
+    --sprite-size: 32px;
+  }
+  .bat-wing-two {
+    left: -54px;
+    top: -10px;
+  }
+  .bat-wing-two .sprite-bat {
+    --sprite-size: 25px;
+  }
+  .bat-wing-three {
+    left: 32px;
+    top: 28px;
+  }
+  .bat-wing-three .sprite-bat {
+    --sprite-size: 28px;
+  }
+  .bat-tail {
+    left: -20px;
+    top: 28px;
+  }
+  .bat-tail .sprite-bat {
+    --sprite-size: 20px;
+  }
+  .bat-trailer {
+    left: -76px;
+    top: 34px;
+  }
+  .bat-trailer .sprite-bat {
+    --sprite-size: 17px;
   }
   .sprite-wolf {
     --sprite-size: 120px;
@@ -1572,31 +1660,6 @@ button {
 }
 .quest-book.is-active {
   animation: bookFloat 3.2s ease-in-out infinite;
-}
-.book-pages {
-  position: absolute;
-  inset: 13px -9px -10px 14px;
-  border-radius: 5px 15px 18px 6px;
-  background: repeating-linear-gradient(0deg, #f8ebbd 0 3px, #d5bf87 4px 5px);
-  border: 3px solid #775735;
-  transform: skewY(-1deg);
-}
-.book-spine {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 37px;
-  border: 3px solid #62432d;
-  border-radius: 12px 3px 3px 12px;
-  background: linear-gradient(
-    90deg,
-    var(--cover-dark),
-    var(--cover),
-    var(--cover-dark)
-  );
-  box-shadow: inset -5px 0 #fff2;
 }
 .book-cover {
   position: absolute;
@@ -1676,21 +1739,6 @@ button {
   flex: 0 0 auto;
   font-size: 0.9em;
 }
-.book-corner {
-  position: absolute;
-  z-index: 4;
-  color: var(--metal);
-  font-size: 18px;
-  text-shadow: 0 2px #49331f;
-}
-.corner-one {
-  left: 30px;
-  top: 5px;
-}
-.corner-two {
-  right: 5px;
-  bottom: 4px;
-}
 .theme-legendary {
   --cover: #a27a2e;
   --cover-dark: #4d4d24;
@@ -1715,21 +1763,41 @@ button {
   translate: 0 -50%;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
-  border: 2px solid #6e5432;
-  border-radius: 50%;
-  background: linear-gradient(#fff3c1, #d6aa55);
-  box-shadow: 0 5px 0 #604224;
-  color: #3d573f;
-  font-size: 36px;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #d6b35f;
+  border-radius: 10px 22px 10px 22px;
+  background:
+    linear-gradient(145deg, #315f4d, #12372f 72%),
+    #173f35;
+  box-shadow:
+    inset 0 0 0 3px #f1d57b24,
+    inset 0 0 18px #f1d57b1f,
+    0 10px 24px #071b1766;
+  color: #f5d477;
   cursor: pointer;
   touch-action: manipulation;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 .quest-arrow:hover,
 .quest-arrow:focus-visible {
-  filter: brightness(1.12);
+  border-color: #f6da83;
+  background: linear-gradient(145deg, #3f775e, #183f35 72%);
+  transform: translateY(-2px);
   outline: 3px solid #fff1a4;
+  outline-offset: 4px;
+}
+.quest-arrow:active {
+  transform: translateY(1px) scale(0.96);
+}
+.quest-chevron {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .quest-prev {
   left: 0;
@@ -1742,6 +1810,7 @@ button {
   left: 50%;
   bottom: 4px;
   translate: -50% 0;
+  z-index: 30;
   margin: 0;
   padding: 6px 12px;
   border-radius: 16px;
@@ -1818,16 +1887,12 @@ button {
   }
 }
 
-/* Life-tree art direction: keep all quest copy as HTML while the generated
-   illustration supplies the same painted wood, foliage and dawn-light texture. */
+/* Keep all quest copy as HTML while the generated card supplies the painted
+   brass, foliage and parchment texture. Orbit geometry remains unchanged. */
 .quest-book {
   height: 460px;
-  filter: drop-shadow(0 24px 18px #102d2288) drop-shadow(0 0 18px #f6d76b33);
-}
-.book-pages,
-.book-spine,
-.book-corner {
-  display: none;
+  filter: none;
+  transition: filter 260ms ease;
 }
 .book-cover {
   inset: 0;
@@ -1836,7 +1901,7 @@ button {
   border-radius: 22px;
   background-image:
     linear-gradient(var(--book-wash, #2d6b5950), var(--book-wash, #2d6b5950)),
-    var(--image-quest-book);
+    var(--image-quest-card);
   background-size: 100% 100%;
   background-position: center;
   background-blend-mode: color, normal;
@@ -1881,15 +1946,42 @@ button {
 }
 .book-cta {
   width: 92%;
-  padding: 9px;
+  min-height: 38px;
+  padding: 8px 12px;
   margin-left: auto;
   margin-right: auto;
-  border-color: #6e5838;
-  background: linear-gradient(#fff2b8, #e8be62);
-  color: #315343;
+  border: 1px solid #d7b65f;
+  border-radius: 7px 16px 7px 16px;
+  background: linear-gradient(145deg, #315f4d, #153b32 76%);
+  color: #fff0b6;
   box-shadow:
-    0 4px 0 #66452d,
-    0 8px 16px #4b3b2240;
+    inset 0 0 0 2px #fff1a417,
+    inset 0 0 18px #e5c46714,
+    0 8px 18px #172c2447;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+.book-cta:not(.is-disabled):hover,
+.book-cta:not(.is-disabled):focus-visible {
+  border-color: #f3d77d;
+  background: linear-gradient(145deg, #40755d, #1b463a 76%);
+  transform: translateY(-2px);
+  outline: 3px solid #f7dfa0;
+  outline-offset: 3px;
+}
+.book-cta:not(.is-disabled):active {
+  transform: translateY(1px);
+}
+.book-cta-icon {
+  min-width: 22px;
+  min-height: 22px;
+  display: grid;
+  place-items: center;
+  padding-left: 7px;
+  border-left: 1px solid #e9cc7366;
+}
+.book-cta-icon .quest-chevron {
+  width: 15px;
+  height: 15px;
 }
 .theme-legendary {
   --book-wash: #d2a34125;
@@ -2011,7 +2103,7 @@ button {
 }
 .quest-orbit .quest-book.is-sealed .book-cover {
   background-image:
-    linear-gradient(#173b35a8, #294f4396), var(--image-quest-book);
+    linear-gradient(#173b35a8, #294f4396), var(--image-quest-card);
   filter: saturate(0.5) brightness(0.73);
 }
 .quest-orbit .swiper-slide-active .quest-book.is-sealed .book-cover {
@@ -2042,11 +2134,11 @@ button {
   transform: translateX(-50%);
 }
 .book-cta.is-disabled {
-  border-color: #7a755d;
-  background: linear-gradient(#c9c6a8, #989a78);
-  color: #43564a;
+  border-color: #777d6c;
+  background: linear-gradient(145deg, #53645a, #334840);
+  color: #c5c9ae;
   box-shadow:
-    0 4px 0 #4d493b,
+    inset 0 0 0 2px #e9e4bc0f,
     0 8px 16px #263c3040;
   cursor: not-allowed;
 }
@@ -2127,7 +2219,7 @@ button {
   }
   .quest-orbit .quest-book {
     width: 280px;
-    height: 418px;
+    height: 455px;
   }
   .quest-orbit .book-cover {
     padding: 142px 77px 24px;
@@ -2151,7 +2243,7 @@ button {
     height: 402px;
   }
   .quest-orbit .book-cover {
-    padding: 48% 27% 6% 29%;
+    padding: 49% 22% 5%;
   }
   .quest-orbit .book-cover h3 {
     font-size: 18px;
@@ -2231,9 +2323,36 @@ button {
 }
 .quest-orbit-slot.is-front {
   z-index: 6;
+  pointer-events: auto;
   filter: none;
   transform: translate(-50%, -50%) translate3d(0, 0, 210px) rotateY(0deg)
     scale(1);
+}
+.quest-orbit-slot.is-front .quest-book:hover,
+.quest-orbit-slot.is-front .quest-book:focus-within {
+  filter: none;
+}
+.quest-book::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 3% 5% 4%;
+  border-radius: 34%;
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    #f6d76b5c 0 30%,
+    #8fe6b452 52%,
+    #8fe6b41f 68%,
+    transparent 82%
+  );
+  filter: blur(18px);
+  opacity: 0.34;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+.quest-orbit-slot.is-front .quest-book:hover::after,
+.quest-orbit-slot.is-front .quest-book:focus-within::after {
+  opacity: 0.92;
 }
 .quest-orbit-slot.is-left-1 {
   z-index: 4;
@@ -2336,11 +2455,19 @@ button {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .quest-orbit .quest-book {
+    transition: none;
+  }
+  .quest-orbit .quest-book::after {
+    transition: none;
+  }
   .immersive-tree-canvas {
     display: none;
   }
-  .quest-zone .parallax-hills,
-  .quest-zone .bat {
+  .immersive-library-stars {
+    display: none;
+  }
+  .trial-forest-zone .bat-flock {
     transform: none !important;
   }
   .quest-orbit-slot {
@@ -2375,6 +2502,16 @@ button {
 }
 
 @media (min-width: 901px) {
+  .hero-copy-rpg {
+    width: min(720px, 48vw);
+    max-width: none;
+  }
+  .hero-copy-rpg h1 {
+    font-size: clamp(46px, 4.7vw, 72px);
+  }
+  .hero-copy-rpg h1 em {
+    white-space: nowrap;
+  }
   .quest-zone {
     --quest-book-width: clamp(195px, min(23vw, 38dvh), 280px);
     height: calc(100vh - var(--rpg-nav-height));
@@ -2419,16 +2556,16 @@ button {
     min-height: 0;
   }
   .quest-orbit-slot {
-    top: 50%;
+    top: 46%;
     width: var(--quest-book-width);
   }
   .quest-orbit-slot .quest-book {
     width: 100%;
-    height: calc(var(--quest-book-width) * 1.46);
+    height: calc(var(--quest-book-width) * 1.625);
   }
   .quest-orbit-slot .book-cover {
-    /* The painted parchment occupies roughly x=27–74% of the source art. */
-    padding: 49.5% 28% 8%;
+    /* Cropped 811×1318 artwork: parchment occupies roughly x=19–82%. */
+    padding: 57.5% 23% 8%;
   }
   .quest-orbit-slot .book-cover h3 {
     min-height: calc(var(--quest-book-width) * 0.14);
@@ -2479,7 +2616,36 @@ button {
   }
 }
 
+@media (min-width: 2000px) and (min-height: 900px) {
+  .quest-zone {
+    --quest-book-width: clamp(310px, min(17vw, 42dvh), 360px);
+  }
+  .quest-zone .zone-content,
+  .quest-orbit {
+    max-width: 1680px;
+  }
+  .quest-orbit-slot.is-left-1 {
+    transform: translate(-50%, -50%) translate3d(-360px, 13px, 20px)
+      rotateY(-50deg) scale(0.82);
+  }
+  .quest-orbit-slot.is-right-1 {
+    transform: translate(-50%, -50%) translate3d(360px, 13px, 20px)
+      rotateY(50deg) scale(0.82);
+  }
+  .quest-orbit-slot.is-left-2 {
+    transform: translate(-50%, -50%) translate3d(-590px, 32px, -170px)
+      rotateY(-74deg) scale(0.64);
+  }
+  .quest-orbit-slot.is-right-2 {
+    transform: translate(-50%, -50%) translate3d(590px, 32px, -170px)
+      rotateY(74deg) scale(0.64);
+  }
+}
+
 @media (max-width: 900px) {
+  .hero-copy-rpg {
+    width: auto;
+  }
   .quest-zone {
     min-height: calc(100vh - var(--rpg-nav-height));
     min-height: calc(100dvh - var(--rpg-nav-height));
@@ -2599,6 +2765,9 @@ button {
     display: none;
   }
   .quest-zone {
+    background:
+      linear-gradient(180deg, #050d0bc2 0%, #09130e38 30% 72%, #07130fb8 100%),
+      var(--image-quest-workshop-mobile) center top / cover no-repeat;
     padding: clamp(24px, 3.5dvh, 36px) 22px clamp(42px, 6dvh, 60px);
   }
   .quest-zone .zone-title {
@@ -2617,15 +2786,15 @@ button {
     height: 382px;
   }
   .quest-orbit-slot {
-    top: 49% !important;
+    top: 44% !important;
     width: min(62vw, 232px) !important;
   }
   .quest-orbit-slot .quest-book {
     width: 100%;
-    height: min(92.4vw, 346px);
+    height: min(100.75vw, 377px);
   }
   .quest-orbit-slot .book-cover {
-    padding: 48% 27% 6% 29%;
+    padding: 55% 22% 6%;
   }
   .quest-orbit-slot .book-cover h3 {
     font-size: 14px;
@@ -2666,6 +2835,9 @@ button {
     right: 4px;
   }
   .library-zone {
+    background:
+      linear-gradient(180deg, #03131bd1 0%, #0619238f 26%, #0719235c 55%, #031119c2 100%),
+      var(--image-library-celestial-mobile) center top / cover no-repeat;
     padding: clamp(52px, 7dvh, 68px) 22px clamp(68px, 9dvh, 88px);
   }
   .library-zone .rpg-kicker,
