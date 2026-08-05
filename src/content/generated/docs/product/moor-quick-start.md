@@ -30,5 +30,5 @@ Moor 可能依版本與地區提供手機驗證碼、Email 密碼或第三方登
 <callout icon="⚠️" color="yellow_bg">
 	媒體、身分與申請資料只使用核准測試素材；公開 issue 應遮蔽個資、檔案內容與任何可追溯申請人的資訊。
 </callout>
-## 同步展示文字
-test
+## 試給你看
+test la

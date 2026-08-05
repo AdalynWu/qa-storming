@@ -1,7 +1,7 @@
 {
   "_meta": {
     "schemaVersion": 2,
-    "contentHash": "6db5dfd6c24f4584"
+    "contentHash": "dd26d5e63ab389a9"
   },
   "documents": [
     {
@@ -18,7 +18,7 @@
       "chapterSlug": "quick-start",
       "sourceUrl": "https://app.notion.com/p/3b14769bed6a81798427ecb26bde5f90",
       "lastEditedTime": "2026-08-03T08:43:00.000Z",
-      "contentHash": "d93c5a3945265f70",
+      "contentHash": "204e9244cb4a9029",
       "markdownPath": "product/moor-quick-start.md"
     },
     {

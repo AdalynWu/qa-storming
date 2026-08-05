@@ -23,7 +23,7 @@ export type Continent = {
   products: Product[];
   position: { x: number; y: number };
   focus: { x: number; y: number; scale: number };
-  theme: "creator" | "sushi" | "ramen" | "web" | "tv";
+  theme: "creator" | "sushi" | "ramen" | "web" | "date";
   status?: "active" | "development";
 };
 
@@ -47,8 +47,8 @@ export const continents: Continent[] = [
         entryLabel: "進入 Moor 創作者聖域",
         environment: "Mobile／主播端",
         sections: [{ label: "版本", value: "於 testflight 下載 | APK" }],
-        notes: ["完整功能、2026 流程與 QA 重點收錄於 Moor 產品頁。"],
-        status: "beta",
+        notes: ["完整功能、流程與 QA 重點收錄於 Moor 產品頁。"],
+        status: "active",
       },
       {
         id: "flutter-web",
@@ -83,13 +83,13 @@ export const continents: Continent[] = [
           "開發階段需先完成後台設定。",
           "iOS 使用 TestFlight；Android 使用 APK。",
         ],
-        status: "active",
+        status: "development",
       },
     ],
   },
   {
     id: "ramen-cities",
-    name: "Ramen 雙城",
+    name: "Ramen 城",
     subtitle: "User App Kingdom",
     theme: "ramen",
     status: "active",
@@ -100,24 +100,9 @@ export const continents: Continent[] = [
         id: "ramen",
         name: "Ramen",
         technology: "Native App + WebView（類 H5）",
-        summary: "純網頁包在 App 殼內，目前是主要用戶端產品。",
-        environment: "Android",
-        notes: [
-          "收到的回傳資料有加密，主要面向中國使用者。",
-          "有提供 dev 版 APK，方便測試與 QA。",
-        ],
-        status: "active",
-      },
-      {
-        id: "ramen-mdm",
-        name: "Ramen - MDM",
-        technology: "Native App + WebView（類 H5）",
-        summary: "Ramen 的 iOS 版本，純網頁包在 App 殼內。",
-        environment: "iOS／MDM",
-        notes: [
-          "回傳資料有加密，主要面向中國使用者。",
-          "MDM 版本需透過 MDM 企業管理系統安裝，無法直接從 App Store 下載。",
-        ],
+        summary: "純網頁包在 App 殼內，主要面向中國使用者。",
+        environment: "Android | iOS",
+        notes: ["有提供 dev 版 APK，方便測試與 QA。"],
         status: "active",
       },
     ],
@@ -155,20 +140,26 @@ export const continents: Continent[] = [
     ],
   },
   {
-    id: "swag-tv-island",
-    name: "SWAG TV 未知之島",
+    id: "date-app-island",
+    name: "交友新島",
     subtitle: "Uncharted Territory",
-    theme: "tv",
+    theme: "date",
     status: "development",
     position: { x: 48, y: 69 },
     focus: { x: 0, y: -24, scale: 1.92 },
     products: [
       {
-        id: "swag-tv",
-        name: "SWAG TV",
-        technology: "Native App",
-        summary: "全新原生 App，產品功能仍在開發中。",
-        notes: ["平台、受眾與功能尚未確認，不在文件中推測。"],
+        id: "date-app",
+        name: "交友 App（開發中）",
+        technology: "React Native App",
+        summary: "全新交友社群 App，產品名稱與功能仍在開發中。",
+        sections: [
+          {
+            label: "開發方式",
+            value: "文件驅動開發（Spec-Driven Development, SDD）",
+          },
+        ],
+        notes: ["產品名稱、平台、受眾與功能尚未確認。"],
         status: "development",
       },
     ],

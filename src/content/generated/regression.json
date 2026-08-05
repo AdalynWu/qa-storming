@@ -1,7 +1,7 @@
 {
   "_meta": {
     "schemaVersion": 2,
-    "contentHash": "1880ed12769dffe8"
+    "contentHash": "286bc9ea0118a9c7"
   },
   "suites": [
     {
@@ -10,10 +10,10 @@
       "subtitle": "瀏覽器海岸巡查",
       "product": "SWAG",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC",
+        "Mobile"
       ],
-      "description": "SWAG Web Production（swag.live）PC Web 核心回歸範圍：登入與驗證、探索首頁、直播、影片與短影音、搜尋與分類、個人頁與日誌、聊天、鑽石相關流程。",
+      "description": "SWAG Web Production（swag.live）核心回歸範圍：登入與驗證、探索首頁、直播、影片與短影音、搜尋與分類、個人頁與日誌、聊天、鑽石相關流程。",
       "status": "active"
     }
   ],
@@ -25,8 +25,7 @@
       "title": "有效帳號密碼可成功登入 Web Production",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "已有可用的測試帳號（帳號密碼登入方式）",
@@ -62,8 +61,7 @@
       "title": "Email 驗證碼可成功登入並出現快速登入開通提示",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "已有可收信的測試 Email 帳號",
@@ -100,8 +98,7 @@
       "title": "手機號碼自動辨識國碼並可以簡訊驗證碼登入",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "已有可收簡訊的測試手機門號",
@@ -138,8 +135,7 @@
       "title": "Google 帳號可成功登入 Web Production",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試環境已可使用測試用 Google 帳號",
@@ -172,8 +168,7 @@
       "title": "Apple 帳號可透過通行密鑰成功登入 Web Production",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試裝置已設定可用的 Apple 帳號與通行密鑰（Touch ID）",
@@ -209,8 +204,7 @@
       "title": "登出後再登入時「歡迎回來」記住上次帳號與登入方式",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "此裝置先前曾以任一方式成功登入並登出",
@@ -242,8 +236,7 @@
       "title": "登出需經確認對話框且登出後回到未登入狀態",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production"
@@ -275,8 +268,7 @@
       "title": "OTP 驗證碼頁顯示重新發送倒數計時",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "已於登入流程送出 Email 或手機驗證碼請求"
@@ -306,8 +298,7 @@
       "title": "訪客進站自動建立訪客帳號並提示綁定保留鑽石",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "瀏覽器為未登入狀態"
@@ -335,8 +326,7 @@
       "title": "登入後探索首頁顯示導覽列與核心內容區塊",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production"
@@ -367,8 +357,7 @@
       "title": "未完成年齡驗證時顯示驗證橫幅且短影音預覽模糊",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入但尚未完成年齡驗證"
@@ -399,8 +388,7 @@
       "title": "熱門直播中「更多」導向即時熱門直播列表",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production"
@@ -428,8 +416,7 @@
       "title": "追蹤中頁顯示最新上線、追蹤貼文與追蹤清單",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已追蹤至少一位創作者"
@@ -462,8 +449,7 @@
       "title": "首頁顯示推薦影片與熱門創作者區塊",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -492,8 +478,7 @@
       "title": "選單「重新整理」重新載入頁面並顯示最新帳號狀態",
       "priority": "P3",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -523,8 +508,7 @@
       "title": "點擊頭像開啟漢堡選單並顯示完整功能入口",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production"
@@ -555,8 +539,7 @@
       "title": "漢堡選單顯示與帳號一致的鑽石餘額及儲值入口",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且帳號有已知的鑽石餘額"
@@ -588,8 +571,7 @@
       "title": "漢堡選單「設定」導向 SWAG 設定頁",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -618,8 +600,7 @@
       "title": "訪客帳號漢堡選單顯示綁定提醒且鑽石為 0",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "以「訪客進站」進入且未綁定帳號"
@@ -648,8 +629,7 @@
       "title": "漢堡選單於任務活動與通知有更新時顯示紅點提示",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -679,8 +659,7 @@
       "title": "漢堡選單「語言」項顯示目前介面語言",
       "priority": "P3",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且介面語言為繁體中文"
@@ -708,8 +687,7 @@
       "title": "頂部導覽列各分頁正確導向對應頁面",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -743,8 +721,7 @@
       "title": "導覽列「直播」分頁顯示 New 標記",
       "priority": "P3",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -771,8 +748,7 @@
       "title": "頁尾顯示完整連結群組、合規標章與版本資訊",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者位於顯示頁尾的頁面（如首頁或分類總覽）"
@@ -803,8 +779,7 @@
       "title": "頁尾語言切換入口顯示目前介面語言",
       "priority": "P3",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "介面語言為繁體中文"
@@ -830,8 +805,7 @@
       "title": "搜尋頁顯示熱門 Hashtags 與內容分頁",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -861,8 +835,7 @@
       "title": "搜尋框輸入時顯示自動完成建議",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -894,8 +867,7 @@
       "title": "以帳號關鍵字搜尋創作者並進入其個人頁",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -926,8 +898,7 @@
       "title": "從首頁進入直播間可成功載入並播放直播",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production",
@@ -958,8 +929,7 @@
       "title": "直播間可發送聊天訊息並即時顯示",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間",
@@ -990,8 +960,7 @@
       "title": "直播間禮物面板顯示分類與鑽石價格",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間"
@@ -1022,8 +991,7 @@
       "title": "互動菜單顯示挑戰表演項目、秒數與鑽石價格",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間",
@@ -1054,8 +1022,7 @@
       "title": "私密邀請顯示一對一與一對多選項及費率",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間",
@@ -1087,8 +1054,7 @@
       "title": "超級留言依秒數顯示對應價格與字數上限",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間"
@@ -1121,8 +1087,7 @@
       "title": "直播間貢獻排行榜可切換時間區間並正確顯示",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間"
@@ -1153,8 +1118,7 @@
       "title": "直播間遊戲面板顯示可遊玩項目",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入直播間"
@@ -1182,8 +1146,7 @@
       "title": "直播列表篩選條件即時更新結果數並可清除",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入並位於直播列表頁"
@@ -1218,8 +1181,7 @@
       "title": "熱門主播榜可切換榜單類型與時間區間",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1251,8 +1213,7 @@
       "title": "持直播體驗券可解鎖觀看付費演出",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試帳號已由後台發放直播體驗券",
@@ -1284,8 +1245,7 @@
       "title": "持直播體驗券可解鎖觀看私密直播",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試帳號已由後台發放直播體驗券",
@@ -1317,8 +1277,7 @@
       "title": "頂部獎盃入口開啟熱門主播榜",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1345,8 +1304,7 @@
       "title": "從直播間進入創作者個人頁並顯示完整資訊",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已進入任一直播間"
@@ -1378,8 +1336,7 @@
       "title": "創作者個人頁可切換追蹤與取消追蹤狀態",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入並位於任一創作者個人頁"
@@ -1409,8 +1366,7 @@
       "title": "設定頁顯示帳號、鑽石與關於區塊之管理項目",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入 Web Production"
@@ -1441,8 +1397,7 @@
       "title": "貼文與短影音的更多選單提供封鎖、追蹤與前往個人檔案",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1470,8 +1425,7 @@
       "title": "解除封鎖後重新整理頁面該用戶自封鎖名單移除",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試帳號已封鎖另一測試用戶"
@@ -1503,8 +1457,7 @@
       "title": "封鎖名單可正常開啟並顯示已封鎖成員",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試帳號已封鎖至少一位用戶"
@@ -1533,8 +1486,7 @@
       "title": "任務活動入口顯示於個人中心",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1564,8 +1516,7 @@
       "title": "追蹤創作者後該帳號出現於追蹤中頁與追蹤清單",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -1599,8 +1550,7 @@
       "title": "可自搜尋結果與短影音播放頁直接追蹤創作者",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1631,8 +1581,7 @@
       "title": "短影音播放器可按讚並即時更新讚數",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且已開啟任一短影音"
@@ -1663,8 +1612,7 @@
       "title": "付費短影音以鑽石解鎖後可完整觀看",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且鑽石餘額足夠",
@@ -1697,8 +1645,7 @@
       "title": "影片貼文以鑽石解鎖後可完整播放並支援進度拖曳與全螢幕",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且鑽石餘額足夠",
@@ -1734,8 +1681,7 @@
       "title": "影片播放時顯示觀看者帳號浮水印",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入並已解鎖任一影片貼文"
@@ -1764,8 +1710,7 @@
       "title": "付費照片貼文以鑽石解鎖後顯示完整照片",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且鑽石餘額足夠",
@@ -1795,8 +1740,7 @@
       "title": "限時動態檢視器可瀏覽動態並解鎖付費動態",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -1832,8 +1776,7 @@
       "title": "分類總覽與分類詳情頁正確顯示各內容分頁",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1864,8 +1807,7 @@
       "title": "創作者個人頁內容可依影片價格排序",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入並位於任一創作者個人頁的內容分頁"
@@ -1895,8 +1837,7 @@
       "title": "熱門短影音「更多」導向趨勢短影音列表",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -1924,8 +1865,7 @@
       "title": "限時動態檢視器顯示置頂標記、動態集清單與新動態提示",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -1957,8 +1897,7 @@
       "title": "限時動態檢視器內提供付費私訊輸入並顯示每則價格",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入並開啟任一創作者的限時動態"
@@ -1987,8 +1926,7 @@
       "title": "搜尋頁限時動態分頁顯示熱門限時動態並標示直播中創作者",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入"
@@ -2017,8 +1955,7 @@
       "title": "分類詳情頁顯示層級麵包屑導覽",
       "priority": "P3",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者位於任一分類詳情頁的內容分頁"
@@ -2044,8 +1981,7 @@
       "title": "分類詳情頁的相關標籤可切換至其他分類",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者位於任一分類詳情頁"
@@ -2072,8 +2008,7 @@
       "title": "聊天頁顯示對話清單與付費私訊價格",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入且有歷史對話"
@@ -2105,8 +2040,7 @@
       "title": "日誌僅記錄鑽石與票券等資產異動",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -2140,8 +2074,7 @@
       "title": "付費演出未達開演條件時票券退款並記錄於日誌",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試主播可建立付費演出（售票）",
@@ -2175,8 +2108,7 @@
       "title": "付費演出中斷未完成時票券退款並記錄於日誌",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "測試主播已成功開演付費演出",
@@ -2210,8 +2142,7 @@
       "title": "每日免費鑽石於任務活動領取且 24 小時內限領一次",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -2245,8 +2176,7 @@
       "title": "龍虎鬥遊戲遊玩紀錄於 5 分鐘內更新",
       "priority": "P1",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用者已登入",
@@ -2279,8 +2209,7 @@
       "title": "VIP 效期自升等當月起保留三個月",
       "priority": "P2",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "使用測試環境提供的 VIP 測試帳號登入"
@@ -2308,11 +2237,10 @@
       "id": "WEB_CHUN-001",
       "suiteId": "web-production",
       "module": "VIP",
-      "title": "test test",
+      "title": "test test la",
       "priority": "P0",
       "platforms": [
-        "Web",
-        "Chrome"
+        "PC"
       ],
       "preconditions": [
         "testtt"
